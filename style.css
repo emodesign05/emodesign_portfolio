@@ -1,0 +1,1978 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Serif+JP:wght@200..900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  /* outline: 2px solid pink; */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  /* 背景のグラデーション */
+  background: radial-gradient(circle at 50% 50%, #140022 0%, #000 80%);
+  /* スクロールバーが常に表示されないようにする（必要に応じて） */
+  overflow-x: hidden;
+  font-family: helvetica-lt-pro, noto-sans-cjk-jp, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  /* 標準カーソルを完全に非表示にする */
+  cursor: none;
+}
+
+html {
+    /* html要素はビューポートの高さを基準にする */
+    height: 100%; 
+}
+
+body {
+    /* bodyはコンテンツの量に合わせて自動で高さを決定 */
+    min-height: 100%; /* htmlの高さ（ビューポート）以下にならないようにする */
+    height: auto;     /* 高さはコンテンツに合わせる */ 
+    /* スクロールバーが常に表示されないようにする（必要に応じて） */
+    overflow-x: hidden; 
+}
+
+li {
+  list-style: none;
+  text-align: -webkit-match-parent;
+  unicode-bidi: isolate;
+  /* line-height: 2; */
+}
+
+picture, video, canvas, svg {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* aタグなどにマウスが乗ったとき、標準カーソルは非表示を維持し、フィードバックを与えない */
+a, button, [data-cursor-effect] {
+    cursor: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* color */
+  --white: #f8f8f8;
+  --purple: #d272ff;
+  --black: #333;
+  --palegreen: #a8ff9c;
+  --paleblue: #a8d2ff;
+  /* font */
+  --helvetica: helvetica-lt-pro, sans-serif;
+  --noto-sans: noto-sans-cjk-jp, sans-serif;
+  --noto-serif: "Noto Serif JP", serif;
+  --din: din-condensed, sans-serif;
+  --marydale: "marydale", sans-serif;
+  /* ★追加: 星形と軌跡の色★ */
+  --stalker-color-main: #d272ff; /* 星の基本色 */
+  --stalker-color-trail: rgba(210, 114, 255, 0.5); /* 軌跡の色（半透明） */
+  --stalker-color-trail-end: rgba(210, 114, 255, 0); /* 軌跡の終わりの色（透明） */
+}
+
+
+a {
+
+}
+
+
+@media (max-width: 1440px) {
+  html, body  {
+    font-size: 15px;
+  }
+}
+@media (max-width: 1024px) {
+  html, body  {
+    font-size: 14px;
+  }
+}
+@media (min-width: 768px) {
+  .sp  {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .sp  {
+    display: block;
+  }
+}
+
+
+/* ========================================================= */
+/* ハンバーガー のスタイル */
+/* ========================================================= */
+.checkbox {
+  display: none;
+}
+
+.button {
+  position: relative;
+  background-color: white;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 5vh; 
+  right: 5vw; 
+  z-index: 2000;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+  text-align: center; 
+  cursor: pointer;
+}
+
+.background {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 5.5vh; 
+  right: 5.5vw; 
+  background-image:  radial-gradient(#69EACB 0%, #ecc3ff 48%, #6654F1 100%);
+  z-index: 1000;
+
+  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.full-screen-nav {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: -60vw;
+  z-index: 1500;
+  opacity: 0;
+  width: 0;
+  transition: all 0.8s;
+}
+
+.nav_list {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+  width: 100%;
+}
+
+.site-logo img{
+  padding-bottom: 3rem;
+}
+.site-logo img{
+  width: 9rem;
+}
+
+.nav_list li {
+  margin: 1rem;
+  font-size: 36px;
+}
+
+.link:link,
+.link:visited {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 300;
+  padding: 1rem 2rem;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  background-size: 220%;
+  transition: all 0.4s;
+}
+
+.link:hover,
+.link:active {
+  color: lightgreen;
+  cursor: pointer;
+}
+
+/* functionality */
+.checkbox:checked ~ .background {
+  transform: scale(80);
+}
+.checkbox:checked ~ .full-screen-nav {
+  opacity: 1;
+  width: 100%;
+  right: 0;
+}
+
+/*  */
+/* styling hamb ICON */
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon,
+.icon::before,
+.icon::after {
+  width: 3rem;
+  height: 2px;
+  background-color: gray;
+  display: inline-block;
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  transition: all 0.2s;
+}
+
+.icon::before {
+  top: -0.8rem;
+}
+.icon::after {
+  top: 0.8rem;
+}
+
+.button:hover icon:before {
+  top: -1rem;
+}
+.button:hover icon::after {
+  top: 1rem;
+}
+
+.checkbox:checked + .button .icon {
+  background-color: transparent;
+}
+
+.checkbox:checked + .button .icon::before {
+  top: 0;
+  transform: rotate(135deg);
+}
+.checkbox:checked + .button .icon::after {
+  top: 0;
+  transform: rotate(-135deg);
+}
+
+@media (max-width: 768px){
+  .button {
+    height: 3rem;
+    width: 3rem;
+    top: 3vw;
+    right: 3vw;
+  }
+  .icon, .icon::before, .icon::after {
+    width: 1.75rem;
+  }
+  .icon::before {
+    top: -0.6rem;
+  }
+  .icon::after {
+    top: 0.6rem;
+  }
+  .background {
+    height: 2.5rem;
+    width: 2.5rem;
+    top: 3.5vw;
+    right: 3.5vw;
+  }
+}
+
+@media (max-width: 480px){
+  .link:link, .link:visited {
+    font-size: 1.8rem;
+    padding: 0 0;
+  }
+}
+
+/* ========================================================= */
+/* ローディング画面 (色が流れる変形リング) のスタイル */
+/* ========================================================= */
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: var(--white, #ffffff); */
+    background-color: var(--black, #333333);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* ★ローダーの外枠（正円） */
+.loader {
+    width: 100px;  /* 少し大きめに設定 */
+    height: 100px;
+    border-radius: 50%; /* 外側は正円 */
+    position: relative;
+    overflow: hidden; /* はみ出したグラデーションをカット */
+    
+    /* 影をつけて少し立体感を出す（お好みで削除可） */
+    /* box-shadow: 0 0 10px rgba(0,0,0,0.05); */
+}
+
+/* ★色が流れるグラデーション（回転する背景） */
+.loader::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%; /* 回転しても端が見えないように大きく */
+    height: 200%;
+    transform: translate(-50%, -50%);
+    
+    /* 扇形グラデーション（色が繋がるように開始色と終了色を合わせる） */
+    background: conic-gradient(
+        #69EACB 0%, 
+        #ecc3ff 45%, 
+        #6654F1 70%, 
+        #69EACB 100%
+    );
+    
+    /* 色自体を回転させる */
+    animation: flowColor 1.2s linear infinite;
+}
+
+/* ★中央のマスク（楕円にして線の太さに抑揚をつける） */
+.loader::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    /* 楕円のサイズ調整（幅を狭く、高さを長くすると、左右が太く上下が細くなる） */
+    width: 86px;  /* ローダー幅(100px) - 線(太い部分7px*2) */
+    height: 96px; /* ローダー高(100px) - 線(細い部分4px*2) */
+    
+    border-radius: 50%;
+    background-color: var(--white, #ffffff); /* 背景色と同じ色で抜く */
+    background-color: var(--black, #333333);
+    
+    /* ★重要: 1時と7時の方向を細くするための回転 */
+    /* 楕円を傾けることで、細い部分の位置をずらす */
+    transform: translate(-50%, -50%) rotate(-30deg);
+}
+
+/* 回転アニメーション */
+@keyframes flowColor {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* 読み込み完了時の非表示クラス */
+#loading-screen.is-loaded {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* =================================================================
+  canvas と　背景
+================================================================= */
+
+.canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* コンテンツより下に配置 */
+}
+
+/* TOP用キャンバスは常に表示 */
+.canvas-top {
+    opacity: 1; 
+    /* z-index: 10; */ /* 既存の z-index を使用 */
+}
+
+.bg-fade-layer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1; /* canvas(0)の上、hero(2)の下に配置 */
+  background-color: #f7f7f7; /* 地球パートの背景色 */
+  opacity: 0; /* 最初は透明 */
+  pointer-events: none;
+}
+
+/* =================================================================
+    HERO
+================================================================= */
+
+.hero {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotateY(0deg);
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+  /* 遠近感を指定するために重要です */
+  perspective: 1000px; 
+}
+
+.hero h1 {
+  font-size: 8vw;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* background: linear-gradient(90deg, #fff, #e4caff, #fff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;  */
+  color:  #d272ff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.875), 
+                0 0 15px rgba(255, 255, 255, 0.8),
+                0 0 30px rgba(200, 100, 255, 0.5);
+  font-family: din-condensed, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.hero h1 span {
+  display: inline-block;
+}
+
+.hero .white {
+  font-size: 6.0vw;
+  color: #333;
+  -webkit-text-fill-color: #333;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8), 
+               0 0 30px rgba(255,255,255,0.5);
+  background: none;
+}
+
+.hero .emotion {
+  font-family: "marydale", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.emotion .char {
+  opacity: 0; /* 初期状態では非表示 */
+}
+
+.scroll-text {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #aaa;
+  font-size: 14px;
+  letter-spacing: 2px;
+  animation: blink 2s infinite; /* 点滅アニメーション */
+  z-index: 10;
+}
+
+.hero h1 > span:not(.emotion) {
+    /* ★追加: アニメーション開始まで透明にしておく */
+    opacity: 0; 
+}
+
+/* 点滅アニメーションの定義 */
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+
+
+/* tablet size 画面サイズが1024px以下 */
+@media screen and (max-width:1024px) {
+  .hero h1 {
+    font-size: 15vw;
+  }
+
+  .hero .white {
+  font-size: 11.0vw;
+  }
+ 
+}
+
+/* sp size 画面サイズが480px以下 */
+@media screen and (max-width: 480px) {
+  .hero h1 {
+    font-size: 19vw;
+  }
+
+  .hero .white {
+  font-size: 16.0vw;
+  }
+}
+/* =================================================================
+    PROJECT 
+================================================================= */
+
+.projects-section {
+    position: relative; /* ★修正: Pinが有効になるまで relative に戻す★ */
+    /* top: 100vh;      ★削除★ */
+    margin-top: 100vh; /* ★修正: Heroセクションの高さ分を下にずらす★ */
+    width: 100%;
+    
+    /* Pinによって固定されたときに画面中央に表示するための設定 */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    /* background: #000; */
+    /* 遠近感を強調 -> ★削除 (下の.carouselに移動)★ */
+    /* perspective: 800px; */ 
+    overflow: hidden;
+    
+    /* GSAP制御用（Pin/フェード） */
+    opacity: 0; 
+    z-index: 5; 
+    pointer-events: none; 
+}
+
+
+.carousel {
+  width: 350px;
+  height: 350px;
+  position: relative;
+  transform-style: preserve-3d;
+  /* ★追加: 遠近感を強調するため、perspectiveを設定する★ */
+  perspective: 800px;
+  /* ★追加: カルーセル自体をさらに上に少しずらし、中央に見えるように調整★ */
+  /* -175px は height: 350px の半分です。 */
+  /* figureの配置ロジックと相殺し、視覚的な中央調整を行います */
+  /* transform: translateY(-175px); */ 
+}
+
+.carousel__container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+/* 🚨 新規: figure の基本スタイル（imgの代わりに配置の基点となる） 🚨 */
+.carousel-figure {
+  position: absolute;
+  width: 260px; /* imgと同じサイズを適用 */
+  height: 300px; /* figcaptionの分だけ高さを増やす */
+  left: 50%; /* ズレ補正箇所 */
+  top: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+  transition: box-shadow 0.3s;
+  
+  /* 中央寄せ（transformはJSで上書きされるため、ここで translate は不要） */
+  transform: translate(-50%, -50%); 
+
+  /* 🚨 重要な修正: 3D変形の起点と裏返し防止を figure に移す 🚨 */
+  transform-origin: center center; /* imgから削除 */
+  backface-visibility: hidden;     /* imgから削除 */
+  transform-style: preserve-3d; /* figcaptionが変形の影響を受けるように */
+  
+  /* flexboxで画像とキャプションを縦に並べる */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+
+  /* 3D空間を維持させる */
+  transform-style: preserve-3d;
+  /* 裏面がチラつくのを防ぐ */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* GSAPで頻繁に変化させるプロパティを事前に宣言 */
+  will-change: transform, opacity;
+}
+
+.carousel-figure img {
+  width: 100%;
+  height: auto;
+  max-height: 100%; /* キャプションのためのスペース確保 */
+  object-fit: cover;
+  border-radius: 10px;
+
+  /* ★★★ 重要: 背景より 2px 手前に配置する ★★★ */
+  /* これにより、物理的な距離が生まれ、GPUが迷わなくなります */
+  transform: translateZ(2px);
+  
+  /* 裏面非表示 */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* 画像自体も動く場合は画像にも適用 */
+  will-change: transform, opacity;
+}
+
+.carousel-figure figcaption {
+  color: #FFF;
+  margin-top: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+@media (max-width: 480px){
+  .carousel-figure {
+    width: 208px; /* imgと同じサイズを適用 */
+    height: 240px; /* figcaptionの分だけ高さを増やす */
+  }
+}
+
+/* ============================
+// シャッフルボタンのスタイル
+// ============================ */
+.shuffle-button {
+    position: absolute;
+    bottom: 15%;
+    right: 30%;
+    transform: translateY(-50%);
+    
+    /* 見た目の調整 */
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 10; /* カルーセルの上に表示 */
+    transition: background-color 0.3s ease;
+}
+
+.shuffle-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.shuffle-button i {
+    margin-right: 8px;
+}
+
+/* 縦向きの場合のスタイル */
+@media (orientation: portrait) {
+  .shuffle-button  {
+    bottom: 10%;
+    right: 5%;
+    /* transform: translateX(-50%); */
+  }
+}
+
+@media (max-width: 1440px) {
+  .shuffle-button  {
+    bottom: 10%;
+  }
+}
+
+
+
+
+/* =================================================================
+// パララックスバブルセクションのスタイル
+// ================================================================= */
+.parallax {
+  position: relative; 
+  height: 100vh; 
+  width: 100%;
+  overflow: visible; /* バブルの動きがセクション外に漏れないように隠す */
+  background-color: transparent; /* 背景色切り替えはbody/bg-fade-layerで行う */
+  /* z-indexは既存のセクションと被らないよう適当に設定 */
+  z-index: 5; 
+}
+
+.parallax img {
+  position: absolute;
+  height: auto;
+  opacity: 0.5;
+  mix-blend-mode: screen; 
+}
+
+
+
+
+
+
+
+
+
+/* =================================================================
+// REASONセクションのスタイル
+// ================================================================= */
+.reason {
+  height: 300vh; /* Pinのトリガー期間 */
+  position: relative; 
+  z-index: 2;
+  background-color: var(--white);
+}
+
+.reason-text {
+  text-align: center;
+  font-size: 3rem;
+  font-family: var(--noto-serif);
+  color: var(--black);
+  opacity: 1; 
+  visibility: visible;
+  will-change: opacity, transform;
+  width: 100%; 
+  line-height: 1.6;
+  z-index: 4; 
+}
+
+.reason-text .marker-wrap {
+  position: relative;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.reason-text.is-animated .marker-wrap::before {
+  animation: bg 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  background: linear-gradient(-225deg, #69EACB 0%, #ecc3ff 48%, #6654F1 100%);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+}
+.reason-text .marker-wrap .marker {
+  color: #fff;
+  display: inline-block;
+  font-weight: bold;
+  padding: 4px 8px;
+  position: relative;
+  z-index: 1;
+}
+ 
+@keyframes bg {
+  0% {
+    opacity: 0;
+    transform: scaleX(0) translateX(-5%);
+  }
+  30% {
+    transform: scaleX(1) translateX(0);
+  }
+  100% {
+    transform: scaleX(1) translateX(0);
+  }
+  30%, 100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1440px) {
+  .reason-text {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .reason-text {
+    font-size: 4.5vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .reason-text {
+    font-size: 5.5vw;
+  }
+}
+
+
+
+/* =================================================================
+// HOWTOセクションのスタイル
+// ================================================================= */
+.howto {
+  position: relative; 
+  height: 200vh;
+  display: flex; /* Flexboxは維持しますが、子要素はabsoluteで中央配置を無視します */
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  /* ★修正: 画面外の要素を隠すために必須★ */
+  overflow: hidden; 
+  /* ★追加: Pin留め時の背景色を白にする（暗転対策）★ */
+  background-color: var(--white); /* 👈 追加 */
+}
+
+/* howto-route の基本スタイルを修正 */
+.howto-route {
+    /* ★修正: 縦100vh 横100vwに変更★ */
+    position: absolute; /* 親のPinに依存せず、画面内で絶対位置指定 */
+    top: 0; /* 画面上端に配置 */
+    left: 0;
+    width: 100vw; /* 修正 */
+    height: 100vh; /* 修正 */
+    
+    transform: none; /* JSでyPercentを制御するため、transform: translate(-50%, -50%) は削除 */
+    box-sizing: border-box; /* paddingを含めて100vh/100vwになるように */
+    
+    /* 背景色を仮設定し、スタッキングを確認しやすくする */
+    background: white; 
+    z-index: 1; /* ベース */
+
+    /* ★追加: Pinアニメーション中の描画パフォーマンス向上 (任意) ★ */
+    will-change: transform;
+
+
+  /* 背景ぼかし */
+  backdrop-filter: blur(10px);
+  /* 半透明の背景色 */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* わずかな影 */
+  /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+  /* ボーダーなど */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+
+}
+
+.howto-content-wrapper {
+    width: 100%;
+    height: 100%;
+    
+    display: grid; /* ★グリッドをここに移動★ */
+    grid-template-columns: 45% 55%;
+
+    /* ★追加: コンテンツに余白を持たせる★ */
+    /* padding: 5%;  */
+    
+    /* ★追加: グリッド内の要素を中央に配置★ */
+    align-items: center;
+
+    position: relative;
+}
+
+/* ★修正: nth-of-typeのインデックスを+1します。これは最初のdivがIndicatorだからです★ */
+.howto-route:nth-of-type(2) { background: #E0F7FA; z-index: 1; } 
+.howto-route:nth-of-type(3) { background: #B3E5FC; z-index: 2; }
+.howto-route:nth-of-type(4) { background: #81D4FA; z-index: 3; }
+.howto-route:nth-of-type(5) { background: #4FC3F7; z-index: 4; }
+.howto-route:nth-of-type(6) { background: #29B6F6; z-index: 5; }
+.howto-route:nth-of-type(7) { background: #03A9F4; z-index: 6; } 
+.howto-route:nth-of-type(8) { background: #0288D1; z-index: 7; } /* 7番目のRouteに適用 */
+
+.ht-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: var(--black);
+  /* padding-left: 3vw; */
+}
+
+.ht-text h2 {
+  font-size: 2.8rem;
+  font-family: var(--noto-serif);
+  /* text-shadow: 2px 2px 8px rgba(72, 72, 72, 0.4); */
+  /* padding-bottom: 1.5rem; */
+}
+
+/* style.css の該当箇所 */
+.howto-route h3 {
+    /* 既存のスタイルを維持 */
+    font-family: var(--noto-sans);
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding-bottom: 1.5rem;
+    
+    /* ★新規追加: アニメーションの初期状態とトランジション設定★ */
+    clip-path: inset(0 100% 0 0); /* 初期状態: 右端から100%クリップ */
+    display: inline-block; /* clip-pathを適用するために必要 */
+    will-change: clip-path;
+    /* 1.4秒でclip-pathをアニメーション */
+    transition: 1.4s cubic-bezier(0.37, 0, 0.63, 1);
+    transition-property: clip-path;
+    
+    /* ★追加: アニメーションの開始を0.3秒遅延★ */
+    transition-delay: 0.3s; 
+}
+
+.ht-text p {
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
+
+/* 7枚目の文字色は白 (#fff) に設定 */
+.howto-route:nth-child(7) .ht-text {
+    color: #fff;
+}
+
+
+/* 強調アンダーライン */
+.ht-text .underline {
+  background: linear-gradient(transparent 10%, #fff 50%);
+  /* background: linear-gradient(transparent 10%, #d272ff 50%); */
+}
+
+.ht-text .underline_fff {
+  background: linear-gradient(transparent 10%, #d272ff 50%);
+}
+
+
+/* 2. p (下からぬるりと現れるためのラッパー) */
+.howto-route .p-wrap {
+    /* overflow: hidden を適用し、p要素の初期移動を隠す */
+    overflow: hidden;
+    /* opacityを0にし、ホールド期間を作る */
+    opacity: 0; 
+    display: block;
+    /* h3とpの間のマージンをここで制御 */
+    margin-top: 10px;
+    will-change: opacity, transform;
+    /* transition: 0.8s ease; はJSで制御 */
+}
+/* 複数行のpに対応するため、p-wrap内のpにtransformを適用 */
+.howto-route .p-wrap p {
+    /* 既存のスタイルを維持 */
+    font-size: 1.5rem;
+    line-height: 1.7;
+    /* モバイル版では対応していない */
+    word-break: auto-phrase;
+
+    /* ★新規追加: アニメーションの初期状態★ */
+    /* translateY(100%)で下に移動（matrix(1, 0, 0, 1, 0, 100)に相当） */
+    transform: translateY(100%); 
+    opacity: 0;
+    /* 1.2秒でtransformとopacityをアニメーション */
+    transition: 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-property: transform, opacity;
+}
+
+/* 3. is-animatedクラスが付与された時の最終状態 (アニメーション実行) */
+.howto-route.is-animated h3 {
+    clip-path: inset(0); /* clip-path: 0% になり、全体が表示される */
+}
+
+.howto-route.is-animated .p-wrap {
+    opacity: 1; /* ラッパーが表示され始める */
+}
+
+.howto-route.is-animated .p-wrap p {
+    transform: translateY(0); /* translateY(0)で本来の位置へ移動 */
+    opacity: 1;
+}
+
+
+/* === ドットインジケーター（パンくず） === */
+
+/* インジケーターのラッパーを画面に固定 */
+.howto-indicator-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* 初期は透過し、pankuzuでのみクリック可能にする */
+  z-index: 50; /* howto-route (z-index: 1〜7)より高い値 */
+
+  /* ★★★ 追加: 最初は隠しておく ★★★ */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* ★★★ 追加: 表示用のクラス ★★★ */
+.howto-indicator-wrapper.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pankuzu {
+  display: flex;
+  align-items: center;
+  /* position: absolute; は不要になりました */
+  top: 1rem;
+  left: 1rem;
+  position: absolute; /* .howto-indicator-wrapper 内で絶対配置 */
+  pointer-events: auto; /* クリックを有効化 */
+}
+
+.index {
+  font-size: 14px;
+  position: relative;
+  width: 8rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* ★追加: クリックしやすくするため、カーソルをポインターに変更★ */
+  cursor: pointer;
+}
+
+/* ドット */
+.index::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: rgba(51, 51, 51, 0.45);
+  top: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: background-color 0.3s, transform 0.3s;
+}
+/* 1. ドット本体の強調 (.is-active) */
+.index.is-active::after {
+  background-color: var(--purple); /* メインカラーで強調 */
+  transform: translateX(-50%) scale(1.3); /* ドットを少し大きくする */
+}
+
+.index.is-active:last-of-type::after {
+    /* 最後の要素がアクティブになったときに棒線を消さないようにするための修正 */
+    display: block; 
+}
+
+/* 棒線 */
+.index::before {
+  position: absolute;
+  content: "";
+  top: calc(150% + 0.5rem);
+  left: calc(100% - 1.5rem);
+  width: 3rem;
+  height: 1px;
+  background-color: rgba(51, 51, 51, 0.45);
+  transition: background-color 0.3s;
+}
+/* 棒線 (.is-highlighted) */
+/* ★修正: is-highlightedクラスを持つ要素の棒線が強調される★ */
+.index.is-highlighted::before {
+    background-color: var(--purple); /* 棒線を紫色で強調 */
+}
+
+.index:last-of-type::before {
+  display: none;
+}
+
+
+.ht-image {
+  order: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: transparent;
+  height: 100%;
+  overflow: visible;
+  position: relative;
+}
+
+/* 幅1024px以下かつ横向きの場合のスタイル */
+@media (orientation: landscape) and (max-width: 1024px) {
+  .ht-text { 
+    transform: translateX(-4vw);
+  }
+}
+
+/* 縦向きの場合のスタイル */
+@media (orientation: portrait) {
+   .howto-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 55% 45%;
+  }
+  .ht-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* transform: translateX(4vw); */
+  }
+   .ht-image {
+    order: 1;
+  }
+   .ht-image img{
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .pankuzu {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    position: static;
+    padding-top: 2vh;
+    padding-left: 2vw;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .index {
+    font-size: 14px;
+    position: relative;
+    width: 8rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-left: 2rem;
+  }
+  /* 棒 */
+  .index::before {
+    top: 178%;
+    left: 4%;
+    transform: rotate(90deg);
+    width: 2.5rem;
+  }
+  /* 円 */
+  .index::after {
+    top: 27%;
+    left: 20%;
+  }
+}
+
+/* 768px以下 */
+@media (max-width: 768px) {
+   .howto-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 55% 45%;
+  }
+  .ht-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+    /* transform: translateX(6vw); */
+    width: 90%;
+    margin: auto;
+    /* word-break: keep-all; */
+  }
+  .ht-text h2 {
+    font-size: 2rem;
+  }
+  .howto-route h3 {
+    font-family: var(--noto-sans);
+    font-size: 1.7rem;
+  }
+  .howto-route .p-wrap p {
+    font-size: 1.2rem; 
+  }
+   .ht-image {
+    order: 1;
+    overflow: visible;
+  }
+   .ht-image img{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .pankuzu {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    position: static;
+    padding-top: 1rem;
+    padding-left: 0;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .index {
+    font-size: 12px;
+    position: relative;
+    width: 7rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-left: 2rem;
+  }
+  /* 棒 */
+  .index::before {
+    top: 178%;
+    left: 4%;
+    transform: rotate(90deg);
+    width: 2.5rem;
+  }
+  /* 円 */
+  .index::after {
+    top: 27%;
+    left: 20%;
+  }
+}
+
+/* 600px以下 */
+@media (max-width: 600px) {
+  .pankuzu {
+    gap: 2rem;
+    position: absolute;
+    justify-content: flex-end;
+    bottom: 1rem;
+    left: 0.5rem;
+    padding-left: 0;
+  }
+  .index::before {
+    top: 147%;
+    left: 6%;
+    transform: rotate(90deg);
+    width: 2rem;
+  }
+  .index::after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .ht-image {
+    transform: translateX(5vw);
+  }
+}
+
+/* 480px以下 */
+@media (max-width: 480px) {
+  .howto-route h3 {
+    font-family: var(--noto-sans);
+    font-size: 1.5rem;
+  }
+  .howto-route .p-wrap p {
+    font-size: 1.1rem; 
+    /* モバイル版での対応 */
+    /*  1. overflowを防ぐための必須設定 */
+    /* 日本語文を適切な位置（単語の途中以外）で改行できるようにする */
+    word-break: normal;
+    /* 2. はみ出しの最終防御策 */
+    /* 特に長い英数字やURLなどの固まりがあった場合に、強制的に改行させる */
+    overflow-wrap: break-word;
+    /* 3. 句読点（、。）のぶら下げ処理 */
+    /* 句読点が文末に来たとき、行の終端の外側に配置できるようにする（より自然な体裁に） */
+    line-break: strict;
+    /* 4. 改行を制御 */
+    /* 日本語の禁則処理（句読点の行頭配置禁止など）を有効にする */
+    white-space: normal;
+  }
+}
+
+/* ============================================================
+// ABOUT
+// ============================================================ */
+
+/* EMODESIGN紹介セクションのスタイル */
+.about {
+  position: relative; 
+  width: 100%;
+  min-height: 100vh;
+  /* padding: 10vh 0; */
+  z-index: 3; 
+  background-color: transparent; 
+  color: var(--black);
+  transition: background-color 1.0s ease, color 1.0s ease;
+}
+
+/* about-section にこのクラスが付与されたら、背景と文字色を反転 */
+.about.is-dark-theme {
+    /* 背景を透明から黒へ変更（よりドラマチックな変化のため、 transition を推奨） */
+    background-color: var(--black); 
+    /* 文字色を黒から白へ変更 */
+    color: var(--white); 
+    
+    /* スムーズな遷移のため transition を追加 (既存の about-section に設定がない場合) */
+    transition: background-color 1.0s ease, color 1.0s ease;
+}
+
+/* ========// スライダー // ======== */
+.loop {
+  background-image: url(img/about/loop_bg.webp);
+  background-size: 200%;
+  background-position: left center;
+  display: flex; /* スライドのグループを横並び */
+  overflow: hidden; /* はみ出たスライドを隠す */
+  gap: 10vw;
+}
+
+.loop_slider {
+  animation: scroll-left 600s infinite linear .5s both;
+  display: flex;
+  gap: 10vw;
+}
+
+.loop_slider li {
+  width: 200vw;
+}
+
+.loop_slider li img{
+  width: 100%;
+  max-width: none;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.about-wrapper {
+  /* max-width: 1200px; */
+  /* width: 90%; */
+  margin: 0 auto;
+  padding: 0 1%;
+  display: flex;
+  flex-direction: column;
+  gap: 12vh;
+  /* overflow: visible; */
+}
+
+/* ========// 自己紹介 // ======== */
+.about_top {
+  position: relative; /* 擬似要素の基準にする */
+  max-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+  /* ★修正: グラデーションは擬似要素へ移動するため、一旦透明にするか、別の背景色を指定 */
+  background-color: transparent; 
+  /* background: linear-gradient(-225deg, #69EACB 0%, #ecc3ff 48%, #6654F1 100%);  <-- CSSアニメーション制御のため移動 */
+  overflow: hidden; 
+  /* 擬似要素がはみ出さないようにクリップ */
+}
+
+/* ★修正・追加: 滲みエフェクトを適用する背景用擬似要素 ★ */
+.about_top::before {
+    content: '';
+    position: absolute;
+    top: -0%;
+    left: 0%;
+    width: 110%; 
+    height: 110%;
+    z-index: -1; 
+    opacity: 0; /* ★初期状態は非表示を維持★ */
+    
+    /* background: linear-gradient(-225deg, #69EACB 0%, #ecc3ff 48%, #6654F1 100%);  */
+    background-image: url(img/about/about_bg4.webp);
+    background-size: 45%;
+    background-repeat: no-repeat;
+    
+    filter: url(#ink-bleed); 
+    
+    /* ★追加: フェードイン用のトランジション★ */
+    transition: opacity 0.5s ease-in-out; 
+}
+
+/* ★追加: 親要素にクラスが付いたら擬似要素を表示する ★*/
+.about_top.is-bg-active::before {
+    opacity: 1;
+}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.profile-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* margin-bottom: 30px; */
+  /* 写真にもやさしい影をつけて「発光」を抑える */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+}
+
+.emo_intro {
+  text-align: center;
+}
+
+.emo_intro div:first-of-type{
+  padding-bottom: 0.5rem;
+}
+
+.emo_intro div:first-of-type dt{
+  font-size: 2rem;
+  font-weight: bold;
+  /* font-family: var(--helvetica); */
+}
+
+.emo_intro div:first-of-type dd{
+  font-size: 1.5rem;
+}
+
+.emo_intro div:last-of-type{
+  /* padding-bottom: 0.5rem; */
+  font-size: 1rem;
+}
+
+.about-thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* text-align: center; */
+  padding-bottom: 15vh;
+  max-width: 1200px; 
+  width: 90%;
+  margin: 0 auto;
+}
+
+.about-thanks h2{
+  font-size: 2rem;
+  padding-bottom: 2rem;
+  text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
+}
+
+.about-thanks p{
+  font-size: 1rem;
+  width: 48%;
+  text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
+  word-break: auto-phrase;
+}
+
+.about-process {
+  max-width: 1200px; 
+  width: 90%;
+  margin: auto;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  display: flex;
+  gap:23vh;
+}
+
+.about-process h2{
+  color: var(--white);
+  padding: 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: .3em;
+  line-height: 1.6;
+  position: relative; /* マーカーの基準 */
+  overflow: hidden;   /* マーカーの出現を隠す */
+  /* margin-bottom: ; */
+}
+
+/* 縦書きマーカーの定義 */
+.about-process h2::after {
+  content: '';
+  position: absolute;
+  /* 縦書きの右端全体に配置 */
+  top: 0%;
+  right: 45%;
+  width: 10%;
+  height: 100%;
+/* ★修正: グラデーションカラーに変更★ */
+  background: linear-gradient(-225deg, #69EACB 0%, #ecc3ff 48%, #6654F1 100%); 
+  transform-origin: top center; /* アニメーションの始点を上端中央に設定 */
+  transform: scaleY(0); /* 初期状態: 高さゼロ */
+  opacity: 0; /* 初期状態: 透明 */
+  z-index: -1;
+}
+
+/* アニメーション起動用のクラス */
+.about-process h2.is-animated::after {
+  /* REASONセクションと同じ時間・イージングを使用し、縦書き用キーフレームを適用 */
+  animation: vertical-bg 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 縦書き用キーフレームアニメーション */
+@keyframes vertical-bg {
+  0% {
+    opacity: 0;
+    /* 横アニメーション(scaleX, translateX)を縦アニメーション(scaleY, translateY)に変換 */
+    transform: scaleY(0) translateY(-5%); 
+  }
+  30% {
+    transform: scaleY(1) translateY(0);
+  }
+  100% {
+    transform: scaleY(1) translateY(0);
+  }
+  30%, 100% {
+    opacity: 1;
+  }
+}
+.about-process dl{
+  display: flex;
+}
+
+.about-process dl div {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-process dl div:first-of-type {
+  justify-content: flex-end;
+}
+
+.about-process dl div:nth-of-type(2) {
+  padding-right: 5%;
+}
+
+.about-process dl div:last-of-type {
+  justify-content: flex-end;
+  padding-left: 7%;
+}
+
+.about-process dt{
+  position: relative; /* 👈 擬似要素配置 */
+  font-size: 1.75rem;
+  letter-spacing: .3em;
+  padding-left: 3rem;
+}
+
+.about-process dt::before{
+  position: absolute;
+  /* opacity: 0.2; */
+  content: '';
+  display: inline-block;
+  background-size: contain;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  height: 300px;
+  width: 200px;
+  top: -50%;
+  left: 0;
+  z-index: -1;
+  mix-blend-mode: screen; 
+}
+
+.process1 dt::before {
+  background-image: url(img/about/process_no1.webp);
+}
+
+.process2 dt::before {
+  background-image: url(img/about/process_no2.webp);
+}
+
+.process3 dt::before {
+  background-image: url(img/about/process_no3.webp);
+}
+
+.about-process dd {
+  font-size: 1rem;
+  letter-spacing: .4em;
+  line-height: 2.0;
+}
+
+.about-process .en {
+  letter-spacing: .1em;
+}
+
+
+/* 滲みエフェクトを適用する要素 */
+.process-item-bleed {
+    /* SVGフィルターを適用 */
+    filter: url(#ink-bleed); 
+    /* Webkit環境での互換性確保のためにプレフィックスを付けるのが安全ですが、
+       GSAPが扱う属性をCSSで定義するだけでOK */
+}
+
+
+
+/* 縦向きの場合のスタイル */
+@media (orientation: portrait) {
+  .about-process h2::after {
+    width: 15%;
+    right: 42%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .about_top {
+    justify-content: space-evenly;
+  }
+
+  .about-thanks {
+    padding-bottom: 0;
+  }
+
+  .about-process dl {
+      display: flex;
+      gap: 10rem;
+  }
+  .about-process dt::before{
+    height: 200px;
+    width: 140px;
+    top: -30%;
+    left: 40%;
+  }
+  .about-process dl div:last-of-type {
+    justify-content: flex-end;
+    padding-left: 0%;
+    padding-top: 5rem;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .about_top::before {
+    width: 200%;
+  }
+  .profile-photo {
+    width: 150px;
+    height: 150px;
+  }
+  .about-thanks {
+    text-align: center;
+  }
+  .about-thanks p {
+    width: 70%;
+  }
+  .about-process dl div:nth-of-type(2) {
+    padding-right: 2%;
+  }
+  .about-process h2::after {
+    width: 20%;
+    right: 40%;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .about-content {
+    flex-direction: column;
+  }
+  .profile-photo {
+    width: 30vw;
+    height: 30vw;
+  }
+  .about-thanks p {
+    width: 90%;
+  }
+  .about-process h2::after {
+    width: 27%;
+    right: 36%;
+  }
+  .about-process dt::before {
+    height: 150px;
+    width: 110px;
+    top: -30%;
+    left: 40%;
+  }
+  form h3 {
+    font-size: 1.45rem;
+  }
+}
+
+/* ============================================================
+// CONTACT
+// ============================================================ */
+
+/* CONTACT用キャンバスは初期状態では非表示（透明） */
+.canvas-contact {
+    opacity: 0; /* JSのScrollTriggerで表示を制御 */
+    z-index: 4; /* TOPキャンバスより上にしてもOK */
+}
+
+.contact {
+    position: relative; 
+    padding: 40vh 2vw 0; 
+    /* background-color: var(--black);  */
+    background-color:transparent; 
+    /* 画面全体を使う場合は高さも指定 */
+    overflow: hidden; 
+    z-index: 2; 
+    transition: background-color 1.0s ease, color 1.0s ease; 
+}
+
+/* about-section にこのクラスが付与されたら、背景と文字色を反転 */
+.contact.is-dark-theme {
+    /* 背景を透明から黒へ変更（よりドラマチックな変化のため、 transition を推奨） */
+    background-color: var(--black); 
+    /* 文字色を黒から白へ変更 */
+    color: var(--white); 
+    
+    /* スムーズな遷移のため transition を追加 (既存の.contactに設定がない場合) */
+    transition: background-color 1.0s ease, color 1.0s ease;
+}
+
+.contact h2 {
+  padding: 30vh 0;
+  display: flex;
+  text-align: center ;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-family: var(--noto-serif);
+  word-break: auto-phrase;
+}
+
+
+/* フォーム全体の設定 */
+form {
+    max-width: 600px; /* フォームの最大幅 */
+    margin: 0 auto; /* 中央寄せ */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    
+    /* ★追加・修正箇所 1: 背景色を不透明に設定 (例: 白) */
+    background-color: var(--white, #f9f9f9); 
+    
+    /* ★追加・修正箇所 2: z-indexを高く設定 (例: 10) */
+    position: relative; /* z-indexを有効にするために必要 */
+    z-index: 10; 
+}
+
+
+form h3 {
+  color: var(--black);
+  font-family: var(--noto-sans);
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+form h3 span {
+  font-family: var(--din);
+  font-size: 1.5rem;
+}
+
+/* 各入力グループの設定 */
+.form-group {
+    margin: 1.25rem 0;
+}
+
+/* ラベル（項目名）の設定 */
+label {
+    display: block; /* 縦に並ぶようにする */
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    /* color: #333; */
+}
+
+.form-group ul {
+  padding-left: 1rem;
+}
+.form-group li {
+  display: flex;
+  gap: 0.8rem;
+}
+
+/* inputとtextareaの共通設定 */
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%; /* 親要素（.form-group）の幅いっぱいに広げる */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* paddingやborderを幅に含める */
+    font-size: 16px;
+}
+
+/* 送信ボタンの設定 */
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #6654F1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s; /* ホバー時のアニメーション */
+}
+
+button[type="submit"]:hover {
+    background-color: var(--purple);
+}
+
+/* .contactがis-dark-themeの場合、フォームの背景色を調整 */
+.contact.is-dark-theme form {
+    /* 例: フォームの背景も黒くするが、流星を見えなくするため不透明な黒にする */
+    background-color: var(--black, #000000); 
+    border-color: var(--white); /* 境界線を白にして見やすくする */
+    color: var(--white); /* フォーム内のテキストを白にする */
+}
+
+/* フォーム内の見出しもテーマに合わせて色を調整 */
+.contact.is-dark-theme form h3 {
+  color: var(--white);
+}
+
+/* ============================
+// フッター (FOOTER)
+// ============================ */
+footer {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: var(--black, #000); /* CONTACTセクションのテーマが黒であれば統一 */
+    color: var(--white, #fff);
+    text-align: center;
+    position: relative;
+    z-index: 50; /* 他のコンテンツやキャンバスの上に表示 */
+}
+
+.copyright {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    font-family: var(--noto-sans);
+}
+
+/* ============================
+// SNSアイコン
+// ============================ */
+.sns-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* アイコン間のスペース */
+    margin-bottom: 20px;
+}
+
+.sns-links a {
+    color: var(--white, #fff);
+    text-decoration: none;
+    font-size: 2rem; /* アイコンの大きさ */
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+/* ホバー時のエフェクト */
+.sns-links a:hover {
+    transform: translateY(-5px) scale(1.1); /* わずかに浮き上がり、拡大 */
+}
+
+/* アイコンタグ <i> 自体にもスタイルを適用 */
+.sns-links a i {
+  /* アイコンフォントファミリーを明示 */
+    /* font-family: 'Font Awesome 6 Brands'; 
+    font-weight: 400; */
+    /* アイコンの描画領域を確保 */
+    display: block; 
+    /* 必要に応じて幅/高さを確保 */
+    width: 2rem;
+    height: 2rem;
+}
+
+
+
+/* =================================================================
+// マウスカーソル変更
+// ================================================================= */
+
+#stalker {
+    /* 基本設定 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+
+    /* グラデーションとぼかし */
+    /* filter: blur(1px); */
+    background: radial-gradient(77.95% 77.95% at 74.66% 58.07%, rgba(255, 254, 220, 0.8) 0%, rgba(255, 255, 255, 0.152) 62.28%, rgba(255, 255, 255, 0) 100%), radial-gradient(89.67% 70.39% at 93.75% 92.16%, var(--paleblue) 0%, rgba(144, 160, 215, 0.49) 52.46%, rgba(255, 156, 156, 0) 100%), radial-gradient(68.86% 68.86% at 94.55% 1.7%, var(--palegreen) 0%, rgba(250, 220, 144, 0) 100%), linear-gradient(130.87deg, rgba(245, 115, 122, 0.78) 3.47%, rgba(245, 115, 122, 0) 77.25%);
+    background-blend-mode: overlay,normal,normal,normal,normal,normal;
+
+    /* アニメーションを滑らかにするためのトランジションを追加 */
+    transition: transform 0s, box-shadow 0.3s ease-out, scale 0.3s ease-out;
+}
+
+/* ホバーエフェクト用のスタイル */
+#stalker.is-hovering {
+    /* グラデーションのカーソル自体は変化させず、box-shadowでリングを追加 */
+    /* 10pxのぼかしの入った白っぽいリングを追加 */
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.2); 
+}
+
+/* ホバー時のスケール変更 */
+#stalker.is-active {
+
+}
+
+.sparkle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* マウスイベントを透過 */
+    overflow: hidden; /* コンテナ外のパーティクルを非表示 */
+    z-index: 999; /* マウスストーカーよりは下、その他コンテンツよりは上 */
+}
+
+/* キラキラパーティクル（十字形状）のスタイル */
+.sparkle {
+    position: absolute;
+    width: 20px; /* 十字全体の幅を20pxに増加 */
+    height: 20px; /* 十字全体の高さを20pxに増加 */
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    pointer-events: none;
+    
+    /* transition: opacity 0.3s ease-out, transform 0.3s ease-out;  GSAPで制御するためコメントアウト */
+}
+
+/* 十字の横棒 */
+.sparkle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px; 
+    /* background-color: #fff; JSで動的に色を制御するためコメントアウト */
+    background-color: var(--sparkle-color, #fff); /* CSSカスタムプロパティで色を受け取る */
+    transform: translateY(-50%);
+    border-radius: 2px;
+}
+
+/* 十字の縦棒 */
+.sparkle::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px; 
+    height: 100%;
+    /* background-color: #fff; JSで動的に色を制御するためコメントアウト */
+    background-color: var(--sparkle-color, #fff); /* CSSカスタムプロパティで色を受け取る */
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* キラキラが降り注ぐアニメーションのキーフレーム */
+/* animationプロパティはJSで動的に設定するため、ここではキーフレームのみ定義 */
+@keyframes sparkle-fall {
+    0% {
+        opacity: 0.8; /* 生成時は少し透明 */
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + var(--sparkle-fall-distance))) scale(0.2) rotate(var(--sparkle-rotate-end));
+    }
+}

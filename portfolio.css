@@ -1,0 +1,251 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Serif+JP:wght@200..900&display=swap');
+
+/* ==============================================
+// 共通変数とリセット (index.htmlからの継承を想定)
+// ============================================== */
+:root {
+    /* メインページからの継承を想定: 白テーマで使う色を定義 */
+    --white: #ffffff; /* 白に固定 */
+    --black: #1a1a1a;
+    --text-color: var(--black);
+    --border-color: #e0e0e0; /* 薄いグレーの罫線 */
+    
+    /* index.htmlのJSで使われている紫や青緑をアクセントカラーとして定義 */
+    --color-purple: #c080ff; /* JSのcolorPurple */
+    --color-pale-green: #a8ff9c; /* JSのcolorPaleGreen */
+    --accent-color: var(--color-purple); /* アクセントは紫をメインに */
+
+    /* フォントファミリーもindex.htmlから継承 */
+    /* 例: --noto-sans: 'Noto Sans JP', sans-serif; */
+}
+
+/* ==============================================
+// ページ全体
+// ============================================== */
+
+/* html, body の上書きセクション */
+html, body {
+    /* ★★★ ここを background: ショートハンドに変更 ★★★ */
+    /* これにより、既存の background-image (radial-gradient) を none に上書き */
+    background: var(--white); 
+    color: var(--black);
+    /* 標準カーソルを強制表示 */
+    cursor: default !important;
+}
+body {
+    /* bodyにも背景色を再設定 */
+    background-color: var(--white); 
+    color: var(--text-color);
+    font-family: sans-serif;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+}
+
+.portfolio-main {
+    max-width: 1200px;
+    margin: 150px auto 0;
+    padding: 40px 20px;
+}
+
+/* ==============================================
+// 🔗 アンカーリンクのカーソル表示を強制
+// ============================================== */
+/* a, a * は、リンク要素とその中の要素（例：画像）を指します */
+a, a *, a:hover, button, [data-cursor-effect] {
+    /* リンク上にカスタムカーソルがある場合、それを非表示にする設定を無効化 */
+    cursor: default !important;
+    
+    /* 標準の指マーク（ポインター）を表示したい場合はこちら */
+    cursor: pointer !important;
+}
+
+/* ==============================================
+// portfolio index 目次
+// ============================================== */
+.portfolio_index {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.portfolio_index h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.portfolio_index nav {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.portfolio_index nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    /* ★ ホバー時の色変化 ★ */
+    transition: color 0.3s ease;
+}
+
+.portfolio_index nav a:hover {
+    color: var(--accent-color); /* アクセントカラーに変化 */
+    text-decoration: underline;
+}
+
+/* ==============================================
+// 罫線
+// ============================================== */
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color); /* 薄い罫線 */
+    margin: 40px 0;
+}
+
+
+/* ==============================================
+// カテゴリセクション
+// ============================================== */
+.work-category {
+    padding: 40px 0;
+    margin-top: -60px; /* sticky headerの下にコンテンツが隠れないように調整 */
+    padding-top: 60px;
+}
+
+.work-category h2 {
+    font-size: 2.5rem;
+    border-left: 5px solid var(--accent-color); /* アクセントカラーの強調線 */
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+
+/* --------------------
+// 索引リスト (index-list)
+// -------------------- */
+.index-list {
+    margin-bottom: 40px;
+}
+
+.index-list a {
+    display: block;
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ★ ホバー時の色変化 ★ */
+.index-list a:hover {
+    background-color: #f7f7f7; /* 薄い背景色 */
+    color: var(--accent-color);
+}
+
+/* ==============================================
+// 個別作品アイテム
+// ============================================== */
+.work-item {
+    margin: 60px 0;
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.work-item h3 {
+    font-size: 1.8rem;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-color); /* 見出し下の罫線 */
+}
+
+.work-details {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap; /* スマホで折り返す */
+    padding-top: 30px;
+}
+
+.eyecatch {
+    width: 100%;
+    max-width: 400px; /* アイキャッチ画像の最大サイズ */
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.metadata {
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+.metadata p {
+    margin: 5px 0;
+}
+
+/* --------------------
+// 説明とサブ画像
+// -------------------- */
+.description {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.description h4 {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.sub-images {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.sub-images img {
+    max-width: 48%; /* 2列表示 */
+    height: auto;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+/* サブ画像ホバーでわずかに拡大 */
+.sub-images img:hover {
+    transform: scale(1.02);
+}
+
+
+
+/* ==============================================
+// 🌠 マウスストーカー/キラキラを強制停止
+// ============================================== */
+html, body {
+    /* 標準カーソルを強制表示 */
+    cursor: default !important;
+}
+
+#stalker, 
+.sparkle-container {
+    /* カスタム要素を非表示にして、画面から完全に取り除く */
+    display: none !important;
+    visibility: hidden !important; 
+    pointer-events: none !important;
+}
+
+
+/* ==============================================
+// ページ内遷移調整
+// ============================================== */
+/* レスポンシブ調整していないので気になったら調整する */
+
+#uiux-section, #code-section, #logo-section, #graphic-section, #flyer-section {
+    scroll-margin-top: 150px; 
+}

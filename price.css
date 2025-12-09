@@ -1,0 +1,320 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Serif+JP:wght@200..900&display=swap');
+
+/* ==============================================
+// 共通変数とリセット (index.htmlからの継承を想定)
+// ============================================== */
+:root {
+    --white: #f8f8f8;
+    --purple: #d272ff; /* キーカラー */
+    --black: #333;
+    --palegreen: #a8ff9c;
+    --paleblue: #a8d2ff;
+    --accent-color: var(--purple); /* アクセントは紫をメインに */
+    /* セル背景色に使う、キーカラーの薄いバージョン */
+    --light-purple: #f2e3ff; 
+    --more-light-purple:  #faf4ff; 
+
+    /* テーブルヘッダー用の、濃いめのキーカラー */
+    --dark-purple: #9b3ddb;
+}
+
+/* ==============================================
+// ページ全体
+// ============================================== */
+
+/* html, body の上書きセクション */
+html, body {
+    /* ★★★ ここを background: ショートハンドに変更 ★★★ */
+    /* これにより、既存の background-image (radial-gradient) を none に上書き */
+    background: var(--white); 
+    color: var(--black);
+    /* 標準カーソルを強制表示 */
+    cursor: default !important;
+}
+body {
+    /* bodyにも背景色を再設定 */
+    background-color: var(--white); 
+    color: var(--text-color);
+    font-family: sans-serif;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+}
+
+.price-main {
+    max-width: 1200px;
+    margin: 150px auto 0;
+    padding: 40px 20px;
+    background-color: var(--white); /* 背景はホワイトベース */
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ==============================================
+// 🔗 アンカーリンクのカーソル表示を強制
+// ============================================== */
+/* a, a * は、リンク要素とその中の要素（例：画像）を指します */
+a, a *, a:hover, button, [data-cursor-effect] {
+    /* リンク上にカスタムカーソルがある場合、それを非表示にする設定を無効化 */
+    cursor: default !important;
+    
+    /* 標準の指マーク（ポインター）を表示したい場合はこちら */
+    cursor: pointer !important;
+}
+
+/* ==============================================
+// price index 目次
+// ============================================== */
+.price_index {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.price_index h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.price_index nav {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.price_index nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    /* ★ ホバー時の色変化 ★ */
+    transition: color 0.3s ease;
+}
+
+.price_index nav a:hover {
+    color: var(--accent-color); /* アクセントカラーに変化 */
+    text-decoration: underline;
+}
+
+/* ==============================================
+// 罫線
+// ============================================== */
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color); /* 薄い罫線 */
+    margin: 40px 0;
+}
+
+
+/* ==============================================
+// 価格表
+// ============================================== */
+.price-main h2 {
+    font-size: 2.5rem;
+    border-left: 5px solid var(--accent-color);
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+
+.description {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* テーブル共通スタイル */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* スマホで横スクロール可能にする */
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    min-width: 600px; /* スマホでテーブルが潰れない最小幅 */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #eef7ff;
+    color: var(--color-purple);
+    font-weight: bold;
+    white-space: nowrap; /* ヘッダーの改行を防ぐ */
+}
+
+td {
+    background-color: #fff;
+    font-size: 0.9em;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+.category-heading {
+    background-color: var(--light-purple)!important; /* カテゴリ見出しの背景色 */
+    font-weight: bold;
+    color: var(--black);
+    font-size: 1.1em;
+    padding: 15px;
+    text-align: center;
+}
+
+/* コーディングポリシーセクション */
+#coding-policy {
+    margin-top: 60px;
+}
+
+.policy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* レスポンシブグリッド */
+    gap: 25px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.policy-item {
+    background-color: var(--more-light-purple);
+    border: 1px solid var(--light-purple);
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+}
+
+.policy-item h3 {
+    color: var(--black);
+    margin-top: 0;
+    font-size: 1.4em;
+    border-bottom: 2px solid var(--purple);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.policy-item .value-prop {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+
+.policy-item p {
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.8;
+}
+
+
+/* グラフィックデザインのテーブル構造の調整 */
+
+/* メインカテゴリのグループ化（パンフレット、ロゴなど） */
+.category-group {
+    background-color: var(--light-purple)!important; /* 濃い目の背景色でグループ化を強調 */
+    font-weight: bold;
+    text-align: center !important;
+    vertical-align: middle !important;
+    min-width: 100px;
+    color: #444;
+}
+
+/* サブカテゴリの見出し（デザイン本体、企画・編集など） */
+.subcategory-heading {
+    background-color: #e8e8f2 !important; /* やや明るいグレーの背景 */
+    font-weight: bold;
+    color: #333;
+    padding: 8px 15px !important;
+    font-size: 0.9em;
+    text-align: left !important;
+}
+
+/* 項目が空欄の場合のセル */
+tbody td:empty {
+    /* row spanによって空いたセルを透明化（装飾的に必要であれば） */
+    background-color: transparent;
+    border: none;
+}
+
+/* row spanを使って項目が続く場合の行の区切りを調整 */
+tbody tr td:first-child:not(.category-group) {
+    /* row spanで最初のセルが空欄になった行の左端の罫線を消す */
+    border-left: 1px solid #ddd;
+}
+
+/* レスポンシブ対応 (モバイル向け追加調整) */
+@media (max-width: 768px) {
+
+    .price_index h1 {
+        font-size: 2em;
+    }
+
+    .price-main h2 {
+        font-size: 1.8rem;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    table {
+        font-size: 0.8em; /* モバイルではフォントを少し小さく */
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .policy-grid {
+        grid-template-columns: 1fr; /* 1列表示 */
+    }
+}
+
+@media (max-width: 480px) {
+    .price_index h1 {
+        font-size: 1.8em;
+    }
+
+    .price-main h2 {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* ==============================================
+// 🌠 マウスストーカー/キラキラを強制停止
+// ============================================== */
+html, body {
+    /* 標準カーソルを強制表示 */
+    cursor: default !important;
+}
+
+#stalker, 
+.sparkle-container {
+    /* カスタム要素を非表示にして、画面から完全に取り除く */
+    display: none !important;
+    visibility: hidden !important; 
+    pointer-events: none !important;
+}
+
+
+/* ==============================================
+// ページ内遷移調整
+// ============================================== */
+/* レスポンシブ調整していないので気になったら調整する */
+
+#web-design-pricing, #frontend-pricing, #graphic-design-pricing {
+    scroll-margin-top: 150px; 
+}

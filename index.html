@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>EMODESIGN | Portforio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EMODESIGNのPortforioサイト。フロントエンドエンジニア、WEB・graphic・VI・CIデザイナー、CODER。作品を展示しています。東京葛飾区在住。">
+  <meta name="keywords" content=
+  "エモデザイン,EMO,EMODESIGN,emo,emodesign,葛飾区,江戸川区,葛飾区フロントエンドエンジニア,江戸川区フロントエンドエンジニア,葛飾区ウェブデザイナー,江戸川区ウェブデザイナー,ウェブデザイナー、グラフィックデザイナー">
+  <meta name="thumbnail" content="img/EMODESIGN_umezome.png">
+  <link rel="icon" href="img/favicon.ico" sizes="192x192">
+  <link rel="apple-touch-icon" href="img/favicon.ico">
+  <link rel="apple-touch-icon" href="img/favicon.ico">
+  <meta name="msapplication-TileImage" content="img/EMODESIGN_umezome.png">
+  <meta property="og:title" content="EMODESIGN | Home">
+  <meta property="og:type" content="	website">
+  <meta property="og:url" content="https://emodesign0501.candypop.jp/">
+  <meta property="og:image" content="/img/ogp.webp">
+  <meta property="og:site_name" content="EMODESIGN | Portforio">
+  <meta property="og:description" content="EMODESIGNのPortforioサイト。フロントエンドエンジニア、WEB・graphic・VI・CIデザイナー、CODER。作品を展示しています。東京葛飾区在住。">
+  <meta property="og:locale" content="ja_JP">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Font Awesome  -->
+  <script src="https://kit.fontawesome.com/dc816d1780.js" crossorigin="anonymous"></script>
+
+
+  <!-- AdobeFont -->
+  <script>
+    (function(d) {
+      var config = {
+        kitId: 'luz0jyx',
+        scriptTimeout: 3000,
+        async: true
+      },
+      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+  </script>
+
+</head>
+
+
+<body>
+
+  <canvas class="canvas-container canvas-top"></canvas> 
+  <canvas class="canvas-container canvas-contact"></canvas>
+
+  <div class="bg-fade-layer"></div>
+
+  <div id="loading-screen">
+    <div class="loader"></div> 
+  </div>
+  
+  <div id="header-placeholder"></div>
+
+  <div class="hero" id="top">
+    <h1 class="design-text">
+        <span>Design</span><br>
+        <span class="white">that moves your</span><br>
+        <span class="emotion">
+            <span class="char">e</span>
+            <span class="char">m</span>
+            <span class="char">o</span>
+            <span class="char">t</span>
+            <span class="char">i</span>
+            <span class="char">o</span>
+            <span class="char">n</span>
+        </span>
+    </h1>
+  </div>
+
+  <div class="scroll-text">Scroll ↓</div>
+
+  <section class="projects-section" id="projects-section">
+      <div class="carousel" id="carousel-container">
+          <div class="carousel__container" id="carousel-track">
+              <figure class="carousel-figure a">
+                  <img src="" alt="UI/UX作品"> 
+                  <figcaption>UI/UX</figcaption> 
+              </figure>
+              <figure class="carousel-figure b">
+                  <img src="" alt="コード作品"> 
+                  <figcaption>CODE</figcaption> 
+              </figure>
+              <figure class="carousel-figure c">
+                  <img src="" alt="グラフィック作品"> 
+                  <figcaption>GRAPHIC</figcaption> 
+              </figure>
+              <figure class="carousel-figure d">
+                  <img src="" alt="フライヤー作品"> 
+                  <figcaption>FLYER</figcaption> 
+              </figure>
+              <figure class="carousel-figure e">
+                  <img src="" alt="ロゴ作品"> 
+                  <figcaption>LOGO</figcaption> 
+              </figure>
+          </div>
+      </div>
+      <button id="shuffle-button" class="shuffle-button">
+          <i class="fas fa-random"></i>SHUFFLE
+      </button>
+
+  </section>
+
+  <section class="parallax">
+  </section>
+
+  <section class="reason" id="reason">
+    <div class="reason-text">
+      高品質・高単価の理由は <br><span class="marker-wrap"><span class="marker">「見た目の前に“設計”がある」から。</span></span><br>
+      <span style="font-weight: 700;">一人で、<br class="sp">企画・デザイン・コーディングまでを <br> 一貫対応。</span><br><br> <span class="marker-wrap"><span class="marker">要件定義と情報設計</span></span>を軸に<br>
+      目的に沿った<br class="sp"><span class="marker-wrap"><span class="marker">“意味のあるデザイン”</span></span><br class="sp">を形にします。
+    </div>
+  </section>
+
+
+  <!-- HOWTOセクションだけのインジケーター -->
+  <div class="howto-indicator-wrapper">
+    <div class="pankuzu">
+      <span class="index" data-target="0">制作の流れ</span>
+      <span class="index" data-target="1">ヒアリング</span>
+      <span class="index" data-target="2">お見積<br>ご契約</span>
+      <span class="index" data-target="3">要件定義<br>情報設計</span>
+      <span class="index" data-target="4">デザイン<br>実装</span>
+      <span class="index" data-target="5">修正<br>ご確認</span>
+      <span class="index" data-target="6">納品</span>
+    </div>
+  </div>
+
+  <section class="howto">
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">        
+        <div class="ht-text">
+          <h2>制作の流れ</h2>
+        </div>
+        <div class="ht-image">
+
+          <img src="img/howto/peony0.webp" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">       
+        <div class="ht-text">
+          <h2>ヒアリング</h2>
+          <h3>目的を聞き、方向を整える。</h3>
+          <div class="p-wrap">
+            <p>事業内容やターゲット、目指す成果を丁寧にヒアリング。 <br> <span class="underline">「誰に」「何を」「どう伝えるか」</span>を一緒に整理します。</p>
+          </div>
+        </div>
+        <div class="ht-image">
+          <img src="img/howto/peony1.webp" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">      
+        <div class="ht-text">
+          <h2>お見積・ご契約</h2>
+          <h3>内容を明確にし、正式にスタート。</h3>
+          <div class="p-wrap">
+            <p>ヒアリング内容をもとにお見積を提示しいたします。<br>内容を確認いただき、契約後に制作へ進みます。 </p>
+          </div>
+        </div>
+        <div class="ht-image">
+          <img src="img/howto/peony2.webp" alt="" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">      
+        <div class="ht-text">
+          <h2> 要件定義・情報設計</h2>
+          <h3>成果を生む設計図をつくる。</h3>
+          <div class="p-wrap">
+            <p>ヒアリングをもとに、<span class="underline">目的・機能・構成・導線を定義。</span><br> デザイン・実装の基盤となる設計を行い、<br> “見た目の前に、ロジックのあるデザイン”を実現します。 </p><br>
+            <p><span class="underline">すべての案件でこの工程を実施。</span><br> 要件定義と情報設計があるからこそ、<br> 高品質の制作が可能です。</p>
+          </div>
+        </div>
+        <div class="ht-image">
+          <img src="img/howto/peony3.webp" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">     
+        <div class="ht-text">
+          <h2>デザイン・実装</h2>
+          <h3>デザインも、コードも、自分の手で。</h3>
+          <div class="p-wrap">
+          <p>要件定義を踏まえたデザインを作成し、<br> コーディング（HTML / CSS / JavaScript）まで<br><span class="underline">一貫して自社で対応。</span><br><br> 見た目と動きを一体として設計します。</p> 
+          </div>
+        </div>
+        <div class="ht-image">
+          <img src="img/howto/peony4.webp" alt="" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">      
+        <div class="ht-text">
+          <h2>修正・ご確認</h2>
+          <h3>納得いくまでブラッシュアップ。 </h3>
+          <div class="p-wrap">
+            <p>デザイン・動作を実際に確認いただきながら、<br> 細部の修正を重ねて完成度を高めます。 </p>
+          </div>
+        </div>
+        <div class="ht-image">
+          <img src="img/howto/peony5.webp" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="howto-route">
+      <div class="howto-content-wrapper">       
+        <div class="ht-text">
+          <h2>納品</h2>
+          <h3>完成を一緒に喜びたい瞬間。</h3>
+          <div class="p-wrap">
+            <p>最終データをお渡しし、制作完了となります。<br> 納品後も軽微な修正や運用アドバイスなど、<br><span class="underline_fff"> “そばにいるパートナー”としてお手伝いします。</span> </p>
+          </div>
+        </div>
+        <div class="ht-image">
+          <!-- <img class="butterfly" src="img/howto/butterfly2.webp" alt="">
+          <img class="butterfly" src="img/howto/butterfly1.webp" alt=""> -->
+          <img src="img/howto/peony6.webp" alt="" loading="lazy">
+        </div>
+        
+      </div>
+    </div>
+
+  </section>
+
+  <section class="about">
+    
+    <div class="loop">
+      <ul class="loop_slider">
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+        <li> <img src="img/about/loop_text.webp" alt="" loading="lazy"> </li>
+      </ul>
+    </div>
+
+    <div class="about-wrapper">
+
+      <div class="about_top" id="about">
+
+        <div class="about-content">
+          <div class="emo_image">
+            <img  loading="lazy" src="img/about/emo_photo3.png" alt="自己紹介写真" class="profile-photo">
+          </div> 
+          <div class="emo_intro">
+            <dl>
+              <div>
+                <dt>EMODESIGN</dt>
+                <dd>江本有紀</dd>
+              </div>
+              <div>
+                <dt>【主なスキル】</dt>
+                <dd>Webデザイン（UI/UX）</dd>
+                <dd>フロントエンド開発（HTML/CSS/JavaScript）</dd>
+                <dd>グラフィックデザイン(Illustrator/Photoshop)</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="about-thanks">
+          <h2>【要件定義×没入感】<br class="sp">で記憶に残る体験を設計</h2>
+          <p>サイトへのご訪問ありがとうございます。<br><br>私は、Webデザインを核に、要件定義・情報設計からフロントエンド開発まで、全ての工程を一貫して担当しています。<br>この一気通貫の体制により、スピーディかつ、狙った成果に対するブレのない高品質な制作が可能です。
+          </p>
+        </div>
+            
+      </div>
+
+      <div class="about-process">
+        <h2>私の制作プロセスと、<br>他社と一線を画す強み</h2>
+          <dl>
+            <div class="process1">
+              <dt>ロジックに基づく設計</dt>
+              <dd>徹底したヒアリングと、<br>要件定義・情報設計に基づく<br>「なぜこのデザインなのか」という<br>ロジック（根拠）を重視します。<br>感覚や流行に頼らず、<br>ユーザーの行動変容を促す<br>ビジネスの成果に直結する設計を追求します。</dd>
+            </div>
+            <div class="process2">
+              <dt>イマーシブな体験の創出</dt>
+              <dd>単なる情報伝達で終わる静的なサイトではなく、<br><span class="en">JavaScript</span>を駆使し、<br>ユーザーを惹きつける<br>没入感の高いインタラクティブな表現を得意としています。<br><span class="en">Web</span>サイトを、記憶に深く刻まれる<br>「特別な体験」を提供する場へと昇華させます。</dd>
+            </div>
+            <div class="process3">
+              <dt> 包括的な実装力</dt>
+              <dd><span class="en">HTML/CSS/JavaScript</span>による<br>高度なフロントエンド開発に加え、<br>サイトで使用するグラフィックデザイン<br><span class="en">（Illustrator/Photoshop）</span><br>まで一貫対応。<br>企画から公開まで、<br>全てのクリエイティブを一人の責任で管理します。</dd>
+            </div>
+          </dl>
+
+      </div>
+    
+    </div><!-- about-wrapper END -->
+
+  </section>
+
+  <!-- about内歪みエフェクト -->
+  <svg style="position: absolute; width: 0; height: 0;">
+    <filter id="ink-bleed">
+      <feTurbulence 
+        type="fractalNoise" 
+        baseFrequency="0 0" 
+        numOctaves="1" 
+        result="noise"
+        seed="2"
+      />
+      <feDisplacementMap 
+        in="SourceGraphic" 
+        in2="noise" 
+        scale="0" 
+        xChannelSelector="R" 
+        yChannelSelector="R" 
+      />
+    </filter>
+  </svg>
+
+
+  <section class="contact">
+    <!-- <div class="light-source"></div> -->
+    <div class="contact_container">
+      <h2>ロジカルな設計と、ユーザーの心を掴むイマーシブなWeb体験を<br>一緒に作りあげましょう。</h2>
+    </div>
+
+
+    <form action="https://formspree.io/f/mrbjyygg" method="POST" id="contact">
+
+      <h3><span>-&nbsp;CONTACT&nbsp;-&nbsp;&nbsp;</span> お問い合わせフォーム</h3>
+      <div class="form-group">
+          <label>ご用件の種別 (一つ選択)</label>
+          <ul>
+              <li>
+                <input type="radio" id="service" name="ご用件種別" value="サービスに関する質問" required>
+                <label for="service">サービスに関する質問</label>
+              </li>              
+            <li>
+                <input type="radio" id="work" name="ご用件種別" value="不具合・エラー報告" required>
+                <label for="bug">仕事のご依頼</label>
+            </li>              
+            <li>
+              <input type="radio" id="other" name="ご用件種別" value="その他" required>
+              <label for="other">その他</label>
+            </li>
+          </ul>
+      </div>
+      <hr>
+
+      <div class="form-group">
+          <label>興味のあるサービス (複数選択可)</label>
+          <ul>
+              <li>
+                <input type="checkbox" id="plan_a" name="興味のあるサービス[]" value="プランA">
+                <label for="plan_a">UI/UX（HP,LPデザイン）について</label>
+              </li>              
+              <li>
+                <input type="checkbox" id="plan_b" name="興味のあるサービス[]" value="プランB">
+                <label for="plan_b">コーディングについて</label>
+              </li>              
+              <li>
+                <input type="checkbox" id="plan_c" name="興味のあるサービス[]" value="個別相談">
+                <label for="consult">グラフィック（ロゴ、フライヤー等デザイン）について</label>
+              </li>
+              <li>
+                <input type="checkbox" id="consult" name="興味のあるサービス[]" value="個別相談">
+                <label for="consult">個別相談を希望</label>
+              </li>
+          </ul>
+      </div>
+
+      <hr>
+
+      <div class="form-group">
+          <label for="name">お名前 (必須)</label>
+          <input type="text" id="name" name="お名前" required>
+      </div>
+
+      <div class="form-group">
+          <label for="email">メールアドレス (必須)</label>
+          <input type="email" id="email" name="メールアドレス" required>
+      </div>
+
+      <div class="form-group">
+          <label for="message">お問い合わせ内容 (必須)</label>
+          <textarea id="message" name="お問い合わせ内容" rows="6" required></textarea>
+      </div>
+
+      <!-- ボットによるスパムを防ぐためのシンプルな仕組み（ハニーポット）です。 -->
+      <input type="text" name="_gotcha" style="display:none">
+
+      <button type="submit">送信する</button>
+
+    </form>
+
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- マウスストーカー -->
+  <div id="stalker"></div>
+  <div class="sparkle-container"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
