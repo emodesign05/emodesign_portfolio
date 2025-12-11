@@ -178,6 +178,12 @@ hr {
     height: auto;
     object-fit: cover;
     border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+/* サブ画像ホバーでわずかに拡大 */
+.eyecatch:hover {
+    transform: scale(1.02);
 }
 
 .metadata {

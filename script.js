@@ -1685,7 +1685,6 @@ function initAnchorScroll() {
                         }, 50); 
                     }
                 }
-                // ★★★ 修正箇所 ここまで ★★★
             });
         });
     });
@@ -1881,9 +1880,6 @@ function initLoadingScreen() {
         controlThemeChange();
 
     // 6. ★★★ 既存の ScrollTrigger.refresh を削除し、安定化関数を呼び出す ★★★
-        // if (typeof ScrollTrigger !== 'undefined') {
-        //   setTimeout(() => ScrollTrigger.refresh(), 200); // 🚨 この行を削除
-        // }
         stabilizeScrollTrigger(); // ★★★ これを追加 ★★★
     }
   
