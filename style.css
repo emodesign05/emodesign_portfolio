@@ -133,7 +133,7 @@ a {
   width: 5rem;
   border-radius: 50%;
   position: fixed;
-  top: 5vh; 
+  top: 3vh; 
   right: 5vw; 
   z-index: 2000;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
@@ -146,7 +146,7 @@ a {
   width: 4rem;
   border-radius: 50%;
   position: fixed;
-  top: 5.5vh; 
+  top: 3.5vh; 
   right: 5.5vw; 
   background-image:  radial-gradient(#69EACB 0%, #ecc3ff 48%, #6654F1 100%);
   z-index: 1000;
