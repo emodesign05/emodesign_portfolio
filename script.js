@@ -608,10 +608,10 @@ function initProjectsSection() {
     // 💡画像の数を変えたらここの数も変える👇
     // const を let に変更
     let CAROUSEL_ITEMS = [
-        { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 7, description: 'UI/UX' },
+        { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 8, description: 'UI/UX' },
         { name: 'CODE', folder: 'coding', filePrefix: 'code', totalImages: 8, description: 'CODE' },
         { name: 'GRAPHIC', folder: 'graphic', filePrefix: 'graphic', totalImages: 7, description: 'GRAPHIC' },
-        { name: 'FLYER', folder: 'flyer', filePrefix: 'flyer', totalImages: 5, description: 'FLYER' },
+        { name: 'FLYER', folder: 'flyer', filePrefix: 'flyer', totalImages: 6, description: 'FLYER' },
         { name: 'LOGO', folder: 'logo', filePrefix: 'logo', totalImages: 6, description: 'LOGO' }
     ];
     const IMAGE_EXTENSION = '.webp'; 
