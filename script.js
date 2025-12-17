@@ -540,371 +540,383 @@ function startHeroAnimation() { // ★関数名を startHeroAnimation に変更�
         return array;
     }
 
-function initProjectsSection() {
-    // 0.📌 pin留め 📌
-    const projectsSection = document.querySelector('.projects-section');
-    const PROJECTS_PIN_SCROLL = 3000; 
+    function initProjectsSection() {
+        // 0.📌 pin留め 📌
+        const projectsSection = document.querySelector('.projects-section');
+            if (!projectsSection) return;
 
-    // ★★★ 修正箇所 ★★★
-    // カルーセルフィギュア要素を取得
-    const carouselFigures = gsap.utils.toArray('.carousel-figure'); 
+            // ★★★ ピン留めレスポンシブ対応: pinDuration の導入 ★★★
+            let pinDuration;
+            const isMobile = window.innerWidth <= 768;
 
-    // ちらつき対策：全フィギュアに translate3d を適用してGPU描画を強制する
-    gsap.set(carouselFigures, {
-        x: 0, 
-        y: 0, 
-        z: 0, // Z軸を0に設定
-        // または transform: 'translate3d(0, 0, 0)' でも可
-    });
-    // ★★★ ここまで ★★★
-
-    // ProjectsセクションのPin留めと出現アニメーション (修正)
-    ScrollTrigger.create({
-        trigger: projectsSection, 
-        pin: true, 
-        start: "top top", 
-        end: `+=${PROJECTS_PIN_SCROLL}`, 
+            if (isMobile) {
+                // SP: 画面高さの3倍程度に短縮 (体感的にちょうど良い速さ)
+                pinDuration = window.innerHeight * 3;
+            } else {
+                // PC: 従来の 3000px または 画面高さの4〜5倍
+                pinDuration = 3000; 
+            }
         
-        // onEnterとonLeaveでPinが開始/解除された時の処理をシンプルにする
-        onEnter: () => {
-            gsap.to(projectsSection, { 
-                opacity: 1, 
-                duration: 0.5,
-                onComplete: () => {
-                    projectsSection.style.pointerEvents = 'auto';
-                    if (typeof render === 'function') requestAnimationFrame(render);
-                }
-            });
-        },
-        onLeave: () => {
-            // Pin解除時に非表示にする
-            gsap.to(projectsSection, { opacity: 0, duration: 0.5, onComplete: () => {
-                projectsSection.style.pointerEvents = 'none'; // マウスイベントを無効化
-            }});
-        },
-        onEnterBack: () => {
-            gsap.to(projectsSection, { 
-                opacity: 1, 
-                duration: 0.5,
-                onStart: () => {
-                    projectsSection.style.pointerEvents = 'auto';
-                    if (typeof render === 'function') requestAnimationFrame(render);
-                }
-            });
-        },
-        onLeaveBack: () => {
-            // Pinが解除され、Projectsセクションが画面上に戻ったら非表示
-            gsap.to(projectsSection, { 
-                opacity: 0, 
-                duration: 0.5,
-                onComplete: () => {
+        // シャッフル時のチラつき修正
+        // カルーセルフィギュア要素を取得
+        const carouselFigures = gsap.utils.toArray('.carousel-figure'); 
+
+        // ちらつき対策：全フィギュアに translate3d を適用してGPU描画を強制する
+        gsap.set(carouselFigures, {
+            x: 0, 
+            y: 0, 
+            z: 0, // Z軸を0に設定
+            // または transform: 'translate3d(0, 0, 0)' でも可
+        });
+        // シャッフル時のチラつき修正 ここまで ★★★
+
+        // ProjectsセクションのPin留めと出現アニメーション (修正)
+        ScrollTrigger.create({
+            trigger: projectsSection, 
+            pin: true, 
+            start: "top top", 
+            end: `+=${pinDuration}`, 
+            
+            // onEnterとonLeaveでPinが開始/解除された時の処理をシンプルにする
+            onEnter: () => {
+                gsap.to(projectsSection, { 
+                    opacity: 1, 
+                    duration: 0.5,
+                    onComplete: () => {
+                        projectsSection.style.pointerEvents = 'auto';
+                        if (typeof render === 'function') requestAnimationFrame(render);
+                    }
+                });
+            },
+            onLeave: () => {
+                // Pin解除時に非表示にする
+                gsap.to(projectsSection, { opacity: 0, duration: 0.5, onComplete: () => {
                     projectsSection.style.pointerEvents = 'none'; // マウスイベントを無効化
+                }});
+            },
+            onEnterBack: () => {
+                gsap.to(projectsSection, { 
+                    opacity: 1, 
+                    duration: 0.5,
+                    onStart: () => {
+                        projectsSection.style.pointerEvents = 'auto';
+                        if (typeof render === 'function') requestAnimationFrame(render);
+                    }
+                });
+            },
+            onLeaveBack: () => {
+                // Pinが解除され、Projectsセクションが画面上に戻ったら非表示
+                gsap.to(projectsSection, { 
+                    opacity: 0, 
+                    duration: 0.5,
+                    onComplete: () => {
+                        projectsSection.style.pointerEvents = 'none'; // マウスイベントを無効化
+                    }
+                });
+            }
+        });
+
+        // 1.🛠️ 設定: 画像パターンと枚数の定義 🛠️
+        // 💡画像の数を変えたらここの数も変える👇
+        // const を let に変更
+        let CAROUSEL_ITEMS = [
+            { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 8, description: 'UI/UX' },
+            { name: 'CODE', folder: 'coding', filePrefix: 'code', totalImages: 8, description: 'CODE' },
+            { name: 'GRAPHIC', folder: 'graphic', filePrefix: 'graphic', totalImages: 7, description: 'GRAPHIC' },
+            { name: 'FLYER', folder: 'flyer', filePrefix: 'flyer', totalImages: 6, description: 'FLYER' },
+            { name: 'LOGO', folder: 'logo', filePrefix: 'logo', totalImages: 6, description: 'LOGO' }
+        ];
+        const IMAGE_EXTENSION = '.webp'; 
+        const ANGLE_STEP = 360 / CAROUSEL_ITEMS.length; // 72度
+
+        // DOM要素の取得
+        const container = document.querySelector('.carousel__container');
+        const figures = container.querySelectorAll('.carousel-figure'); 
+        const total = figures.length; 
+
+        // 状態変数
+        let angle = 0; // 現在の全体回転角 (未使用だが残存しているため、そのまま維持)
+        let isDragging = false;
+        let startX = 0;
+        let autoRotate = true;
+
+        // 🚨 修正: 遠近法の半径を 300 に設定 🚨
+        const radius = 300; 
+
+        // 🚨 新規: オートプレイ制御用の変数 🚨
+        let lastAutoRotateTime = 0; // 最後に自動回転が実行された時間
+        const AUTO_ROTATE_INTERVAL = 3000; // 3000ms (3秒) ごとに回転
+
+        // 🚨 新規: アニメーションの目標角度 🚨
+        let targetAngle = 0; 
+        let currentAngle = 0; // 以前の `angle` 変数と同じ役割を担いますが、より制御しやすいように名前を変更
+
+
+        // 2.🖼️ 関数: 画像パスと初期設定 🖼️
+
+        /**
+         * 指定されたアイテム情報に基づき、ランダムな画像パスを生成します。
+         */
+        function getRandomImagePath(item) {
+            const randomIndex = Math.floor(Math.random() * item.totalImages) + 1;
+            // ★修正: フォルダ名を 'images' から 'img' に変更★
+            return `img/${item.folder}/${item.filePrefix}${randomIndex}${IMAGE_EXTENSION}`;
+        }
+
+        /**
+         * ページ読み込み時に、各 figure 要素にランダムな画像を割り当てます。
+         */
+        function setInitialImages() {
+            figures.forEach((figure, index) => {
+                if (CAROUSEL_ITEMS[index]) {
+                    const item = CAROUSEL_ITEMS[index];
+                    const imagePath = getRandomImagePath(item);
+                    
+                    const imgElement = figure.querySelector('img');
+                    const captionElement = figure.querySelector('figcaption');
+                    
+                    // 画像パスを設定
+                    if (imgElement) {
+                        imgElement.src = imagePath;
+                        imgElement.alt = item.name + ' - ' + item.description;
+                    }
+                    // キャプションを設定
+                    if (captionElement) {
+                        captionElement.textContent = item.description;
+                    }
+                    
+                    // 各 figure の初期角度を保存
+                    figure.dataset.angle = (ANGLE_STEP * index).toString(); 
                 }
             });
         }
-    });
-
-    // 1.🛠️ 設定: 画像パターンと枚数の定義 🛠️
-    // 💡画像の数を変えたらここの数も変える👇
-    // const を let に変更
-    let CAROUSEL_ITEMS = [
-        { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 8, description: 'UI/UX' },
-        { name: 'CODE', folder: 'coding', filePrefix: 'code', totalImages: 8, description: 'CODE' },
-        { name: 'GRAPHIC', folder: 'graphic', filePrefix: 'graphic', totalImages: 7, description: 'GRAPHIC' },
-        { name: 'FLYER', folder: 'flyer', filePrefix: 'flyer', totalImages: 6, description: 'FLYER' },
-        { name: 'LOGO', folder: 'logo', filePrefix: 'logo', totalImages: 6, description: 'LOGO' }
-    ];
-    const IMAGE_EXTENSION = '.webp'; 
-    const ANGLE_STEP = 360 / CAROUSEL_ITEMS.length; // 72度
-
-    // DOM要素の取得
-    const container = document.querySelector('.carousel__container');
-    const figures = container.querySelectorAll('.carousel-figure'); 
-    const total = figures.length; 
-
-    // 状態変数
-    let angle = 0; // 現在の全体回転角 (未使用だが残存しているため、そのまま維持)
-    let isDragging = false;
-    let startX = 0;
-    let autoRotate = true;
-
-    // 🚨 修正: 遠近法の半径を 300 に設定 🚨
-    const radius = 300; 
-
-    // 🚨 新規: オートプレイ制御用の変数 🚨
-    let lastAutoRotateTime = 0; // 最後に自動回転が実行された時間
-    const AUTO_ROTATE_INTERVAL = 3000; // 3000ms (3秒) ごとに回転
-
-    // 🚨 新規: アニメーションの目標角度 🚨
-    let targetAngle = 0; 
-    let currentAngle = 0; // 以前の `angle` 変数と同じ役割を担いますが、より制御しやすいように名前を変更
 
 
-    // 2.🖼️ 関数: 画像パスと初期設定 🖼️
-
-    /**
-     * 指定されたアイテム情報に基づき、ランダムな画像パスを生成します。
-     */
-    function getRandomImagePath(item) {
-        const randomIndex = Math.floor(Math.random() * item.totalImages) + 1;
-        // ★修正: フォルダ名を 'images' から 'img' に変更★
-        return `img/${item.folder}/${item.filePrefix}${randomIndex}${IMAGE_EXTENSION}`;
-    }
-
-    /**
-     * ページ読み込み時に、各 figure 要素にランダムな画像を割り当てます。
-     */
-    function setInitialImages() {
-        figures.forEach((figure, index) => {
-            if (CAROUSEL_ITEMS[index]) {
+        /* ビルボードカルーセルのコンテンツをシャッフルし、表示を更新します。
+        */
+        function shuffleCarousel() {
+            // 1. 自動回転と操作を一時停止
+            autoRotate = false;
+            
+            // 2. CAROUSEL_ITEMS配列をシャッフル
+            shuffleArray(CAROUSEL_ITEMS);
+            
+            // エフェクトの基本設定
+            const EFFECT_DURATION = 0.6; // 回転アニメーションの秒数
+            const EFFECT_STAGGER = 0.05; // 各アイテムの開始時間のズラし
+            const totalEffectTime = EFFECT_DURATION + (figures.length - 1) * EFFECT_STAGGER; // 全てのアニメーションが完了する時間
+            
+        // 3. シャッフルされた新しい順序で figure 要素の内容を更新
+            figures.forEach((figure, index) => {
                 const item = CAROUSEL_ITEMS[index];
                 const imagePath = getRandomImagePath(item);
                 
                 const imgElement = figure.querySelector('img');
                 const captionElement = figure.querySelector('figcaption');
                 
-                // 画像パスを設定
+                // **コンテンツの更新**（エフェクト開始前に行う）
                 if (imgElement) {
                     imgElement.src = imagePath;
                     imgElement.alt = item.name + ' - ' + item.description;
                 }
-                // キャプションを設定
                 if (captionElement) {
                     captionElement.textContent = item.description;
                 }
-                
-                // 各 figure の初期角度を保存
-                figure.dataset.angle = (ANGLE_STEP * index).toString(); 
-            }
-        });
-    }
 
-
-    /* ビルボードカルーセルのコンテンツをシャッフルし、表示を更新します。
-     */
-    function shuffleCarousel() {
-        // 1. 自動回転と操作を一時停止
-        autoRotate = false;
-        
-        // 2. CAROUSEL_ITEMS配列をシャッフル
-        shuffleArray(CAROUSEL_ITEMS);
-        
-        // エフェクトの基本設定
-        const EFFECT_DURATION = 0.6; // 回転アニメーションの秒数
-        const EFFECT_STAGGER = 0.05; // 各アイテムの開始時間のズラし
-        const totalEffectTime = EFFECT_DURATION + (figures.length - 1) * EFFECT_STAGGER; // 全てのアニメーションが完了する時間
-        
-    // 3. シャッフルされた新しい順序で figure 要素の内容を更新
-        figures.forEach((figure, index) => {
-            const item = CAROUSEL_ITEMS[index];
-            const imagePath = getRandomImagePath(item);
-            
-            const imgElement = figure.querySelector('img');
-            const captionElement = figure.querySelector('figcaption');
-            
-            // **コンテンツの更新**（エフェクト開始前に行う）
-            if (imgElement) {
-                imgElement.src = imagePath;
-                imgElement.alt = item.name + ' - ' + item.description;
-            }
-            if (captionElement) {
-                captionElement.textContent = item.description;
-            }
-
-            // ★★★ エフェクトの追加 ★★★
-            // imgElementをターゲットにし、360度回転とスケールをアニメーション
-            gsap.fromTo(imgElement, 
-                { 
-                    rotationY: 0, 
-                    scale: 0.7,
-                    z: 2, // ★重要: アニメーション開始時も Z=2px (手前) を維持
-                    force3D: true // ★重要: 3Dレンダリングを強制
-                }, 
-                { 
-                    rotationY: 360, 
-                    scale: 1.0,     
-                    z: 2, // ★重要: 回転中・終了時も Z=2px を維持して、背景と重ならないようにする
-                    duration: EFFECT_DURATION,
-                    delay: index * EFFECT_STAGGER, 
-                    ease: "back.out(1.7)",
-                    
-                    // チラつき防止のおまじない
-                    onStart: () => {
-                        // アニメーション中は裏面を隠す
-                        imgElement.style.backfaceVisibility = 'hidden';
-                        imgElement.style.webkitBackfaceVisibility = 'hidden';
+                // ★★★ エフェクトの追加 ★★★
+                // imgElementをターゲットにし、360度回転とスケールをアニメーション
+                gsap.fromTo(imgElement, 
+                    { 
+                        rotationY: 0, 
+                        scale: 0.7,
+                        z: 2, // ★重要: アニメーション開始時も Z=2px (手前) を維持
+                        force3D: true // ★重要: 3Dレンダリングを強制
+                    }, 
+                    { 
+                        rotationY: 360, 
+                        scale: 1.0,     
+                        z: 2, // ★重要: 回転中・終了時も Z=2px を維持して、背景と重ならないようにする
+                        duration: EFFECT_DURATION,
+                        delay: index * EFFECT_STAGGER, 
+                        ease: "back.out(1.7)",
+                        
+                        // チラつき防止のおまじない
+                        onStart: () => {
+                            // アニメーション中は裏面を隠す
+                            imgElement.style.backfaceVisibility = 'hidden';
+                            imgElement.style.webkitBackfaceVisibility = 'hidden';
+                        }
                     }
-                }
-            );
-            
-            // figureの角度情報は変更しない (figure要素の位置は固定されているため)
-            // figure.dataset.angle = (ANGLE_STEP * index).toString(); // 不要
-        });
-        
-        // 4. 回転をリセットし、特定のfigureを正面に持ってくる
-        const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
-        targetAngle = snappedAngle;
-        
-        // 5. アニメーション完了後に自動回転を再開
-        gsap.to(projectsSection, { 
-            duration: 0.1, // 短い時間で処理を挟む
-            delay: totalEffectTime, // 全てのアイテムのアニメーションが終わるまで待つ
-            onComplete: () => {
-                autoRotate = true; // 回転再開
-            }
-        });
-        
-        console.log("Carousel content shuffled with effect.");
-    }
-
-
-
-    // 3.🔄 関数: アニメーションループ (回転ロジック) 🔄
-
-    function render(timestamp) {
-        // 1. 自動回転ロジックの修正
-        if (autoRotate && !isDragging) {
-            if (timestamp - lastAutoRotateTime > AUTO_ROTATE_INTERVAL) {
-                // 🚨 3秒経過したら、次のスライドの角度（72度）を目標に設定 🚨
-                targetAngle -= ANGLE_STEP; 
-                lastAutoRotateTime = timestamp;
-            }
-        }
-        
-        // 2. 目標角度に向けて現在の角度を滑らかに補間
-        // (補間関数を使用して、スムーズに回転させる)
-        const easing = 0.01; // 回転の滑らかさ (数値が小さいほどゆっくり)
-        currentAngle += (targetAngle - currentAngle) * easing;
-
-        // 3. 各 figure 要素の transform を更新
-        figures.forEach((figure) => {
-            const figureAngle = parseFloat(figure.dataset.angle);
-            // currentAngle を使用
-            const totalAngle = figureAngle + currentAngle; 
-            
-            figure.style.transform = `
-                translate(-50%, -50%) 
-                rotateY(${totalAngle}deg)
-                translateZ(${radius}px)
-                rotateY(${-totalAngle}deg)
-            `;
-        });
-
-        requestAnimationFrame(render);
-    }
-
-
-    // 4.🖱️ イベント: マウス/タッチ操作 🖱️
-
-    const shuffleButton = document.getElementById('shuffle-button');
-
-    if (shuffleButton) {
-        shuffleButton.addEventListener('click', shuffleCarousel);
-    }
-
-    // マウスドラッグで操作
-    container.parentElement.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-        container.parentElement.style.cursor = 'grabbing';
-    });
-
-    window.addEventListener('mouseup', () => {
-        isDragging = false;
-        container.parentElement.style.cursor = 'grab';
-
-        // ★追加: ドラッグ終了時のスナップ処理★
-        if (autoRotate) {
-            // 現在の角度に最も近い、ANGLE_STEPの倍数を計算
-            // targetAngleを基準に最も近い72度の倍数を計算
-            const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
-            
-            // GSAPのSetter/Getter機能を使用し、targetAngleをアニメーション
-            gsap.to({ a: targetAngle }, {
-                a: snappedAngle,
-                duration: 0.5,
-                ease: "power2.out",
-                onUpdate: function() {
-                    targetAngle = this.targets()[0].a;
-                },
-                onStart: () => autoRotate = false,
-                onComplete: () => autoRotate = true,
-            });
-            
-        }
-    });
-
-    // タッチ操作（スマホ対応）
-    container.parentElement.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-    });
-
-    // タッチ操作にも同様の処理が必要です
-    container.parentElement.addEventListener('touchend', () => {
-        isDragging = false;
-
-        // ★追加: タッチ操作終了時のスナップ処理★
-        if (autoRotate) {
-            const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
-            
-            gsap.to({ a: targetAngle }, {
-                a: snappedAngle,
-                duration: 0.5,
-                ease: "power2.out",
-                onUpdate: function() {
-                    targetAngle = this.targets()[0].a;
-                },
-                onStart: () => autoRotate = false,
-                onComplete: () => autoRotate = true,
-            });
-        }
-    });
-
-    container.parentElement.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        const delta = e.touches[0].clientX - startX;
-        startX = e.touches[0].clientX;
-        
-        // 🚨 修正: タッチ操作も targetAngle に影響を与える 🚨
-        targetAngle += delta * 0.3; // 感度
-    });
-
-    // ホバーで自動回転停止
-    container.parentElement.addEventListener('mouseenter', () => autoRotate = false);
-    container.parentElement.addEventListener('mouseleave', () => autoRotate = true);
-
-
-
-    figures.forEach((figure, index) => {
-        // figure要素自体にクリックイベントを付与
-        figure.addEventListener('click', () => {
-            // 現在 figure に割り当てられているアイテム情報を取得
-            const item = CAROUSEL_ITEMS[index];
-            
-            if (item && item.folder) {
-                // folder名をID名に合わせて変換 (例: uiux -> uiux-section)
-                const sectionId = `${item.folder}-section`;
+                );
                 
-                // ポートフォリオページに移動し、該当セクションへジャンプ
-                window.location.href = `portfolio.html#${sectionId}`;
+                // figureの角度情報は変更しない (figure要素の位置は固定されているため)
+                // figure.dataset.angle = (ANGLE_STEP * index).toString(); // 不要
+            });
+            
+            // 4. 回転をリセットし、特定のfigureを正面に持ってくる
+            const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
+            targetAngle = snappedAngle;
+            
+            // 5. アニメーション完了後に自動回転を再開
+            gsap.to(projectsSection, { 
+                duration: 0.1, // 短い時間で処理を挟む
+                delay: totalEffectTime, // 全てのアイテムのアニメーションが終わるまで待つ
+                onComplete: () => {
+                    autoRotate = true; // 回転再開
+                }
+            });
+            
+            console.log("Carousel content shuffled with effect.");
+        }
+
+
+
+        // 3.🔄 関数: アニメーションループ (回転ロジック) 🔄
+
+        function render(timestamp) {
+            // 1. 自動回転ロジックの修正
+            if (autoRotate && !isDragging) {
+                if (timestamp - lastAutoRotateTime > AUTO_ROTATE_INTERVAL) {
+                    // 🚨 3秒経過したら、次のスライドの角度（72度）を目標に設定 🚨
+                    targetAngle -= ANGLE_STEP; 
+                    lastAutoRotateTime = timestamp;
+                }
+            }
+            
+            // 2. 目標角度に向けて現在の角度を滑らかに補間
+            // (補間関数を使用して、スムーズに回転させる)
+            const easing = 0.01; // 回転の滑らかさ (数値が小さいほどゆっくり)
+            currentAngle += (targetAngle - currentAngle) * easing;
+
+            // 3. 各 figure 要素の transform を更新
+            figures.forEach((figure) => {
+                const figureAngle = parseFloat(figure.dataset.angle);
+                // currentAngle を使用
+                const totalAngle = figureAngle + currentAngle; 
+                
+                figure.style.transform = `
+                    translate(-50%, -50%) 
+                    rotateY(${totalAngle}deg)
+                    translateZ(${radius}px)
+                    rotateY(${-totalAngle}deg)
+                `;
+            });
+
+            requestAnimationFrame(render);
+        }
+
+
+        // 4.🖱️ イベント: マウス/タッチ操作 🖱️
+
+        const shuffleButton = document.getElementById('shuffle-button');
+
+        if (shuffleButton) {
+            shuffleButton.addEventListener('click', shuffleCarousel);
+        }
+
+        // マウスドラッグで操作
+        container.parentElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            container.parentElement.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.parentElement.style.cursor = 'grab';
+
+            // ★追加: ドラッグ終了時のスナップ処理★
+            if (autoRotate) {
+                // 現在の角度に最も近い、ANGLE_STEPの倍数を計算
+                // targetAngleを基準に最も近い72度の倍数を計算
+                const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
+                
+                // GSAPのSetter/Getter機能を使用し、targetAngleをアニメーション
+                gsap.to({ a: targetAngle }, {
+                    a: snappedAngle,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onUpdate: function() {
+                        targetAngle = this.targets()[0].a;
+                    },
+                    onStart: () => autoRotate = false,
+                    onComplete: () => autoRotate = true,
+                });
+                
             }
         });
 
-        // カーソルをポインターに変更し、クリック可能であることを示す
-        figure.style.cursor = 'pointer';
-    });
+        // タッチ操作（スマホ対応）
+        container.parentElement.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+        });
 
-    
-    //5. 🚀 起動処理 🚀
+        // タッチ操作にも同様の処理が必要です
+        container.parentElement.addEventListener('touchend', () => {
+            isDragging = false;
 
-    // 1. 画像の初期設定
-    setInitialImages();
-    // 2. アニメーションループ開始
-    // 🚨 render() の引数に timestamp が渡されるようにする 🚨
-    requestAnimationFrame(render);
+            // ★追加: タッチ操作終了時のスナップ処理★
+            if (autoRotate) {
+                const snappedAngle = Math.round(targetAngle / ANGLE_STEP) * ANGLE_STEP;
+                
+                gsap.to({ a: targetAngle }, {
+                    a: snappedAngle,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onUpdate: function() {
+                        targetAngle = this.targets()[0].a;
+                    },
+                    onStart: () => autoRotate = false,
+                    onComplete: () => autoRotate = true,
+                });
+            }
+        });
 
-}       
+        container.parentElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const delta = e.touches[0].clientX - startX;
+            startX = e.touches[0].clientX;
+            
+            // 🚨 修正: タッチ操作も targetAngle に影響を与える 🚨
+            targetAngle += delta * 0.3; // 感度
+        });
+
+        // ホバーで自動回転停止
+        container.parentElement.addEventListener('mouseenter', () => autoRotate = false);
+        container.parentElement.addEventListener('mouseleave', () => autoRotate = true);
+
+
+
+        figures.forEach((figure, index) => {
+            // figure要素自体にクリックイベントを付与
+            figure.addEventListener('click', () => {
+                // 現在 figure に割り当てられているアイテム情報を取得
+                const item = CAROUSEL_ITEMS[index];
+                
+                if (item && item.folder) {
+                    // folder名をID名に合わせて変換 (例: uiux -> uiux-section)
+                    const sectionId = `${item.folder}-section`;
+                    
+                    // ポートフォリオページに移動し、該当セクションへジャンプ
+                    window.location.href = `portfolio.html#${sectionId}`;
+                }
+            });
+
+            // カーソルをポインターに変更し、クリック可能であることを示す
+            figure.style.cursor = 'pointer';
+        });
+
+        
+        //5. 🚀 起動処理 🚀
+
+        // 1. 画像の初期設定
+        setInitialImages();
+        // 2. アニメーションループ開始
+        // 🚨 render() の引数に timestamp が渡されるようにする 🚨
+        requestAnimationFrame(render);
+
+    }       
 
 // =================================================================
 // 4. PARALLAXセクションのアニメーション (バブルの動き + セクションのワイプアウト)　(関数化)
@@ -1085,6 +1097,7 @@ function initReasonSection() {
             // ★★★ 修正 ここまで ★★★
 
         } else {
+            
             // B. 通常アクセス時: Pinアニメーションのために初期状態を隠しておく
             gsap.set(reasonText, { 
                 opacity: 0, 
@@ -1166,9 +1179,12 @@ function initHowtoSection() {
 
     if (howtoRoutes.length > 0) {
         const TOTAL_ITEMS = howtoRoutes.length; 
-        const PIN_DURATION_PER_ITEM = 1500; 
+        // ★★★ レスポンシブ: デバイスごとにスクロール量を設定 ★★★
+        const isMobile = window.innerWidth <= 768;
+        // SPならPCの半分（1500 -> 750）に設定
+        const PIN_DURATION_PER_ITEM = isMobile ? 750 : 1500; 
+        // ★★★ レスポンシブ ここまで ★★★
         const TRANSITION_RATIO = 0.33; 
-
         const transitionDuration = PIN_DURATION_PER_ITEM * TRANSITION_RATIO; 
         const holdDuration = PIN_DURATION_PER_ITEM * (1 - TRANSITION_RATIO); 
 
