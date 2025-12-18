@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxyParallax</title>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+  <div id="luxy">    
+    <!-- 全画面でパララックス＋慣性スクロールが動く -->
+    <div class="content01">
+      <div id="bg-section01" class="luxy-el" data-speed-y="15">
+        <p class="luxy-el" data-speed-y="-15">Parallax
+        scroll <br>
+        ↓</p>
+      </div>
+    </div>
+    
+    <p class="txt">
+      Please scroll<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+    </p>
+  
+    <!-- 範囲のなかの画像が慣性スクロール＋パララックスで動く -->
+    <div class="content02">
+      <div id="bg-section02" class="luxy-el" data-speed-y="-5"></div>
+    </div>
+
+    <p class="txt">
+      More scroll<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+      ↓<br>
+    </p>
+  
+
+    <div class="content03">
+      <!-- １匹 -->
+      <div class="container01">
+        <div class="luxy-el luxy-img01" 
+        data-speed-y="30"
+        >
+          <img class="kurukuru5s" src="img/butterfly3.png" alt="" />
+        </div>
+      </div>
+      <!-- ２匹 -->
+      <div class="container02">
+        <div class="luxy-el luxy-img02" 
+          data-speed-y="5"
+          data-speed-x="2"
+          data-horizontal="1"
+        >
+          <img class="kurukuru6s" src="img/butterfly4.png" alt="" />
+        </div>
+        <div class="luxy-el luxy-img03" 
+          data-speed-y="-3"
+          data-speed-x="-2"
+          data-horizontal="1"
+        >
+          <img class="kurukuru4s" src="img/butterfly5.png" alt="" />
+        </div>
+      </div>
+      <!-- ３匹 -->
+      <div class="container03">
+        <div
+          class="luxy-el luxy-img04"
+          data-speed-y="-10"
+          data-speed-x="-20"
+          data-horizontal="1"
+        >
+          <img class="fuwafuwa3" src="img/butterfly2.png" alt="" />
+        </div>
+        <div class="luxy-el luxy-img05">
+          <img class="kurukuru6s" src="img/butterfly6.png" alt="" />
+        </div>
+        <div
+          class="luxy-el luxy-img06"
+          data-speed-y="-5"
+          data-speed-x="20"
+          data-horizontal="1"
+        >
+          <img class="fuwafuwa2" src="img/butterfly1.png" alt="" />
+        </div>
+      </div>
+    </div>
+  
+
+
+
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="luxy.min.js" charset="utf-8"></script>
+  <script src="script.js"></script>
+</body>
+</html>

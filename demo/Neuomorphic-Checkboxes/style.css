@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+* {
+  box-sizing: border-box;
+  /* word-break: keep-all; */
+  /* overflow-wrap: break-word; */
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  /* outline: 2px solid aqua; */
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ebf5fc;
+  background: #fcebf9;
+}
+
+ul {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  padding: 20px;
+  width: 240px;
+  background: #ebf5fc;
+  background: #fcebf9;
+  box-shadow: -2px -2px 5px white, 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+ul li {
+  position: relative;
+  list-style: none;
+  text-align: center;
+  margin: 15px;
+}
+ul li label {
+  position: relative;
+  cursor: pointer;
+}
+ul li label input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+}
+ul li label :checked ~ .icon-box {
+  box-shadow: inset -2px -2px 5px white, inset 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+ul li label :checked ~ .icon-box .fa {
+  transform: scale(0.95);
+}
+ul li label .icon-box {
+  width: 60px;
+  height: 60px;
+  background: #ebf5fc;
+  background: #fcebf9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -2px -2px 5px white, 3px 3px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+ul li label .icon-box .fa {
+  font-size: 30px;
+  color: #6a9bd8;
+  color: #d86ab9;
+}

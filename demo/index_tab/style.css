@@ -1,0 +1,76 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
+
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Darumadrop One", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+  }
+  
+  
+ 
+.tab-section {
+	/* margin: 1vh 0; */
+	background-color:bisque;
+	height: 100vh;
+}
+
+.tab-box{
+	max-width: 80vw;
+	margin: 0 auto;
+	padding: 5vh 0;
+}
+.tab-container {
+	display: flex;
+	gap: 1rem;
+
+}
+.tab {
+	background-color: violet;
+	padding: .5rem 3rem;
+	border-radius: 1rem 1rem 0 0;
+	transition: .3s;
+	font-weight: 700;
+	color: hsl(286, 100%, 25%);
+	cursor: pointer;
+}
+.tab.active {
+	background-color: rgb(180, 130, 238);
+	color: #f1f1f1;
+}
+.content-container {
+	background-color:rgb(247, 208, 251);
+	height: 50vh;
+	border-radius: 0px 12px 12px 12px;
+}
+.content {
+	display: none;
+	animation: content-show .9s ease-in-out forwards;
+	height: 100%;
+	text-align: center;
+	line-height: 50vh;
+	color: #f1f1f1;
+	border-radius: 0px 12px 12px 12px;
+	font-size: 2rem;
+}
+ 
+.content.show {
+	display: block;
+}
+@keyframes content-show {
+	from {
+	  opacity: 0;
+	}
+	to {
+	  opacity: 1;
+	}
+}
+@media screen and (max-width: 768px) {
+	.tab {
+	padding: .5rem 1rem;
+	}
+}
