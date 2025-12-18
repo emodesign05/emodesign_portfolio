@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://emodesign0501.candypop.jp/sitemap.xml
