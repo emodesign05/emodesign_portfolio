@@ -16,6 +16,8 @@ function initLenis() {
         // ★重要: スマホのタッチ操作はブラウザ標準（native）に任せることでバウンスを防ぐ
         syncTouch: false, 
         touchMultiplier: 1.5,
+        // ★属性付きの要素を無視する設定（Lenisのスクロール対象から除外する）
+        prevent: (node) => node.hasAttribute('data-lenis-prevent')
     });
 
     // 🚨 重要: LenisのスクロールをGSAPのScrollTriggerに伝える
@@ -1509,29 +1511,31 @@ function controlContactParticlesVisibility() {
 // =================================================================
 // フォーム入力完了時の位置ズレ防止
 // =================================================================
-// 入力フォームにフォーカスした際、ブラウザの自動スクロールを優先させ、Lenisを完全に黙らせる
 function fixFormScrollJump() {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+
     const inputs = document.querySelectorAll('input, textarea, select');
     
     inputs.forEach(input => {
         input.addEventListener('focus', () => {
-            isInputActive = true; // ★追加：入力中フラグを立てる
-            if (lenis) {
-                lenis.stop(); 
-            }
+            isInputActive = true;
+            // 入力中、Lenisを眠らせる
+            if (lenis) lenis.stop(); 
         });
 
         input.addEventListener('blur', () => {
-            isInputActive = false; // ★追加：フラグを降ろす
-            
-            if (lenis) {
-                setTimeout(() => {
-                    lenis.start();
-                    lenis.scrollTo(window.scrollY, { immediate: true });
-                    // キーボードが消えきった後に一度だけ計算し直す
-                    ScrollTrigger.refresh();
-                }, 500);
-            }
+            // 次の項目へ移動したか判定するための微調整
+            setTimeout(() => {
+                if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                    isInputActive = false;
+                    if (lenis) {
+                        lenis.start();
+                        // 瞬時に同期
+                        lenis.scrollTo(window.scrollY, { immediate: true });
+                    }
+                }
+            }, 100);
         });
     });
 }

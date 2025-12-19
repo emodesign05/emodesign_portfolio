@@ -40,11 +40,54 @@ body {
     overflow-x: hidden; 
 }
 
+/* Lenis用のクラス設定 */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* 入力中、Lenisが止まっている間の保険 */
+.lenis-stopped {
+  overflow: hidden !important;
+  /* スクロール位置を固定 */
+  position: fixed;
+  width: 100%;
+}
+
+
 /* inputにフォーカスが当たっている時、htmlの動きを抑制する */
 html:has(input:focus), 
 html:has(textarea:focus) {
     overflow: auto !important;
     scroll-behavior: auto !important;
+}
+
+/* 入力中、htmlタグにこのクラスが付いている間は余計な動きをさせない */
+html.is-typing {
+    height: 100%;
+    overflow: hidden !important; /* スクロールを一時的にロック */
+}
+
+html.is-typing body {
+    height: 100%;
+    overflow: hidden !important;
+    position: fixed; /* 画面をその場に固定 */
+    width: 100%;
 }
 
 /* iOS Safariで入力時に画面がズームして位置がズレるのを防ぐ */
@@ -104,36 +147,6 @@ img {
   --stalker-color-trail: rgba(210, 114, 255, 0.5); /* 軌跡の色（半透明） */
   --stalker-color-trail-end: rgba(210, 114, 255, 0); /* 軌跡の終わりの色（透明） */
 }
-
-
-html.lenis {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
-/* 入力中、Lenisが止まっている間の保険 */
-.lenis-stopped {
-  overflow: hidden !important;
-  /* スクロール位置を固定 */
-  position: fixed;
-  width: 100%;
-}
-
 
 @media (max-width: 1440px) {
   html, body  {
@@ -716,7 +729,7 @@ html.lenis {
 /* 縦向きの場合のスタイル */
 @media (orientation: portrait) {
   .shuffle-button  {
-    bottom: 10%;
+    bottom: 20%;
     right: 5%;
     /* transform: translateX(-50%); */
   }
@@ -724,7 +737,7 @@ html.lenis {
 
 @media (max-width: 1440px) {
   .shuffle-button  {
-    bottom: 10%;
+    bottom: 80%;
   }
 }
 
@@ -1869,13 +1882,13 @@ button[type="submit"]:hover {
 
 
 /* iPhoneでの自動ズームによる画面のズレを防止 *//* 16px以上にすると自動ズームが起きません */
-/* @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
     input[type="text"],
     input[type="email"],
     textarea {
         font-size: 16px !important; 
     }
-} */
+}
 
 
 /* ============================
