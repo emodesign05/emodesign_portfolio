@@ -32,6 +32,8 @@ html, body {
     color: var(--black);
     /* 標準カーソルを強制表示 */
     cursor: default !important;
+    /* これを入れると、キーボードが出ても背景の高さが固定されやすくなります */
+    height: -webkit-fill-available;
 }
 body {
     /* bodyにも背景色を再設定 */
@@ -56,8 +58,6 @@ body {
 a, a *, a:hover, button, [data-cursor-effect] {
     /* リンク上にカスタムカーソルがある場合、それを非表示にする設定を無効化 */
     cursor: default !important;
-    
-    /* 標準の指マーク（ポインター）を表示したい場合はこちら */
     cursor: pointer !important;
 }
 
@@ -253,5 +253,9 @@ html, body {
 /* レスポンシブ調整していないので気になったら調整する */
 
 #uiux-section, #code-section, #logo-section, #graphic-section, #flyer-section {
+    scroll-margin-top: 120px; 
+}
+
+#uiux-section article, #code-section article, #logo-section article, #graphic-section article, #flyer-section  article{
     scroll-margin-top: 150px; 
 }

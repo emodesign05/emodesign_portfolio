@@ -40,6 +40,20 @@ body {
     overflow-x: hidden; 
 }
 
+/* inputにフォーカスが当たっている時、htmlの動きを抑制する */
+html:has(input:focus), 
+html:has(textarea:focus) {
+    overflow: auto !important;
+    scroll-behavior: auto !important;
+}
+
+/* iOS Safariで入力時に画面がズームして位置がズレるのを防ぐ */
+@media screen and (max-width: 768px) {
+    input, textarea {
+        font-size: 16px !important; /* 16px未満だと自動ズームしてしまいます */
+    }
+}
+
 li {
   list-style: none;
   text-align: -webkit-match-parent;
@@ -92,8 +106,32 @@ img {
 }
 
 
-a {
+html.lenis {
+  height: auto;
+}
 
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* 入力中、Lenisが止まっている間の保険 */
+.lenis-stopped {
+  overflow: hidden !important;
+  /* スクロール位置を固定 */
+  position: fixed;
+  width: 100%;
 }
 
 
@@ -725,7 +763,7 @@ a {
 // REASONセクションのスタイル
 // ================================================================= */
 .reason {
-  height: 300vh; /* Pinのトリガー期間 */
+  height: 200vh; /* Pinのトリガー期間 */
   position: relative; 
   z-index: 2;
   background-color: var(--white);
@@ -852,6 +890,15 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 
+}
+
+/* howtoセクション全体と、その中のルート要素に対して */
+.howto,
+.howto-route {
+    /* スクロール中の描画を安定させる魔法のプロパティ */
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .howto-content-wrapper {
@@ -1819,6 +1866,17 @@ button[type="submit"]:hover {
 .contact.is-dark-theme form h3 {
   color: var(--white);
 }
+
+
+/* iPhoneでの自動ズームによる画面のズレを防止 *//* 16px以上にすると自動ズームが起きません */
+/* @media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    textarea {
+        font-size: 16px !important; 
+    }
+} */
+
 
 /* ============================
 // フッター (FOOTER)

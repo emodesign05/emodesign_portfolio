@@ -1,3 +1,40 @@
+// =================================================================
+// 0. Lenis スムーススクロール初期化 & GSAP同期
+// =================================================================
+let lenis;
+let isInputActive = false; // ★ここ
+
+function initLenis() {
+    // モバイル判定
+    const isMobile = window.innerWidth <= 768;
+
+    // Lenisの初期化
+    lenis = new Lenis({
+        duration: isMobile ? 0.8 : 1.2, // スマホでは少しキビキビ動かす
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        // ★重要: スマホのタッチ操作はブラウザ標準（native）に任せることでバウンスを防ぐ
+        syncTouch: false, 
+        touchMultiplier: 1.5,
+    });
+
+    // 🚨 重要: LenisのスクロールをGSAPのScrollTriggerに伝える
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // GSAPの ticker（描画ループ）にLenisの更新を組み込む
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+
+    // GSAPの計算ズレを防ぐ設定
+    gsap.ticker.lagSmoothing(0);
+}
+
+// ページ読み込み時に実行
+initLenis();
+
+
+
 // ==============================================
 // script.js — 初期化を一箇所にまとめた完全版
 // ==============================================
@@ -9,14 +46,17 @@ if ('scrollRestoration' in history) {
 
 // GSAPプラグインの登録（安全な書き方）
 if (typeof gsap !== 'undefined') {
-  // プラグインオブジェクトが存在するかチェックしてから登録
-  const plugins = [];
-  if (typeof ScrollTrigger !== 'undefined') plugins.push(ScrollTrigger);
-  if (typeof ScrollToPlugin !== 'undefined') plugins.push(ScrollToPlugin);
-  
-  if (plugins.length > 0) {
+    ScrollTrigger.config({ 
+        ignoreMobileResize: true 
+    });
+    // プラグインオブジェクトが存在するかチェックしてから登録
+    const plugins = [];
+    if (typeof ScrollTrigger !== 'undefined') plugins.push(ScrollTrigger);
+    if (typeof ScrollToPlugin !== 'undefined') plugins.push(ScrollToPlugin);
+
+    if (plugins.length > 0) {
     gsap.registerPlugin(...plugins);
-  }
+    }
 }
 
 // ============================
@@ -919,7 +959,7 @@ function startHeroAnimation() { // ★関数名を startHeroAnimation に変更�
     }       
 
 // =================================================================
-// 4. PARALLAXセクションのアニメーション (バブルの動き + セクションのワイプアウト)　(関数化)
+// 4. PARALLAXセクションのアニメーション (バブルの動き + セクションのワイプアウト)(関数化)
 // =================================================================
 
 function initParallaxSection() {
@@ -943,7 +983,9 @@ function initParallaxSection() {
     const WIPE_OUT_DURATION_VH = 100;
 
     if (parallaxSection) {
-        
+        // ★レスポンシブ: SP判定をループの外で一度だけ行っておく
+        const isMobile = window.innerWidth <= 768;
+
         // 💡 1. バブル要素を生成し、初期設定とアニメーションを適用 (既存ロジックを維持)
         for (let i = 0; i < TOTAL_BUBBLE_COUNT; i++) {
             
@@ -960,17 +1002,9 @@ function initParallaxSection() {
             const speedFactor = 1 + scaleValue * 3; 
 
             // ★★★ 修正箇所: SP（画面幅768px以下）のサイズ調整ロジック ★★★
-            // SPのサイズ係数を決定
-            let mobileScaleFactor = 1;
-            if (window.innerWidth < 768) {
-                // SPの場合、2.5倍に拡大 (この値でSPのサイズ感を調整できます)
-                mobileScaleFactor = 2.5; 
-            }
-            
-            // 最終的なスケール値は、元の値にSP倍率を掛けたもの
+            let mobileScaleFactor = isMobile ? 2 : 1; 
             const finalScale = scaleValue * mobileScaleFactor;
-            // ★★★ 修正箇所 ここまで ★★★
-
+            
             // 初期設定
             gsap.set(bubble, {
                 position: 'absolute',
@@ -982,12 +1016,16 @@ function initParallaxSection() {
                 rotation: Math.random() * 360,
             });
 
-            // 💡 2. バブルのパララックスアニメーション (既存ロジックを維持)
-            const baseRange = 500; 
+            // 💡 2. バブルのパララックスアニメーション (レスポンシブ修正)
+            // ★修正箇所: SPでは移動量を大幅に減らす (例: 500 -> 200)
+            const baseRange = isMobile ? 200 : 500; 
             const parallaxRange = baseRange * speedFactor; 
-            const baseHorizontalRange = 4000;
+            
+            // ★修正箇所: 横移動もSPでは少し抑える (4000 -> 2000)
+            const baseHorizontalRange = isMobile ? 2000 : 4000;
             const parallaxX = (Math.random() - 0.5) * baseHorizontalRange * speedFactor * 0.5;
-            const rotationSpeed = (Math.random() - 0.5) * 500; 
+            
+            const rotationSpeed = (Math.random() - 0.5) * 500;
 
             gsap.to(bubble, {
                 scrollTrigger: {
@@ -995,9 +1033,10 @@ function initParallaxSection() {
                     start: "top bottom",
                     // バブルのパララックスはワイプアウト完了時に終了する
                     end: `top top+=${WIPE_OUT_DURATION_VH}vh`, // 100vhで終了
-                    scrub: 1,
+                    // ★調整: Lenisと同期させるため、SPでは少し数値を上げると滑らか（ふわふわ）になります
+                    scrub: isMobile ? 1.5 : 1,
                 },
-                y: -parallaxRange, 
+                y: -parallaxRange, // ここで計算した「短い距離」が適用されます
                 x: parallaxX,
                 rotation: rotationSpeed,
                 ease: "none",
@@ -1042,11 +1081,8 @@ function initParallaxSection() {
             .to(canvasContainer, { opacity: 0, duration: 1 }, 0) 
             
             // C. bodyの文字色を白から黒へ切り替える処理
-            .to('body', { color: '#000', duration: 1 }, 0)
-            
-            // D. アニメーション完了時にbg-fade-layerを完全に非表示にする (不要なためコメントアウト)
-            // .set(bgFadeLayer, { display: 'none' }, 1);
-            
+            .to('body', { color: '#000', duration: 1 }, 0);
+                
     } else {
         console.warn("パララックスセクションが見つかりません。HTMLを確認してください。");
     }
@@ -1210,8 +1246,10 @@ function initHowtoSection() {
                 pin: true,           
                 start: "top top",
                 end: `+=${PIN_DURATION_PER_ITEM * TOTAL_ITEMS}`, 
-                scrub: true,         
+                scrub: 0.1, // ★数値を小さく（0.1程度）すると、スクロールへの追従が速くなりグニョっと感が減る
                 pinSpacing: true,
+                anticipatePin: 1, // ★重要：Pin留めのタイミングを少し早めに計算してガタつきを防ぐ
+                fastScrollEnd: true, // ★素早いスクロール時にアニメーションを強制終了させて安定させる
                 
                 // ★★★ 追加: インジケーターの表示・非表示制御 ★★★
                 onEnter: () => {
@@ -1469,32 +1507,59 @@ function controlContactParticlesVisibility() {
 }
 
 // =================================================================
+// フォーム入力完了時の位置ズレ防止
+// =================================================================
+// 入力フォームにフォーカスした際、ブラウザの自動スクロールを優先させ、Lenisを完全に黙らせる
+function fixFormScrollJump() {
+    const inputs = document.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            isInputActive = true; // ★追加：入力中フラグを立てる
+            if (lenis) {
+                lenis.stop(); 
+            }
+        });
+
+        input.addEventListener('blur', () => {
+            isInputActive = false; // ★追加：フラグを降ろす
+            
+            if (lenis) {
+                setTimeout(() => {
+                    lenis.start();
+                    lenis.scrollTo(window.scrollY, { immediate: true });
+                    // キーボードが消えきった後に一度だけ計算し直す
+                    ScrollTrigger.refresh();
+                }, 500);
+            }
+        });
+    });
+}
+
+
+// =================================================================
 // 9. スクロール安定化処理 (モバイル環境向け - 安全版)
 // =================================================================
 function stabilizeScrollTrigger() {
     if (typeof ScrollTrigger === 'undefined') return;
 
-    // 🚨 危険な ScrollTrigger.normalizeScroll(true) は使用しません 🚨
-    
-    // 1. 初期化時のレイアウト計算の最終確定
-    // Adobe Fontsや画像の読み込み遅延による計算ミスを防ぐため、長めの遅延を設けます。
-    setTimeout(() => {
-        // trueを付けて、Pinインスタンスの開始/終了位置も再計算させる
-        ScrollTrigger.refresh(true); 
-    }, 800); 
-
-    // 2. ★★★ モバイルのvh変動対策として、リサイズ時のリフレッシュを強化 ★★★
+    let lastWidth = window.innerWidth;
     let resizeTimer;
+
     window.addEventListener('resize', () => {
-         // リサイズ中はリフレッシュを遅延させ、連続実行を防ぐ
-         clearTimeout(resizeTimer);
-         resizeTimer = setTimeout(() => {
-             // ScrollTriggerを再計算させ、Pinなどの位置ズレを修正
-             ScrollTrigger.refresh(true); 
-         }, 300); // 300ms待ってから実行
+        // ★フラグが立っている間はGSAPの再計算を完全にブロックする
+        if (isInputActive) return;
+
+        const currentWidth = window.innerWidth;
+        if (currentWidth !== lastWidth) {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                ScrollTrigger.refresh(true);
+                lastWidth = currentWidth;
+            }, 300);
+        }
     });
     
-    // 3. (オプション) 初期の refresh はすぐに実行しておく
     ScrollTrigger.refresh();
 }
 
@@ -1502,7 +1567,7 @@ function stabilizeScrollTrigger() {
 // リサイズ処理（両 canvas を1箇所で処理）
 // ============================
 /**
- * ウィンドウサイズ変更時に各種要素やThree.jsのキャンバスサイズを更新します。
+ * ウィンドウサイズ変更時に各種要素やThree.jsのキャンバスサイズを更新
  */
 function onWindowResize() {
     // 🚨 Three.jsが不要なページでは実行を即時終了 🚨
@@ -1752,27 +1817,24 @@ function initLoadingScreen() {
                 }
                 
                 // 3. ローディング画面を出したまま、ターゲットへ移動
-                gsap.to(window, {
-                    duration: 0.1, // 即時移動に近い速度で
-                    scrollTo: {
-                        y: hash,
-                        offset: -50, 
-                        autoKill: false
-                    },
-                    onComplete: () => {
-                        // 4. 移動完了後、ScrollTriggerを強力にリフレッシュ
-                        // ReasonセクションなどのPin位置を正しく計算させます
-                        ScrollTrigger.refresh(true);
-                        
-                        // 5. 少し待ってからローディング解除
-                        setTimeout(() => {
-                            hideLoadingScreen(true); // true = Heroアニメーションをスキップ
-                            
-                            // 念押しでScrollTriggerをもう一度更新 (WORKFLOW対策)
-                            ScrollTrigger.refresh();
-                        }, 300);
-                    }
-                });
+                // --- 🔴 ここからgsapではなくLenis用に書き換え 🔴 ---
+                // 前のコード：gsap.to(window, { duration: 0.1, scrollTo: { y: hash, ... } });
+                if (lenis) {
+                    // Lenisを使って、ハッシュの位置までスクロールさせる
+                    lenis.scrollTo(hash, {
+                        offset: -70,      // ヘッダーの高さ分調整
+                        duration: 1.2,    // 少し時間をかけて滑らかに
+                        immediate: false, 
+                        onComplete: () => {
+                            ScrollTrigger.refresh(true);
+                            setTimeout(() => {
+                                hideLoadingScreen(true);
+                                ScrollTrigger.refresh();
+                            }, 300);
+                        }
+                    });
+                }
+                // --- 🔴 ここまで 🔴 ---
             } else {
                 hideLoadingScreen(false);
             }
@@ -1826,8 +1888,11 @@ function initLoadingScreen() {
 // =================================================================
 (function() {
 
-    // ★★★ 修正: ローディング画面の初期化を最優先で呼び出す ★★★
-    initLoadingScreen(); 
+    // --- A. 全ページ共通の処理 (portfolio.html, price.html でも動かす) ---
+    // ★★★ ローディング画面の初期化を最優先で呼び出す ★★★
+    initLenis();           // Lenis開始
+    initLoadingScreen();    // ローディング & ハッシュ遷移
+    fixFormScrollJump();    // ページ内にフォームがある場合のスクロールジャンプ防止
     // ★★★ ここから他の処理を開始する ★★★
   
     // 1. ヘッダーとフッターの挿入（全ページ共通）
@@ -1839,7 +1904,8 @@ function initLoadingScreen() {
     initSparkleEffect(); 
 
     // 3. メインページ専用処理 (index.htmlでのみ実行)
-    if (!document.body.classList.contains('portfolio-page')) {
+        if (!document.body.classList.contains('portfolio-page') && 
+            !document.body.classList.contains('price-page')) { 
         
         // --------------------------------------------------------
         // 🚨 修正箇所: 変数宣言(const/let)を削除し、グローバル変数に代入 🚨
