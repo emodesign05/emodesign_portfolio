@@ -1945,6 +1945,16 @@ footer {
     width: 2rem;
     height: 2rem;
 }
+.sns-links a {
+  /* アイコンフォントファミリーを明示 */
+    /* font-family: 'Font Awesome 6 Brands'; 
+    font-weight: 400; */
+    /* アイコンの描画領域を確保 */
+    display: block; 
+    /* 必要に応じて幅/高さを確保 */
+    width: 2rem;
+    height: 2rem;
+}
 
 
 
