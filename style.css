@@ -184,10 +184,10 @@ img {
   width: 5rem;
   border-radius: 50%;
   position: fixed;
-  top: 3vh; 
+  top: 1.4vh; 
   right: 5vw; 
   z-index: 2000;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0rem 2rem rgba(0, 0, 0, 0.5);
   text-align: center; 
   cursor: pointer;
 }
@@ -197,7 +197,7 @@ img {
   width: 4rem;
   border-radius: 50%;
   position: fixed;
-  top: 3.5vh; 
+  top: 2.5vh; 
   right: 5.5vw; 
   background-image:  radial-gradient(#69EACB 0%, #ecc3ff 48%, #6654F1 100%);
   z-index: 1000;
@@ -234,14 +234,14 @@ img {
 }
 
 .nav_list li {
-  margin: 1rem;
-  font-size: 36px;
+  /* margin: 1rem; */
+  /* font-size: 1.8rem; */
 }
 
 .link:link,
 .link:visited {
   display: inline-block;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 300;
   padding: 1rem 2rem;
   color: white;

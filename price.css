@@ -75,6 +75,10 @@ a, a *, a:hover, button, [data-cursor-effect] {
     width: 100%;
     top: 0;
     z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
 }
 
 .price_index h1 {
@@ -85,7 +89,7 @@ a, a *, a:hover, button, [data-cursor-effect] {
 
 .price_index nav {
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 4px;
 }
 
 .price_index nav a {
