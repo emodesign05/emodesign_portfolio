@@ -106,6 +106,13 @@ a, a *, a:hover, button, [data-cursor-effect] {
     text-decoration: underline;
 }
 
+@media (max-width: 768px) {
+    .price_index {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
 /* ==============================================
 // 罫線
 // ============================================== */
@@ -155,7 +162,7 @@ th, td {
 }
 
 th {
-    background-color: #eef7ff;
+    background-color:  var(--light-purple);
     color: var(--color-purple);
     font-weight: bold;
     white-space: nowrap; /* ヘッダーの改行を防ぐ */
@@ -171,7 +178,7 @@ tr:nth-child(even) td {
 }
 
 .category-heading {
-    background-color: var(--light-purple)!important; /* カテゴリ見出しの背景色 */
+    background-color: #eef7ff!important; /* カテゴリ見出しの背景色 */
     font-weight: bold;
     color: var(--black);
     font-size: 1.1em;
@@ -227,7 +234,7 @@ tr:nth-child(even) td {
 
 /* メインカテゴリのグループ化（パンフレット、ロゴなど） */
 .category-group {
-    background-color: var(--light-purple)!important; /* 濃い目の背景色でグループ化を強調 */
+    background-color: #eef7ff!important; 
     font-weight: bold;
     text-align: center !important;
     vertical-align: middle !important;

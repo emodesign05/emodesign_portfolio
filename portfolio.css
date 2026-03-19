@@ -104,6 +104,13 @@ a, a *, a:hover, button, [data-cursor-effect] {
     text-decoration: underline;
 }
 
+@media (max-width: 768px) {
+    .portfolio_index {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
 /* ==============================================
 // 罫線
 // ============================================== */
