@@ -1970,3 +1970,106 @@ function initLoadingScreen() {
     }
   
 })();
+
+
+// モーダル機能：portfolio.htmlのみ実行
+if (document.querySelector('article.work-item')) {
+
+    (() => {
+        // モーダルHTMLをbodyに追加
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.innerHTML = `
+            <div class="modal-content">
+                <button class="modal-close" aria-label="閉じる">&times;</button>
+                <button class="modal-prev" aria-label="前の画像">&#8592;</button>
+                <img src="" alt="">
+                <button class="modal-next" aria-label="次の画像">&#8594;</button>
+                <div class="modal-indicator"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const modalImg    = overlay.querySelector('img');
+        const closeBtn    = overlay.querySelector('.modal-close');
+        const prevBtn     = overlay.querySelector('.modal-prev');
+        const nextBtn     = overlay.querySelector('.modal-next');
+        const indicator   = overlay.querySelector('.modal-indicator');
+
+        let currentImages = []; // 現在のarticle内の画像リスト
+        let currentIndex  = 0;
+
+        // 表示を更新
+        function updateModal() {
+            const { src, alt } = currentImages[currentIndex];
+            modalImg.src = src;
+            modalImg.alt = alt;
+            indicator.textContent = currentImages.length > 1
+                ? `${currentIndex + 1} / ${currentImages.length}`
+                : '';
+            const onlyOne = currentImages.length <= 1;
+            prevBtn.classList.toggle('hidden', onlyOne);
+            nextBtn.classList.toggle('hidden', onlyOne);
+        }
+
+        // モーダルを開く
+        function openModal(images, index) {
+            currentImages = images;
+            currentIndex  = index;
+            updateModal();
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // モーダルを閉じる
+        function closeModal() {
+            overlay.classList.remove('is-open');
+            document.body.style.overflow = '';
+            modalImg.src = '';
+            currentImages = [];
+        }
+
+        function goPrev() {
+            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            updateModal();
+        }
+
+        function goNext() {
+            currentIndex = (currentIndex + 1) % currentImages.length;
+            updateModal();
+        }
+
+        // 各articleごとに画像グループを登録
+        document.querySelectorAll('article.work-item').forEach(article => {
+            const imgs = [...article.querySelectorAll('.eyecatch, .sub-images img')];
+            if (!imgs.length) return;
+
+            // article内の画像情報をまとめる
+            const imageData = imgs.map(img => ({ src: img.src, alt: img.alt }));
+
+            imgs.forEach((img, i) => {
+                img.addEventListener('click', () => openModal(imageData, i));
+            });
+        });
+
+        // 背景クリックで閉じる
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goPrev(); });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goNext(); });
+
+        // キーボード操作
+        document.addEventListener('keydown', (e) => {
+            if (!overlay.classList.contains('is-open')) return;
+            if (e.key === 'Escape')     closeModal();
+            if (e.key === 'ArrowLeft')  goPrev();
+            if (e.key === 'ArrowRight') goNext();
+        });
+    })();
+
+}
