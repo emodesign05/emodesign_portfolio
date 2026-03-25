@@ -1956,6 +1956,13 @@ footer {
     height: 2rem;
 }
 
+ /* noteアイコン用 */
+.sns-links a img {
+    vertical-align: top;
+    width: 2rem;
+    height: 2rem;
+}
+
 
 
 /* =================================================================
