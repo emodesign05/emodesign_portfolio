@@ -287,7 +287,7 @@ html, body {
     position: fixed;
     inset: 0;
     background: rgba(26, 26, 26, 0.92);
-    z-index: 1000;
+    z-index: 999;
     align-items: center;
     justify-content: center;
     cursor: pointer !important;
@@ -382,4 +382,16 @@ html, body {
 .eyecatch,
 .sub-images img {
     cursor: zoom-in !important;
+}
+
+/* 480px以下 */
+@media (max-width: 480px) {
+    .modal-content img {
+        max-width: 70vw;
+    }
+    .modal-prev, .modal-next {
+        font-size: 1.0rem;
+        width: 36px;
+        height: 36px;
+    }
 }
