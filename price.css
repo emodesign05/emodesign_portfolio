@@ -126,6 +126,97 @@ hr {
 /* ==============================================
 // 価格表
 // ============================================== */
+
+/* ■■価格シミュレーション■■ */
+/* 1. テーブル全体のレイアウトを固定に設定 */
+.estimate-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    margin-bottom: 30px;
+    table-layout: fixed; /* レイアウトを固定！ */
+    word-break: break-all; /* 文字が溢れた場合に改行させる */
+}
+
+/* 2. 各列の幅をあらかじめ指定（合計100%になるように） */
+.col-name { width: 40%; }     /* 品名 */
+.col-qty  { width: 8%; }      /* 数量 */
+.col-diff { width: 8%; }     /* 難易度 */
+.col-price { width: 10%; }    /* 単価 */
+.col-total { width: 15%; }    /* 金額 */
+.col-note { width: 19%; }     /* 備考 */
+
+.estimate-table th, .estimate-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.estimate-table thead th {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+/* 親行（ヘッダー）のスタイルを強化 */
+.accordion-header {
+    background-color: #f8f9fa;
+    cursor: pointer; /* マウスを指マークに */
+    transition: all 0.3s ease; /* 変化を滑らかに */
+    position: relative;
+}
+
+.accordion-header:hover td {
+    background-color: var(--paleblue) !important;
+    transition: all 0.3s ease; /* 変化を滑らかに */
+}
+
+/* 右端に「クリックで開閉」を匂わせるテキストを追加（オプション） */
+.accordion-header td:first-child::after {
+    content: "クリックで内訳を表示";
+    font-size: 10px;
+    color: #007bff;
+    /* float: center; */
+    opacity: 0.8;
+    margin-left: 1rem;
+}
+
+/* アイコンに動きをつける */
+.accordion-header td:first-child::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 8px;
+    transition: transform 0.3s; /* 回転アニメーション */
+}
+
+/* 開いている時は矢印を下に向ける */
+.accordion-header.active td:first-child::before {
+    transform: rotate(90deg); /* 90度回転 */
+    color: #007bff;
+}
+
+/* 詳細行：最初は非表示 */
+.details-row {
+    display: none;
+    background-color: #ffffff;
+}
+
+/* 表示用のクラス */
+.details-row.show {
+    display: table-row;
+}
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+/* 合計・付帯費用エリア */
+.summary-row { background-color: #fafafa; font-weight: bold; }
+.grand-total { background-color: #fff3e0; font-size: 1.1em;font-weight: bold; }
+
+.remark { font-size: 12px; color: #666; }
+
+
+/* ■■価格表見出し■■ */
 .price-main h2 {
     font-size: 2.5rem;
     border-left: 5px solid var(--accent-color);
@@ -140,7 +231,7 @@ hr {
     font-size: 0.95em;
 }
 
-/* テーブル共通スタイル */
+/* ■■テーブル共通スタイル■■ */
 .table-container {
     width: 100%;
     overflow-x: auto; /* スマホで横スクロール可能にする */
@@ -230,7 +321,7 @@ tr:nth-child(even) td {
 }
 
 
-/* グラフィックデザインのテーブル構造の調整 */
+/* ■■グラフィックデザインのテーブル構造の調整■■ */
 
 /* メインカテゴリのグループ化（パンフレット、ロゴなど） */
 .category-group {

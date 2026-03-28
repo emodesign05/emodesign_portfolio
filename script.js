@@ -2073,3 +2073,13 @@ if (document.querySelector('article.work-item')) {
     })();
 
 }
+
+// Priceシミュレーション　アコーディオン
+function toggleSection(groupName, header) {
+    const rows = document.getElementsByClassName(groupName);
+    header.classList.toggle('active'); // activeクラスの付け外しで矢印を回す
+
+    for (let row of rows) {
+        row.classList.toggle('show');
+    }
+}

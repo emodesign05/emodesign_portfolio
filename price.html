@@ -41,6 +41,221 @@
 
     <main class="price-main">
 
+        <section id="price-simulation">
+            <h2>価格シミュレーション</h2>
+            <p class="description">当ホームページを実装した場合の費用のシミュレーションです。<br>デザイン費とコーディング費を合算となります。</p>
+
+            <div class="table-container">
+                <table class="estimate-table">
+                    <colgroup>
+                        <col class="col-name">
+                        <col class="col-qty">
+                        <col class="col-diff">
+                        <col class="col-price">
+                        <col class="col-total">
+                        <col class="col-note">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>品名</th>
+                            <th>数量</th>
+                            <th>難易度</th>
+                            <th>単価</th>
+                            <th>金額</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="accordion-header" onclick="toggleSection('design-group', this)">
+                            <td colspan="4">【デザイン費】 </td>
+                            <td class="text-right">¥160,000</td>
+                            <td></td>
+                        </tr>
+                        <tr class="details-row design-group">
+                            <td>　└ トップページデザイン</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥100,000</td>
+                            <td class="text-right">¥100,000</td>
+                            <td class="remark">TOPページ</td>
+                        </tr>
+                        <tr class="details-row design-group">
+                            <td>　└ 下層ページデザイン（M）</td>
+                            <td class="text-center">2式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥30,000</td>
+                            <td class="text-right">¥60,000</td>
+                            <td class="remark">PORTFOLIO / PRICEページ</td>
+                        </tr>
+
+                        <tr class="accordion-header" onclick="toggleSection('coding-group', this)">
+                            <td colspan="4">【コーディング費】</td>
+                            <td class="text-right">¥566,400</td>
+                            <td></td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td> トップページ実装</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center">1.8</td>
+                            <td class="text-right">¥80,000</td>
+                            <td class="text-right">¥144,000</td>
+                            <td class="remark">TOPページ基本料金</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ ファーストビュー 3D実装</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥100,000</td>
+                            <td class="text-right">¥100,000</td>
+                            <td class="remark">Three.js実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ ビルボードカルーセル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥20,000</td>
+                            <td class="text-right">¥20,000</td>
+                            <td class="remark">JSオリジナルスライダー</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ バブルスクロールエフェクト</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">GSAP実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ マスキングテープスクロール（横）</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">GSAP実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ スタッキングカルーセル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥30,000</td>
+                            <td class="text-right">¥30,000</td>
+                            <td class="remark">JSオリジナル</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ 文字抜きカルーセル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">CSS実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ 波紋スクロールエフェクト</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">GSAP実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ サイドインスクロールエフェクト</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">GSAP実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ お問い合わせフォーム実装</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">プラグイン、デザイン調整</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ オリジナルカーソル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">JS実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td> 下層ページ実装 (M) - PORTFOLIO</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center">1.3</td>
+                            <td class="text-right">¥30,000</td>
+                            <td class="text-right">¥39,000</td>
+                            <td class="remark">基本料金</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ モーダル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">JS実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ モーダル内カルーセル</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">JS実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td> 下層ページ実装 (M) - PRICE</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center">1.3</td>
+                            <td class="text-right">¥30,000</td>
+                            <td class="text-right">¥39,000</td>
+                            <td class="remark">基本料金</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td>　└ アコーディオン</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="text-right">¥10,000</td>
+                            <td class="remark">JS実装</td>
+                        </tr>
+                        <tr class="details-row coding-group">
+                            <td> レスポンシブ対応</td>
+                            <td class="text-center">1式</td>
+                            <td class="text-center"> - </td>
+                            <td class="text-right">実装費の20%</td>
+                            <td class="text-right">¥94,400</td>
+                            <td class="remark">基本実装費¥472,000に対して</td>
+                        </tr>
+
+                        <tr class="summary-row">
+                            <td colspan="4">制作費合計</td>
+                            <td class="text-right">¥726,400</td>
+                            <td></td>
+                        </tr>
+                        <tr class="summary-row">
+                            <td colspan="4">消費税(10%)</td>
+                            <td class="text-right">¥72,640</td>
+                            <td></td>
+                        </tr>
+                        <!-- <tr class="summary-row">
+                            <td colspan="4">サーバー代実費（エックスサーバー 36ヶ月分）</td>
+                            <td class="text-right">¥24,948</td>
+                            <td class="remark">税込</td>
+                        </tr> -->
+                        <tr class="grand-total">
+                            <td colspan="4">合計金額</td>
+                            <td class="text-right">¥799,040</td>
+                            <td class="remark">税込合計</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
         <section id="web-design-pricing">
             <h2>WEB デザイン</h2>
             <p class="description">Webサイトのデザイン制作をいたします。<br>コーディング実装は下記&nbsp;<a href="#frontend-pricing"><span style="text-decoration: underline;">コーディング</span></a>&nbsp;費用を合算いたします。</p>
@@ -136,7 +351,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4" class="category-heading">ホームページ（コーポレートサイト）実装</td>
+                            <td colspan="4" class="category-heading">ホームページ基本実装費</td>
                         </tr>
                         <tr>
                             <td>トップページ実装</td>
@@ -164,7 +379,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="4" class="category-heading">LP（ランディングページ）実装</td>
+                            <td colspan="4" class="category-heading">LP（ランディングページ）基本実装費</td>
                         </tr>
                         <tr>
                             <td>LP実装（標準セクション）</td>
@@ -180,7 +395,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="4" class="category-heading">実装難易度ランク（基本単価に乗率を適用）</td>
+                            <td colspan="4" class="category-heading">実装難易度ランク（基本実装費に乗率を適用）</td>
                         </tr>
                         <tr>
                             <td>ミニマム</td>
@@ -208,22 +423,16 @@
                             <td colspan="4" class="category-heading">HP・LP実装共通オプション</td>
                         </tr>
                         <tr>
-                            <td>レスポンシブ対応</td>
-                            <td>一式</td>
-                            <td>基本実装費の20%〜30%</td>
-                            <td>PCデザインを元に、タブレット・スマホ最適化を行う費用。</td>
+                            <td>WebGL実装</td>
+                            <td>1件</td>
+                            <td>¥100,000〜</td>
+                            <td>Three.jsを使った3D表現機能。</td>
                         </tr>
                         <tr>
                             <td>アニメーション実装</td>
                             <td>1件</td>
                             <td>¥15,000〜¥30,000</td>
                             <td>スクロールに応じて要素が動くなど、高度な演出。</td>
-                        </tr>
-                        <tr>
-                            <td>WebGL実装</td>
-                            <td>1件</td>
-                            <td>¥100,000〜</td>
-                            <td>Three.jsを使った3D表現機能。</td>
                         </tr>
                         <tr>
                             <td>タブ・カルーセル実装</td>
@@ -236,6 +445,12 @@
                             <td>1件</td>
                             <td>¥10,000〜</td>
                             <td>お問い合わせフォームのデザインされた入力要素の再現。</td>
+                        </tr>
+                        <tr>
+                            <td>レスポンシブ対応</td>
+                            <td>一式</td>
+                            <td>実装費全額の20%〜30%</td>
+                            <td>PCデザインを元に、タブレット・スマホ最適化を行う費用。</td>
                         </tr>
 
                         <tr>
