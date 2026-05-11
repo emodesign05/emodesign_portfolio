@@ -233,18 +233,13 @@ img {
   width: 9rem;
 }
 
-.nav_list li {
-  /* margin: 1rem; */
-  /* font-size: 1.8rem; */
-}
-
 .link:link,
 .link:visited {
   display: inline-block;
   /* width: 15%; */
   font-size: 1.6rem;
   font-weight: 700;
-  padding: 0.75rem 2rem;
+  padding: 0.5rem 2rem;
   color: white;
   text-decoration: none;
   text-transform: uppercase;
@@ -252,6 +247,8 @@ img {
   transition: color 0.4s;
   position: relative;
   overflow: hidden;
+  height: auto;
+  line-height: 1.2;  /* 行高さを少し詰めると制御しやすくなります */
 }
 
 .link:hover,
@@ -262,6 +259,7 @@ img {
 .nav_list .link .en {
   display: block;
   font-family:var(--helvetica);
+  position: relative;
 }
 
 .nav_list .link .jp {
