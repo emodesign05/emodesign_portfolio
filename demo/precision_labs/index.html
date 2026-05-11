@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EMO Precision Labs — 0.001mm の論理。精密加工の新基準。">
+  <meta name="theme-color" content="#0d0c0a">
+  <title>EMO Precision Labs — 株式会社エモ・プレシジョン</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Three.js via importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- GSAP + ScrollTrigger (classic UMD — loaded before module scripts) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       Loader
+  ====================================================== -->
+  <div id="loader">
+    <div class="loader-inner">
+      <svg class="loader-mark" viewBox="0 0 56 56" fill="none">
+        <rect x="6"  y="6"  width="18" height="18" stroke="#c8a96e" stroke-width="1.5"/>
+        <rect x="32" y="6"  width="18" height="18" stroke="#c8a96e" stroke-width="0.8"/>
+        <rect x="6"  y="32" width="18" height="18" stroke="#c8a96e" stroke-width="0.8"/>
+        <rect x="32" y="32" width="18" height="18" stroke="#c8a96e" stroke-width="1.2"/>
+      </svg>
+      <div class="loader-label">
+        <span class="loader-name">EMO PRECISION LABS</span>
+        <span class="loader-track"><span class="loader-fill"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       Navigation
+  ====================================================== -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 30 30" fill="none">
+          <rect x="2"  y="2"  width="11" height="11" stroke="#c8a96e" stroke-width="1.4"/>
+          <rect x="17" y="2"  width="11" height="11" stroke="#c8a96e" stroke-width="0.7" opacity="0.6"/>
+          <rect x="2"  y="17" width="11" height="11" stroke="#c8a96e" stroke-width="0.7" opacity="0.6"/>
+          <rect x="17" y="17" width="11" height="11" stroke="#c8a96e" stroke-width="1"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="brand">EMO<span style="color:var(--gold);margin-left:5px">PRECISION</span></span>
+          <span class="sub">株式会社エモ・プレシジョン</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#contact" class="cta">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ======================================================
+       Hero
+  ====================================================== -->
+  <section id="hero">
+    <div id="canvas-container"></div>
+
+    <div class="hero-grid"></div>
+
+    <div class="hero-corners">
+      <span class="corner-mark tl"></span>
+      <span class="corner-mark tr"></span>
+      <span class="corner-mark bl"></span>
+      <span class="corner-mark br"></span>
+    </div>
+
+    <div class="hero-overlay">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-rule"></span>
+        <span>精密加工の新基準</span>
+        <span class="eyebrow-rule"></span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="title-line"><span>EMO</span></span>
+        <span class="title-line"><span>PRECISION</span></span>
+        <span class="title-line"><span>LABS</span></span>
+      </h1>
+
+      <p class="hero-tagline">
+        <span class="tagline-num">0.001<span class="tagline-unit">mm</span></span>
+        <span class="tagline-no">の</span>
+        <span class="tagline-ja">論&nbsp;理</span>
+      </p>
+    </div>
+
+    <div class="hero-scroll-cue">
+      <span class="scroll-label">Scroll</span>
+      <span class="scroll-track"><span class="scroll-thumb"></span></span>
+    </div>
+
+    <div class="hero-sublabel">
+      <span>株式会社エモ・プレシジョン</span>
+      <span>Since 2006 · Tokyo, Japan</span>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       Philosophy
+  ====================================================== -->
+  <section id="philosophy">
+    <div class="section-wrap">
+      <div class="section-label g-reveal">Philosophy</div>
+
+      <div class="phi-layout">
+        <h2 class="phi-heading">
+          <span class="phi-line"><span>精度とは、</span></span>
+          <span class="phi-line"><span>哲学である。</span></span>
+        </h2>
+
+        <div class="phi-left g-reveal">
+          <div class="phi-body">
+            <p>私たちは 0.001mm という数値を、単なる精度の指標として見ていません。それは、工作機械と人間の知性が交わる臨界点——誤差が消え、理想が形になる瞬間の論理です。</p>
+            <p>EMO Precision Labs は、その瞬間を繰り返し、高い再現性で実現するために存在します。すべての加工は、完璧への問いかけです。</p>
+          </div>
+          <div class="phi-metrics">
+            <div class="phi-metric">
+              <div>
+                <span class="phi-metric-val">±0.001</span>
+                <span class="phi-metric-unit">mm</span>
+              </div>
+              <span class="phi-metric-lbl">公差精度</span>
+            </div>
+            <div class="phi-divider"></div>
+            <div class="phi-metric">
+              <div>
+                <span class="phi-metric-val">Ra 0.02</span>
+                <span class="phi-metric-unit">μm</span>
+              </div>
+              <span class="phi-metric-lbl">表面粗さ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phi-drawing g-reveal">
+          <div class="drawing-h-line"></div>
+          <div class="drawing-v-line"></div>
+          <div class="drawing-circle r3"></div>
+          <div class="drawing-circle r2"></div>
+          <div class="drawing-circle r1"></div>
+          <div class="drawing-target"></div>
+          <!-- scatter dots -->
+          <div class="drawing-dot" style="top:38%;left:44%"></div>
+          <div class="drawing-dot" style="top:52%;left:57%"></div>
+          <div class="drawing-dot" style="top:46%;left:51%"></div>
+          <div class="drawing-dot" style="top:55%;left:48%"></div>
+          <div class="drawing-dot" style="top:42%;left:53%"></div>
+          <div class="drawing-dim bottom">
+            <span class="rule"></span>
+            <span>127.8340</span>
+            <span class="rule"></span>
+          </div>
+          <div class="drawing-dim right">
+            <span class="rule"></span>
+            <span>89.2160</span>
+            <span class="rule"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       Technology
+  ====================================================== -->
+  <section id="technology">
+    <div class="section-wrap">
+      <div class="section-label g-reveal">Technology</div>
+      <h2 class="section-heading g-reveal">
+        <span>技術の</span><span>核心</span>
+      </h2>
+
+      <div class="tech-cards">
+        <!-- Card 01 -->
+        <div class="tech-card g-reveal">
+          <div class="tech-num">01</div>
+          <div class="tech-icon">
+            <svg viewBox="0 0 52 52" fill="none">
+              <circle cx="26" cy="26" r="18" stroke="#c8a96e" stroke-width="0.7" opacity="0.4"/>
+              <circle cx="26" cy="26" r="10" stroke="#c8a96e" stroke-width="1.4"/>
+              <line x1="26" y1="8"  x2="26" y2="16" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="26" y1="36" x2="26" y2="44" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="8"  y1="26" x2="16" y2="26" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="36" y1="26" x2="44" y2="26" stroke="#c8a96e" stroke-width="1"/>
+              <circle cx="26" cy="26" r="2.5" fill="#c8a96e"/>
+              <circle cx="26" cy="26" r="5"   stroke="#c8a96e" stroke-width="0.7" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>5軸精密加工</h3>
+          <p>DMG MORI 製 5 軸マシニングセンタによる複雑形状の精密加工。一度の段取りで高精度を実現し、段取り誤差をゼロに近づけます。</p>
+          <div class="tech-spec">
+            <span class="label">公差</span>
+            <span class="value">±0.001 mm</span>
+          </div>
+        </div>
+
+        <!-- Card 02 -->
+        <div class="tech-card g-reveal">
+          <div class="tech-num">02</div>
+          <div class="tech-icon">
+            <svg viewBox="0 0 52 52" fill="none">
+              <rect x="8"  y="8"  width="36" height="36" stroke="#c8a96e" stroke-width="0.7" opacity="0.4"/>
+              <rect x="16" y="16" width="20" height="20" stroke="#c8a96e" stroke-width="1.4"/>
+              <line x1="26" y1="8"  x2="26" y2="16" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="26" y1="36" x2="26" y2="44" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="8"  y1="26" x2="16" y2="26" stroke="#c8a96e" stroke-width="1"/>
+              <line x1="36" y1="26" x2="44" y2="26" stroke="#c8a96e" stroke-width="1"/>
+              <rect x="23" y="23" width="6" height="6" fill="#c8a96e"/>
+            </svg>
+          </div>
+          <h3>三次元測定</h3>
+          <p>ZEISS 製 CMM による全数検査体制。測定データはリアルタイムで品質管理システムに連携し、トレーサビリティを完全保証します。</p>
+          <div class="tech-spec">
+            <span class="label">測定精度</span>
+            <span class="value">0.0005 mm</span>
+          </div>
+        </div>
+
+        <!-- Card 03 -->
+        <div class="tech-card g-reveal">
+          <div class="tech-num">03</div>
+          <div class="tech-icon">
+            <svg viewBox="0 0 52 52" fill="none">
+              <polygon points="26,5 47,40 5,40" stroke="#c8a96e" stroke-width="0.7" opacity="0.4" fill="none"/>
+              <polygon points="26,13 38,34 14,34" stroke="#c8a96e" stroke-width="1.4" fill="none"/>
+              <circle cx="26" cy="24" r="3.5" stroke="#c8a96e" stroke-width="1.2"/>
+              <line x1="26" y1="5"  x2="26" y2="13" stroke="#c8a96e" stroke-width="0.8" opacity="0.5"/>
+              <circle cx="26" cy="24" r="1.2" fill="#c8a96e"/>
+            </svg>
+          </div>
+          <h3>難削材加工</h3>
+          <p>チタン・インコネル・ハステロイなど、航空宇宙・医療グレードの難削材加工に対応。専用工具と加工条件で品質を担保します。</p>
+          <div class="tech-spec">
+            <span class="label">対応素材</span>
+            <span class="value">Ti / Inconel / SUS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       Metrics
+  ====================================================== -->
+  <section id="metrics">
+    <div class="section-wrap">
+      <div class="section-label g-reveal">Precision Metrics</div>
+      <h2 class="section-heading g-reveal">
+        <span>数字が語る</span><span>精度</span>
+      </h2>
+
+      <div class="metrics-row">
+        <div class="metric-cell g-reveal" data-label-en="parts / month">
+          <div>
+            <span class="metric-value" data-target="2500">0</span>
+            <span class="metric-suffix">+</span>
+          </div>
+          <span class="metric-label-ja">月間加工実績</span>
+        </div>
+        <div class="metric-cell g-reveal" data-label-en="quality pass rate">
+          <div>
+            <span class="metric-value" data-target="9997" data-decimal="2">00.00</span>
+            <span class="metric-suffix">%</span>
+          </div>
+          <span class="metric-label-ja">品質合格率</span>
+        </div>
+        <div class="metric-cell g-reveal" data-label-en="years of excellence">
+          <div>
+            <span class="metric-value" data-target="18">0</span>
+          </div>
+          <span class="metric-label-ja">創業年数</span>
+        </div>
+        <div class="metric-cell g-reveal" data-label-en="minimum tolerance">
+          <div>
+            <span class="metric-value">1</span>
+            <span class="metric-suffix">μm</span>
+          </div>
+          <span class="metric-label-ja">最小加工公差</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       Contact
+  ====================================================== -->
+  <section id="contact">
+    <div class="section-wrap">
+      <div class="section-label g-reveal">Contact</div>
+      <h2 class="section-heading g-reveal">
+        <span>プロジェクトを</span><span>始めましょう</span>
+      </h2>
+
+      <div class="contact-layout">
+        <div class="contact-info g-reveal">
+          <div class="contact-item">
+            <span class="contact-item-label">Email</span>
+            <span class="contact-item-value">info@emo-precision.co.jp</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">Phone</span>
+            <span class="contact-item-value">03-XXXX-XXXX</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">Address</span>
+            <span class="contact-item-value">〒XXX-XXXX 東京都〇〇区〇〇町 X-XX</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">Hours</span>
+            <span class="contact-item-value">平日 08:00 – 18:00</span>
+          </div>
+        </div>
+
+        <!-- ============ Form + Success (grid-stacked) ============ -->
+        <div class="contact-form-wrap">
+
+        <!-- ============ Contact Form ============ -->
+        <form
+          id="contact-form"
+          class="contact-form g-reveal"
+          action="https://formspree.io/f/mqewdyqk"
+          method="POST"
+          novalidate
+        >
+          <!-- Honeypot: hidden from humans, catches bots -->
+          <input
+            type="text"
+            name="_gotcha"
+            class="form-honeypot"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          >
+
+          <div class="form-field" data-field="name">
+            <label for="f-name">お名前 <span class="required" aria-label="必須">*</span></label>
+            <input
+              type="text"
+              id="f-name"
+              name="name"
+              placeholder="山田 太郎"
+              autocomplete="name"
+              required
+            >
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="form-field" data-field="company">
+            <label for="f-company">会社名</label>
+            <input
+              type="text"
+              id="f-company"
+              name="company"
+              placeholder="株式会社〇〇"
+              autocomplete="organization"
+            >
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="form-field" data-field="email">
+            <label for="f-email">メールアドレス <span class="required" aria-label="必須">*</span></label>
+            <input
+              type="email"
+              id="f-email"
+              name="email"
+              placeholder="example@company.jp"
+              autocomplete="email"
+              required
+            >
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="form-field" data-field="message">
+            <label for="f-message">お問い合わせ内容 <span class="required" aria-label="必須">*</span></label>
+            <textarea
+              id="f-message"
+              name="message"
+              rows="5"
+              placeholder="加工図面・素材・数量などをご記入ください"
+              required
+            ></textarea>
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="form-submit" id="form-submit-btn">
+              <span class="btn-text">送信する</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span class="form-general-error" id="form-general-error" role="alert"></span>
+          </div>
+        </form>
+
+        <!-- ============ Success State ============ -->
+        <!-- visibility/opacity controlled entirely by GSAP (no hidden attr) -->
+        <div class="form-success" id="form-success" aria-live="polite">
+          <div class="success-icon">
+            <svg viewBox="0 0 80 80" fill="none" aria-hidden="true">
+              <circle class="si-circle" cx="40" cy="40" r="34" stroke="#c8a96e" stroke-width="1"/>
+              <line  class="si-h"      x1="22" y1="40" x2="58" y2="40" stroke="#c8a96e" stroke-width="0.8"/>
+              <line  class="si-v"      x1="40" y1="22" x2="40" y2="58" stroke="#c8a96e" stroke-width="0.8"/>
+              <path  class="si-check"  d="M25 40 L36 51 L55 29" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="success-title">送信完了</p>
+          <p class="success-msg">
+            お問い合わせいただきありがとうございます。<br>
+            2営業日以内にご返信いたします。
+          </p>
+          <button class="success-reset" id="success-reset" type="button">
+            新しいお問い合わせ
+          </button>
+        </div>
+
+        </div><!-- /.contact-form-wrap -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       Footer
+  ====================================================== -->
+  <footer id="footer">
+    <div class="footer-wrap">
+      <div class="footer-logo">
+        <svg class="footer-logo-mark" viewBox="0 0 22 22" fill="none">
+          <rect x="1" y="1"  width="8" height="8"  stroke="#c8a96e" stroke-width="1.2"/>
+          <rect x="13" y="1" width="8" height="8"  stroke="#c8a96e" stroke-width="0.7" opacity="0.5"/>
+          <rect x="1" y="13" width="8" height="8"  stroke="#c8a96e" stroke-width="0.7" opacity="0.5"/>
+          <rect x="13" y="13" width="8" height="8" stroke="#c8a96e" stroke-width="0.9"/>
+        </svg>
+        <div>
+          <span class="footer-brand">EMO PRECISION LABS</span>
+          <span class="footer-sub">株式会社エモ・プレシジョン</span>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <span>&copy; 2024 EMO Precision Labs. All rights reserved.</span>
+        <span class="tagline">0.001mm の 論 理</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Contact form logic (classic script — uses window.gsap global) -->
+  <script src="main.js"></script>
+
+  <!-- ======================================================
+       Three.js + GSAP Module
+  ====================================================== -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    /* --------------------------------------------------------
+       GSAP Plugin Registration
+    -------------------------------------------------------- */
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* --------------------------------------------------------
+       Device / Performance Flags
+    -------------------------------------------------------- */
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+                  || window.innerWidth < 768;
+    const DPR = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
+
+    /* --------------------------------------------------------
+       Renderer
+    -------------------------------------------------------- */
+    const container = document.getElementById('canvas-container');
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isMobile,
+      alpha: true,
+      powerPreference: 'high-performance',
+      stencil: false,
+    });
+    renderer.setPixelRatio(DPR);
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.toneMapping        = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    renderer.outputColorSpace   = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    /* --------------------------------------------------------
+       Scene / Camera
+    -------------------------------------------------------- */
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      48,
+      container.clientWidth / container.clientHeight,
+      0.1, 100
+    );
+    camera.position.z = 4.2;
+
+    /* --------------------------------------------------------
+       Environment Map (procedural RoomEnvironment)
+    -------------------------------------------------------- */
+    const pmrem  = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+    const envTex = pmrem.fromScene(new RoomEnvironment(0.5), 0.04).texture;
+    scene.environment = envTex;
+    pmrem.dispose();
+
+    /* --------------------------------------------------------
+       Lighting
+    -------------------------------------------------------- */
+    scene.add(new THREE.AmbientLight(0x403830, 0.6));
+
+    const keyLight = new THREE.DirectionalLight(0xfff4e0, 4.5);
+    keyLight.position.set(5, 6, 5);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0x5060b0, 1.8);
+    fillLight.position.set(-6, -3, -4);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.PointLight(0xffffff, 3.5, 16);
+    rimLight.position.set(-3.5, 3, -6);
+    scene.add(rimLight);
+
+    const accentLight = new THREE.PointLight(0xd4a040, 2.2, 9);
+    accentLight.position.set(2.5, -2, 2.5);
+    scene.add(accentLight);
+
+    /* --------------------------------------------------------
+       Materials
+    -------------------------------------------------------- */
+    const GOLD_COLOR = new THREE.Color(0xc4a468);
+
+    function makeFaceMat(roughnessOffset = 0) {
+      return new THREE.MeshPhysicalMaterial({
+        color:              GOLD_COLOR,
+        metalness:          1.0,
+        roughness:          0.07 + roughnessOffset,
+        envMapIntensity:    3.8,
+        clearcoat:          0.35,
+        clearcoatRoughness: 0.05,
+        iridescence:        0.25,
+        iridescenceIOR:     2.2,
+      });
+    }
+
+    const wireMat = new THREE.MeshBasicMaterial({
+      color:       GOLD_COLOR,
+      wireframe:   true,
+      transparent: true,
+      opacity:     0.0,
+    });
+
+    /* --------------------------------------------------------
+       Build Icosahedron from 20 Individual Face Meshes
+       (enables per-face explosion animation)
+    -------------------------------------------------------- */
+    const icoRef  = new THREE.IcosahedronGeometry(1.0, 0);
+    const posAttr = icoRef.attributes.position;
+
+    const mainGroup = new THREE.Group();
+    const faceMeshes = [];
+
+    for (let i = 0; i < posAttr.count; i += 3) {
+      const v = [0, 1, 2].map(j => new THREE.Vector3(
+        posAttr.getX(i + j),
+        posAttr.getY(i + j),
+        posAttr.getZ(i + j)
+      ));
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(
+        new Float32Array([v[0].x,v[0].y,v[0].z, v[1].x,v[1].y,v[1].z, v[2].x,v[2].y,v[2].z]),
+        3
+      ));
+      geo.computeVertexNormals();
+
+      const mat  = makeFaceMat(Math.random() * 0.06);
+      const mesh = new THREE.Mesh(geo, mat);
+
+      const center = new THREE.Vector3()
+        .addVectors(v[0], v[1]).add(v[2]).divideScalar(3);
+
+      mesh.userData.dir    = center.clone().normalize();
+      mesh.userData.target = center.clone().normalize().multiplyScalar(4.5);
+      mesh.userData.rotX   = (Math.random() - 0.5) * Math.PI * 1.8;
+      mesh.userData.rotY   = (Math.random() - 0.5) * Math.PI * 1.8;
+
+      faceMeshes.push(mesh);
+      mainGroup.add(mesh);
+    }
+
+    // Wireframe overlay (slightly larger)
+    const wireMesh = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.03, 1),
+      wireMat
+    );
+    mainGroup.add(wireMesh);
+
+    scene.add(mainGroup);
+
+    /* --------------------------------------------------------
+       Particle Cloud
+    -------------------------------------------------------- */
+    const PCOUNT   = isMobile ? 280 : 560;
+    const pPositions = new Float32Array(PCOUNT * 3);
+
+    for (let i = 0; i < PCOUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.acos(2 * Math.random() - 1);
+      const r     = 1.9 + Math.random() * 1.6;
+      pPositions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      pPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pPositions[i * 3 + 2] = r * Math.cos(phi);
+    }
+
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+
+    const pMat = new THREE.PointsMaterial({
+      color:          0xc8a96e,
+      size:           isMobile ? 0.028 : 0.020,
+      transparent:    true,
+      opacity:        0.55,
+      sizeAttenuation: true,
+    });
+
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    /* --------------------------------------------------------
+       GSAP-driven scene state (proxy object)
+    -------------------------------------------------------- */
+    const S = {
+      autoRotMult:     1.0,  // multiplier for base auto-rotation speed
+      extraRotY:       0,    // cumulative Y rotation from scroll
+      rotX:            0,    // X tilt from scroll
+      scale:           1.0,
+      explode:         0,    // 0 = assembled, 1 = fully exploded
+      wireOpacity:     0,
+      camZ:            4.2,
+      floatAmp:        1.0,  // amplitude of float animation
+      accentIntensity: 2.2,  // drives accentLight.intensity (reacts to form success)
+    };
+
+    /* --------------------------------------------------------
+       GSAP ScrollTrigger Animations
+    -------------------------------------------------------- */
+    function initAnimations() {
+
+      /* ---- Hero pinned timeline ---- */
+      const heroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger:      '#hero',
+          start:        'top top',
+          end:          '+=270%',
+          scrub:        1.8,
+          pin:          true,
+          anticipatePin: 1,
+        }
+      });
+
+      heroTl
+        /* Phase 1 — spin + reveal wireframe */
+        .to(S, { autoRotMult: 3.5,   duration: 1.0, ease: 'none' },  0.0)
+        .to(S, { extraRotY:   Math.PI * 2.5, duration: 2.0, ease: 'none' }, 0.3)
+        .to(S, { rotX:        Math.PI * 0.35, duration: 1.5, ease: 'none' }, 0.5)
+        .to(S, { scale:       1.35, duration: 1.0, ease: 'none' },    0.7)
+        .to(S, { wireOpacity: 0.38, duration: 0.8, ease: 'none' },    0.9)
+
+        /* Phase 2 — decompose */
+        .to(S, { explode:     1.0,  duration: 1.0, ease: 'none' },    1.8)
+        .to(S, { wireOpacity: 0.0,  duration: 0.4, ease: 'none' },    2.1)
+        .to(S, { scale:       0.85, duration: 0.8, ease: 'none' },    1.9)
+        .to(S, { camZ:        6.0,  duration: 1.5, ease: 'none' },    1.5)
+        .to(S, { floatAmp:    0.2,  duration: 0.8, ease: 'none' },    2.0);
+
+      /* ---- Nav scroll state ---- */
+      ScrollTrigger.create({
+        start: 'top -60',
+        onUpdate(self) {
+          document.getElementById('nav')
+            .classList.toggle('scrolled', self.scroll() > 60);
+        }
+      });
+
+      /* ---- Generic section reveal ---- */
+      gsap.utils.toArray('.g-reveal').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1, y: 0,
+            duration: 1.0,
+            ease: 'power3.out',
+            delay: (i % 3) * 0.1,
+            scrollTrigger: {
+              trigger: el,
+              start:   'top 86%',
+              once:    true,
+            }
+          }
+        );
+      });
+
+      /* ---- Philosophy heading line slide ---- */
+      gsap.utils.toArray('.phi-line span').forEach((el, i) => {
+        gsap.fromTo(el,
+          { y: '100%', opacity: 0 },
+          {
+            y: '0%', opacity: 1,
+            duration: 1.1,
+            delay: i * 0.18,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: el.closest('.phi-heading'),
+              start:   'top 80%',
+              once:    true,
+            }
+          }
+        );
+      });
+
+      /* ---- Section heading word-by-word ---- */
+      gsap.utils.toArray('.section-heading span').forEach((el, i) => {
+        gsap.fromTo(el,
+          { y: 36, opacity: 0 },
+          {
+            y: 0, opacity: 1,
+            duration: 0.9,
+            delay: i * 0.14,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: el.closest('.section-heading'),
+              start:   'top 82%',
+              once:    true,
+            }
+          }
+        );
+      });
+
+      /* ---- Tech cards stagger ---- */
+      gsap.utils.toArray('.tech-card').forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 64 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.95,
+            delay: i * 0.14,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.tech-cards',
+              start:   'top 80%',
+              once:    true,
+            }
+          }
+        );
+      });
+
+      /* ---- Metric counters ---- */
+      gsap.utils.toArray('.metric-value[data-target]').forEach(el => {
+        const target  = parseFloat(el.dataset.target);
+        const decimal = parseInt(el.dataset.decimal || '0', 10);
+        const obj     = { val: 0 };
+
+        gsap.to(obj, {
+          val: target,
+          duration: 2.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start:   'top 80%',
+            once:    true,
+          },
+          onUpdate() {
+            if (decimal === 2) {
+              // Format "9997" → "99.97"
+              const raw = obj.val.toFixed(0).padStart(4, '0');
+              el.textContent = raw.slice(0, 2) + '.' + raw.slice(2);
+            } else {
+              el.textContent = Math.round(obj.val).toLocaleString();
+            }
+          }
+        });
+      });
+    }
+
+    /* --------------------------------------------------------
+       Animation Loop
+    -------------------------------------------------------- */
+    let raf;
+    let clock = 0;
+
+    function tick(now) {
+      raf = requestAnimationFrame(tick);
+      clock = now * 0.001;
+
+      const baseY = clock * 0.22 * S.autoRotMult;
+
+      /* Group rotation */
+      mainGroup.rotation.y = baseY + S.extraRotY;
+      mainGroup.rotation.x = S.rotX;
+      mainGroup.scale.setScalar(S.scale);
+
+      /* Floating */
+      mainGroup.position.y = Math.sin(clock * 0.7) * 0.055 * S.floatAmp;
+
+      /* Explode faces */
+      if (S.explode > 0) {
+        faceMeshes.forEach(m => {
+          m.position.set(
+            m.userData.target.x * S.explode,
+            m.userData.target.y * S.explode,
+            m.userData.target.z * S.explode
+          );
+          m.rotation.x = m.userData.rotX * S.explode;
+          m.rotation.y = m.userData.rotY * S.explode;
+        });
+      } else {
+        faceMeshes.forEach(m => {
+          m.position.set(0, 0, 0);
+          m.rotation.x = 0;
+          m.rotation.y = 0;
+        });
+      }
+
+      /* Wireframe opacity */
+      wireMat.opacity = S.wireOpacity;
+
+      /* Particles drift */
+      particles.rotation.y = -clock * 0.06;
+      particles.rotation.x = Math.sin(clock * 0.18) * 0.08;
+      pMat.opacity = 0.55 * (1 - S.explode * 0.4);
+
+      /* Camera z */
+      camera.position.z = S.camZ;
+
+      /* Subtle light drift + intensity driven by S */
+      accentLight.position.x = Math.sin(clock * 0.4) * 3;
+      accentLight.position.z = Math.cos(clock * 0.3) * 3;
+      accentLight.intensity  = S.accentIntensity;
+
+      renderer.render(scene, camera);
+    }
+
+    /* --------------------------------------------------------
+       Resize
+    -------------------------------------------------------- */
+    const ro = new ResizeObserver(() => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+    ro.observe(container);
+
+    /* --------------------------------------------------------
+       Visibility (pause when tab hidden)
+    -------------------------------------------------------- */
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else {
+        tick(performance.now());
+      }
+    });
+
+    /* --------------------------------------------------------
+       Loader → Init
+    -------------------------------------------------------- */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+        ScrollTrigger.refresh();
+        initAnimations();
+        // tick() is already running — no second call needed
+      }, 2400);
+    });
+
+    /* Start rendering immediately (loader overlay hides canvas) */
+    tick(performance.now());
+
+    /* --------------------------------------------------------
+       WebGL reaction to successful form submission
+       main.js dispatches 'emo:form-success' → spike rotation + light
+    -------------------------------------------------------- */
+    document.addEventListener('emo:form-success', () => {
+      // Kill any in-progress scroll-triggered tweens on these props
+      gsap.killTweensOf(S, 'accentIntensity,autoRotMult');
+
+      // Spike up
+      gsap.to(S, {
+        accentIntensity: 7.5,
+        autoRotMult:     5.8,
+        duration: 0.28,
+        ease: 'power3.out',
+      });
+
+      // Ease back down to resting idle values (slower than hero scroll)
+      gsap.to(S, {
+        accentIntensity: 2.2,
+        autoRotMult:     0.7,
+        duration: 3.5,
+        ease: 'power4.out',
+        delay: 0.45,
+      });
+    });
+
+  </script>
+</body>
+</html>

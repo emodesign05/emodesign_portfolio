@@ -1,0 +1,963 @@
+/* ══════════════════════════════════════════════════════════════════════
+   STYLE.CSS — EMO Sake Brewery
+   Light Mode / Pale-Blue Redesign
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts ──────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap');
+
+/* ══════════════════════════════════════════════════════════════════════
+   デザイントークン
+   ──────────────────────────────────────────────────────────────────────
+   ホワイト × ペールブルー × ネイビーの3色構成。
+   --accent は JS の Tweaks Panel から動的に変更される。
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ベースカラー */
+  --white:        #ffffff;
+  --bg:           #f0f8ff;          /* alice blue: シェーダーが見えない時のフォールバック */
+  --bg-surface:   #f8fbff;          /* カード・パネルの薄白 */
+
+  /* ペールブルー系アクセント */
+  --accent:       #5ab4e8;          /* JS から変更可 */
+  --pale-blue:    #a3d8f4;          /* ボーダー・ラベル */
+  --light-blue:   #bfe9ff;          /* ホバー・ハイライト */
+  --sky:          #d6eeff;          /* 淡い面 */
+
+  /* テキスト */
+  --navy:         #1a2b3c;          /* 見出し: 高コントラスト */
+  --text:         #2c3e50;          /* 本文 */
+  --text-dim:     #6b8099;          /* サブテキスト */
+  --text-faint:   #9bb3c5;          /* プレースホルダー等 */
+
+  /* グラスモーフィズム */
+  --glass-bg:     rgba(255,255,255,0.68);
+  --glass-border: rgba(163,216,244,0.38);
+  --glass-blur:   blur(22px);
+
+  /* シャドウ */
+  --shadow-sm:    0 2px 12px rgba(90,180,232,0.10);
+  --shadow-md:    0 8px 32px rgba(90,180,232,0.14);
+  --shadow-lg:    0 20px 60px rgba(90,180,232,0.18);
+
+  --gap: clamp(4rem, 8vw, 8rem);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   リセット
+   ══════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* html にフォールバック背景（WebGL 未対応ブラウザ用）*/
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+/* body は transparent: #liquid-canvas (z-index:-1) が背後で見えるようにする */
+body {
+  background: transparent;
+  color: var(--text);
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── 微細なノイズテクスチャ（ライトモード用: 不透明度を極小に抑える）── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: .12;
+  mix-blend-mode: multiply;  /* ライト上で乗算して質感を加える */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   カスタムカーソル
+   ══════════════════════════════════════════════════════════════════════ */
+#cursor-dot {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  transition: opacity .3s;
+  mix-blend-mode: multiply;
+}
+
+#cursor-ring {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  transform: translate(-50%, -50%);
+  transition: width .3s, height .3s, opacity .3s;
+  opacity: .5;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   WebGL 液体背景キャンバス
+   z-index: -1 ですべてのコンテンツ背後に配置。
+   alpha:false の不透明レンダラーを使うため CSS opacity は不要。
+   セクションの backdrop-filter がこのキャンバスをブラーソースに使う。
+   ══════════════════════════════════════════════════════════════════════ */
+#liquid-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;          /* 全コンテンツの背後 */
+  pointer-events: none;
+  display: block;       /* inline デフォルトだと下余白が生じるため */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   グローバルナビゲーション（グラスモーフィズム）
+   .site-nav クラスで限定。フッター内 <nav> には適用されない。
+   ══════════════════════════════════════════════════════════════════════ */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem clamp(2rem, 5vw, 5rem);
+  /* グラスモーフィズム: キャンバス背景を blur で透かす */
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(.95rem, 1.4vw, 1.15rem);
+  letter-spacing: .25em;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.nav-logo span {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .82rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* ── ハンバーガーボタン ──────────────────────────────────────────
+   <nav> の外で position:fixed を持つ独立した要素。
+   z-index: 205 で overlay (200) よりも確実に前面に表示。
+   デスクトップでは display:none のため位置指定は無効。
+   ─────────────────────────────────────────────────────────────── */
+.nav-hamburger {
+  display: none;            /* デスクトップでは非表示 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: none;
+  /* <nav> の外なのでグローバル z-index が直接効く */
+  position: fixed;
+  top: 1.15rem;
+  right: clamp(2rem, 5vw, 5rem);
+  z-index: 205;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--navy);
+  transform-origin: center;
+  /* GSAP が制御するため CSS transition は不使用 */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   セクション共通
+   z-index は指定しない → 負の z-index のキャンバスより自動的に前面に
+   ══════════════════════════════════════════════════════════════════════ */
+section {
+  position: relative;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MV（メインビジュアル）
+   ══════════════════════════════════════════════════════════════════════ */
+#mv {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* ページ最上部: キャンバスを直接見せるため背景なし */
+}
+
+.mv-inner {
+  text-align: center;
+  position: relative;
+}
+
+/* 縦書きコピー
+   GSAP ブラシリビール: clip-path: inset(0% 0% 100% 0%) → inset(0% 0% 0% 0%) */
+.mv-vertical {
+  writing-mode: vertical-rl;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(3rem, 6vw, 6.5rem);
+  letter-spacing: .3em;
+  color: var(--navy);
+  line-height: 1;
+  margin: 5rem auto 0;
+  position: relative;
+  /* ライトモード: わずかなテキストシャドウで水面感を演出 */
+  text-shadow: 0 2px 18px rgba(90,180,232,.22);
+}
+
+/* 縦線デコレーション */
+.mv-vertical::after {
+  content: '';
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--pale-blue), transparent);
+}
+
+.mv-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  letter-spacing: .6em;
+  color: var(--accent);
+  opacity: .85;
+  display: block;
+  margin-top: -3rem;
+}
+
+.mv-tagline {
+  font-size: clamp(.65rem, 1vw, .82rem);
+  letter-spacing: .45em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  opacity: .7;
+  margin-top: 2rem;
+}
+
+.mv-scroll-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  opacity: .45;
+  font-size: .62rem;
+  letter-spacing: .4em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.mv-scroll-hint::after {
+  content: '';
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--pale-blue), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   セクションラベル
+   ══════════════════════════════════════════════════════════════════════ */
+.section-label {
+  font-size: .62rem;
+  letter-spacing: .5em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: .8;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: var(--pale-blue);
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   The Water セクション
+   グラスモーフィズム: キャンバスの水面が backdrop-filter で透けて見える
+   ══════════════════════════════════════════════════════════════════════ */
+#the-water {
+  min-height: 100vh;
+  padding: var(--gap) clamp(2rem, 10vw, 12rem);
+  display: flex;
+  align-items: center;
+  position: relative;
+  /* セクション全体にうっすらガラス面 */
+  background: rgba(240,248,255,0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* 2D リップルキャンバス（The Water セクション専用）*/
+#ripple-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.water-content {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.water-title {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  line-height: 1.45;
+  margin-bottom: 2rem;
+  color: var(--navy);
+}
+
+.water-title em {
+  font-style: italic;
+  color: var(--accent);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2em;
+}
+
+.water-body {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(.88rem, 1.3vw, 1.02rem);
+  line-height: 2.2;
+  color: var(--text);
+  max-width: 480px;
+}
+
+.water-stat {
+  margin-top: 3rem;
+  display: flex;
+  gap: 3rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: .62rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Process セクション
+   ══════════════════════════════════════════════════════════════════════ */
+#process {
+  min-height: 100vh;
+  padding: var(--gap) 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255,255,255,0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.process-left {
+  padding: 0 clamp(2rem, 6vw, 7rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--glass-border);
+}
+
+.process-right {
+  padding: 0 clamp(2rem, 6vw, 7rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.process-title {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+  color: var(--navy);
+}
+
+.process-body {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: .95rem;
+  line-height: 2.2;
+  color: var(--text);
+  max-width: 400px;
+}
+
+.process-step {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--pale-blue);
+  line-height: 1;
+}
+
+.step-content h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: .12em;
+  color: var(--navy);
+  margin-bottom: .4rem;
+}
+
+.step-content p {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: .82rem;
+  line-height: 1.95;
+  color: var(--text-dim);
+}
+
+.process-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--pale-blue), transparent);
+  opacity: .5;
+}
+
+/* 発酵温度バッジ（グラスモーフィズム）*/
+.temp-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem 1.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+}
+
+.temp-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(163,216,244,.12), transparent);
+}
+
+.temp-badge .temp-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.temp-badge .temp-lbl {
+  font-size: .6rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: .3rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Collection セクション（WordPress カスタム投稿タイプ対応設計）
+   ══════════════════════════════════════════════════════════════════════ */
+#collection {
+  padding: var(--gap) clamp(2rem, 8vw, 10rem);
+  min-height: 100vh;
+  /* キャンバスが透けて見えるように薄い白面 */
+  background: rgba(248,251,255,0.60);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.collection-header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.collection-title {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  margin-bottom: .8rem;
+  color: var(--navy);
+}
+
+.collection-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: .4em;
+  color: var(--accent);
+  opacity: .75;
+}
+
+/* グリッド: auto-fill で WP ループの増減に対応 */
+.bottle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+/* ボトルカード（WordPress <article> 対応 / グラスモーフィズム）*/
+.bottle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-sm);
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1),
+              box-shadow .4s,
+              border-color .4s;
+  cursor: none;
+}
+
+.bottle-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(163,216,244,.65);
+}
+
+.bottle-card:hover .bottle-svg {
+  transform: translateY(-10px) scale(1.04);
+  filter: drop-shadow(0 16px 32px rgba(90,180,232,.25));
+}
+
+.bottle-svg {
+  width: clamp(60px, 8vw, 96px);
+  height: auto;
+  margin-bottom: 2rem;
+  transition: transform .8s cubic-bezier(.34,1.56,.64,1), filter .8s;
+}
+
+.bottle-name-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  letter-spacing: .18em;
+  color: var(--navy);
+  margin-bottom: .4rem;
+}
+
+.bottle-name-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: .85rem;
+  letter-spacing: .28em;
+  color: var(--accent);
+  opacity: .8;
+  margin-bottom: 1rem;
+}
+
+.bottle-desc {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: .74rem;
+  line-height: 2;
+  color: var(--text-dim);
+  max-width: 200px;
+}
+
+.bottle-type-tag {
+  margin-top: 1.2rem;
+  padding: .28rem .9rem;
+  border-radius: 100px;
+  border: 1px solid var(--pale-blue);
+  font-size: .58rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.seimaibuai-badge {
+  margin-top: .5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .7rem;
+  letter-spacing: .28em;
+  color: var(--text-faint);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   フッター
+   ══════════════════════════════════════════════════════════════════════ */
+footer {
+  position: relative;
+  padding: 5rem clamp(2rem, 8vw, 10rem) 3rem;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+.footer-brand-name {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 1.4rem;
+  letter-spacing: .28em;
+  color: var(--navy);
+  margin-bottom: .8rem;
+}
+
+.footer-brand-name span {
+  color: var(--accent);
+}
+
+.footer-brand-copy {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: .88rem;
+  color: var(--accent);
+  letter-spacing: .22em;
+  margin-bottom: 1rem;
+}
+
+.footer-addr {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: .72rem;
+  line-height: 2;
+  color: var(--text-dim);
+}
+
+.footer-addr a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-col-title {
+  font-size: .62rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.footer-col-links a {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: .78rem;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.footer-col-links a:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--glass-border);
+  font-size: .62rem;
+  letter-spacing: .28em;
+  color: var(--text-faint);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   GSAP アニメーション用クラス
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* .reveal: 初期状態（translateY + opacity=0）*/
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* 横書きブラシリビール: 左→右 */
+.brush-reveal {
+  clip-path: inset(0% 100% 0% 0%);
+  will-change: clip-path;
+}
+
+/* 縦書きブラシリビール: 上→下 */
+.brush-reveal-vertical {
+  clip-path: inset(0% 0% 100% 0%);
+  will-change: clip-path;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Tweaks Panel
+   ══════════════════════════════════════════════════════════════════════ */
+#tweaks-panel {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  min-width: 220px;
+  box-shadow: var(--shadow-md);
+}
+
+#tweaks-panel h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .9rem;
+  letter-spacing: .28em;
+  color: var(--navy);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.tweak-row {
+  margin-bottom: 1rem;
+}
+
+.tweak-row label {
+  display: block;
+  font-size: .62rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: .4rem;
+}
+
+.tweak-row input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.tweak-row input[type=color] {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.tweak-row select {
+  width: 100%;
+  background: rgba(255,255,255,.8);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: .3rem .5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   レスポンシブ
+   ══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  .mv-en {
+    margin-top: 0rem;
+  }
+
+  #process {
+    grid-template-columns: 1fr;
+  }
+
+  .process-left {
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: var(--gap);
+  }
+
+  .process-step:nth-of-type(1) {
+    padding: 2.5rem 0 0 0;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .water-stat {
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .bottle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── モバイルナビ: フルスクリーンオーバーレイ（GSAPで制御）── */
+  .nav-hamburger {
+    display: flex;
+    /* position:fixed / top / right は基本スタイルで定義済み */
+  }
+
+  .nav-links {
+    /* display:none を廃止し position:fixed でオーバーレイ化。
+       z-index: 200 により .site-nav(100) を含む全要素を覆う。
+       ハンバーガーボタン(205)は更に上なので常にクリック可能。
+       visibility/opacity/pointerEvents は GSAP が管理する。     */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100svh; /* アドレスバー込みの実高さ(モダンブラウザ) */
+    background: rgba(248,251,255,0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 200;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.8rem;
+    padding: 5rem 2rem;     /* ハンバーガーボタンと下部が被らないよう余白 */
+    overflow-y: auto;       /* 項目が多くなっても画面外に見切れない */
+    /* ── 初期非表示状態（GSAP が visibility/opacity を制御）── */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-links li {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .nav-links a {
+    font-size: 1.3rem;
+    letter-spacing: .32em;
+    color: var(--navy);
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+}
+
+@media (max-width: 480px) {
+  .mv-vertical {
+    font-size: 2.5rem;
+  }
+
+  #the-water,
+  #collection {
+    padding: var(--gap) 1.5rem;
+  }
+}

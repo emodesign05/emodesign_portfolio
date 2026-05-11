@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>エモ酒造 | EMO Sake Brewery — Brewing the Future</title>
+
+  <!-- ── OGP / SEO ────────────────────────────────────────────────── -->
+  <meta name="description" content="岐阜・飛騨の山深くで醸す、未来の日本酒。EMO Sake Brewery — Est. 1842">
+  <meta property="og:title"       content="エモ酒造 | EMO Sake Brewery">
+  <meta property="og:description" content="岐阜・飛騨の山深くで醸す、未来の日本酒。">
+  <meta property="og:type"        content="website">
+
+  <!-- ── フォント（Google Fonts CDN）────────────────────────────────
+       WordPress 化時は functions.php の wp_enqueue_style() に移行する。
+       @import は style.css 内でも定義済み。
+  ──────────────────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+
+  <!-- ── スタイルシート ────────────────────────────────────────────
+       WordPress 化時: wp_enqueue_style('emo-main', get_template_directory_uri().'/style.css')
+  ──────────────────────────────────────────────────────────────────── -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ── Three.js（WebGL 液体シェーダー用）────────────────────────
+       WordPress 化時: wp_enqueue_script('three', ..., [], '0.163.0', true)
+  ──────────────────────────────────────────────────────────────────── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- ── GSAP + ScrollTrigger ──────────────────────────────────────
+       WordPress 化時: wp_enqueue_script('gsap', ...)
+  ──────────────────────────────────────────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" ></script>
+</head>
+<body>
+
+  <!-- ── カスタムカーソル ──────────────────────────────────────────
+       CSS cursor: none と組み合わせて OS カーソルを非表示にしている。
+  ──────────────────────────────────────────────────────────────────── -->
+  <div id="cursor-dot"  aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- ── WebGL 液体背景キャンバス ──────────────────────────────────
+       Three.js の WebGLRenderer が #liquid-canvas に描画する。
+       position: fixed; z-index: 0 でコンテンツの最背面に固定。
+       pointer-events: none でクリックイベントを素通しさせる。
+  ──────────────────────────────────────────────────────────────────── -->
+  <canvas id="liquid-canvas" aria-hidden="true"></canvas>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       ナビゲーション
+       WordPress 化時: wp_nav_menu() でメニューを動的出力する。
+  ════════════════════════════════════════════════════════════════════ -->
+  <nav class="site-nav" role="navigation" aria-label="メインナビゲーション">
+    <a href="#" class="nav-logo">エモ<span>酒造</span></a>
+    <ul class="nav-links">
+      <li><a href="#the-water">The Water</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ハンバーガーボタン: <nav> の外に配置することでグローバル z-index を確保。
+       position:fixed で .site-nav のスタッキングコンテキストから独立させる。 -->
+  <button class="nav-hamburger" aria-label="メニューを開く" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MV（メインビジュアル）
+       縦書きコピー .mv-vertical は GSAP の筆書きリビールアニメーション対象。
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="mv" aria-label="メインビジュアル">
+    <div class="mv-inner">
+      <!-- 縦書きメインコピー：GSAP で clip-path: inset(0% 0% 100% 0%) → 0% にアニメート -->
+      <div class="mv-vertical reveal">醸す、未来。</div>
+      <span class="mv-en reveal">Brewing the Future</span>
+      <p class="mv-tagline reveal">EMO Sake Brewery — Est. 1842</p>
+    </div>
+    <div class="mv-scroll-hint" aria-hidden="true">Scroll</div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       THE WATER セクション
+       #ripple-canvas: 2D Canvas API によるマウス波紋エフェクト専用。
+       Three.js の #liquid-canvas とは別レイヤー。
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="the-water" aria-label="仕込み水について">
+    <!-- 2D リップルキャンバス（マウス移動で金色波紋） -->
+    <canvas id="ripple-canvas" aria-hidden="true"></canvas>
+
+    <div class="water-content">
+      <div class="section-label reveal">The Water</div>
+      <h2 class="water-title reveal">
+        山の奥底から<br>湧き出る、<em>純粋</em>。
+      </h2>
+      <p class="water-body reveal">
+        仕込み水は、標高1,200メートルの花崗岩層を三十年かけて浸透した超軟水。
+        鉄分をほとんど含まず、麹菌の働きを最大限に引き出す。
+        この水が、エモ酒造の酒の透明感と繊細な甘みの礎となる。
+      </p>
+      <div class="water-stat">
+        <div class="stat-item reveal">
+          <span class="stat-num">30</span>
+          <span class="stat-label">Years Filtered</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-num">0.4</span>
+          <span class="stat-label">mg/L Iron</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-num">28</span>
+          <span class="stat-label">Hardness (mg/L)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       PROCESS セクション
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="process" aria-label="製造工程">
+    <div class="process-left">
+      <div class="section-label reveal">Process</div>
+      <h2 class="process-title reveal">職人の手と、<br>科学の精度。</h2>
+      <p class="process-body reveal">
+        代々受け継がれた杜氏の感覚と、最新の温度制御技術。
+        相反するふたつの知恵が交わるとき、唯一無二の酒が生まれる。
+      </p>
+      <div class="temp-badge reveal">
+        <span class="temp-val">5°C</span>
+        <span class="temp-lbl">Fermentation Control</span>
+      </div>
+    </div>
+
+    <div class="process-right">
+      <div class="process-step reveal">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <h4>Seimaibuai — 精米</h4>
+          <p>米の中心部「心白」のみを使うため、外層を50%以上削る。削るほどに雑味が消え、酒の輪郭が際立つ。</p>
+        </div>
+      </div>
+      <div class="process-divider"></div>
+      <div class="process-step reveal">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <h4>Koji Making — 製麹</h4>
+          <p>32℃の麹室で、杜氏が昼夜を問わず48時間手入れを続ける。機械では測れない「香り」が熟練の証。</p>
+        </div>
+      </div>
+      <div class="process-divider"></div>
+      <div class="process-step reveal">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <h4>Moromi — 醪発酵</h4>
+          <p>タンク内の温度をリアルタイムで0.1°C単位で管理。センサーと杜氏の五感が共鳴する、現代の発酵科学。</p>
+        </div>
+      </div>
+      <div class="process-divider"></div>
+      <div class="process-step reveal">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <h4>Pressing — 上槽</h4>
+          <p>袋吊りで一滴ずつ重力に任せる。圧力をかけず、清澄な酒だけを採取する贅沢な搾り。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       COLLECTION セクション（WordPress カスタム投稿タイプ対応設計）
+
+       ■ WordPress 移行ガイド
+       ─────────────────────────────────────────────────────────────
+       1. カスタム投稿タイプ "sake_product" を functions.php で登録:
+          register_post_type('sake_product', [...]);
+
+       2. カスタムフィールド（Advanced Custom Fields 推奨）:
+          - product_name_jp    : 商品名（日本語）
+          - product_name_en    : 商品名（英語）
+          - product_type       : 種別（junmai-daiginjo 等）
+          - product_desc       : 商品説明
+          - seimaibuai         : 精米歩合（%）
+          - product_bottle_svg : ボトル SVG コード（textarea）
+
+       3. テンプレートループ（archive-sake_product.php）:
+          <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+            <article class="bottle-card"
+              data-product-id="<?php the_ID(); ?>"
+              data-product-type="<?php the_field('product_type'); ?>"
+              data-seimaibuai="<?php the_field('seimaibuai'); ?>">
+              <div class="bottle-svg-wrap">
+                <?php the_field('product_bottle_svg'); ?>
+              </div>
+              <p class="bottle-name-jp"><?php the_field('product_name_jp'); ?></p>
+              <p class="bottle-name-en"><?php the_field('product_name_en'); ?></p>
+              <p class="bottle-desc"><?php the_field('product_desc'); ?></p>
+              <div class="bottle-type-tag"><?php the_field('product_type'); ?></div>
+            </article>
+          <?php endwhile; endif; ?>
+       ─────────────────────────────────────────────────────────────
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="collection" aria-label="今季のコレクション">
+    <div class="collection-header reveal">
+      <div class="section-label" style="justify-content:center;margin-bottom:1rem;">Collection</div>
+      <h2 class="collection-title">今季の一本</h2>
+      <p class="collection-sub">— Selected Expressions —</p>
+    </div>
+
+    <!-- .bottle-grid = WordPress ループのコンテナ
+         grid-template-columns: repeat(auto-fill, ...) で枚数が変わっても崩れない -->
+    <div class="bottle-grid" data-wp-loop="sake_product">
+
+      <!-- ── 商品 1: 純米大吟醸 月光 ──────────────────────────────
+           WordPress 化時は <article> タグに置き換え、
+           data-product-id は the_ID()、他は ACF フィールドで動的に出力する。
+      ──────────────────────────────────────────────────────────────── -->
+      <article class="bottle-card"
+        data-product-id="1"
+        data-product-type="junmai-daiginjo"
+        data-seimaibuai="40"
+        data-product-name-jp="純米大吟醸　月光"
+        data-product-name-en="Gekkou — Moonlight">
+
+        <svg class="bottle-svg" viewBox="0 0 80 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="月光 ボトル">
+          <defs>
+            <linearGradient id="b1g" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#1a1a2e"/>
+              <stop offset="40%"  stop-color="#2a2a3e"/>
+              <stop offset="100%" stop-color="#111120"/>
+            </linearGradient>
+            <linearGradient id="b1s" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(197,160,89,0)"/>
+              <stop offset="45%"  stop-color="rgba(197,160,89,0.35)"/>
+              <stop offset="100%" stop-color="rgba(197,160,89,0)"/>
+            </linearGradient>
+          </defs>
+          <path d="M22 70 Q18 80 16 100 L14 180 Q14 200 20 205 L60 205 Q66 200 66 180 L64 100 Q62 80 58 70 Z" fill="url(#b1g)" stroke="rgba(197,160,89,0.3)" stroke-width="0.5"/>
+          <path d="M22 70 Q18 80 16 100 L20 100 Q21 82 24 72Z" fill="rgba(255,255,255,0.04)"/>
+          <rect x="14" y="110" width="52" height="60" fill="url(#b1s)" opacity="0.5"/>
+          <rect x="18" y="120" width="44" height="55" fill="rgba(245,240,232,0.04)" stroke="rgba(197,160,89,0.2)" stroke-width="0.5"/>
+          <rect x="28" y="130" width="24" height="0.5" fill="rgba(197,160,89,0.4)"/>
+          <rect x="24" y="140" width="32" height="6" fill="rgba(197,160,89,0.08)"/>
+          <rect x="30" y="152" width="20" height="0.5" fill="rgba(197,160,89,0.3)"/>
+          <rect x="26" y="158" width="28" height="0.5" fill="rgba(197,160,89,0.2)"/>
+          <path d="M32 40 Q30 50 28 60 L28 70 L52 70 L52 60 Q50 50 48 40Z" fill="url(#b1g)" stroke="rgba(197,160,89,0.25)" stroke-width="0.5"/>
+          <rect x="30" y="28" width="20" height="14" rx="1" fill="#1c1c1c" stroke="rgba(197,160,89,0.4)" stroke-width="0.7"/>
+          <rect x="33" y="32" width="14" height="0.5" fill="rgba(197,160,89,0.4)"/>
+        </svg>
+
+        <p class="bottle-name-jp">純米大吟醸　月光</p>
+        <p class="bottle-name-en">Gekkou — Moonlight</p>
+        <p class="bottle-desc">精米歩合40%。華やかな吟醸香と、絹のような口当たり。</p>
+        <div class="bottle-type-tag">Junmai Daiginjo</div>
+        <!-- data-seimaibuai から JS で動的生成されるバッジ -->
+        <p class="seimaibuai-badge">Seimaibuai 40%</p>
+      </article>
+
+      <!-- ── 商品 2: 特別純米 燈火 ──────────────────────────────── -->
+      <article class="bottle-card"
+        data-product-id="2"
+        data-product-type="tokubetsu-junmai"
+        data-seimaibuai="60"
+        data-product-name-jp="特別純米　燈火"
+        data-product-name-en="Tomoshibi — Ember">
+
+        <svg class="bottle-svg" viewBox="0 0 80 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="燈火 ボトル">
+          <defs>
+            <linearGradient id="b2g" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#1a180e"/>
+              <stop offset="40%"  stop-color="#2c2818"/>
+              <stop offset="100%" stop-color="#181408"/>
+            </linearGradient>
+            <linearGradient id="b2s" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(197,160,89,0)"/>
+              <stop offset="45%"  stop-color="rgba(197,160,89,0.45)"/>
+              <stop offset="100%" stop-color="rgba(197,160,89,0)"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 65 Q14 78 12 105 L10 185 Q10 205 18 210 L62 210 Q70 205 70 185 L68 105 Q66 78 62 65 Z" fill="url(#b2g)" stroke="rgba(197,160,89,0.35)" stroke-width="0.5"/>
+          <path d="M18 65 Q14 78 12 105 L17 105 Q18 80 22 68Z" fill="rgba(255,255,255,0.05)"/>
+          <rect x="10" y="115" width="60" height="65" fill="url(#b2s)" opacity="0.4"/>
+          <rect x="14" y="125" width="52" height="60" fill="rgba(245,240,232,0.03)" stroke="rgba(197,160,89,0.25)" stroke-width="0.5"/>
+          <rect x="20" y="134" width="40" height="0.5" fill="rgba(197,160,89,0.5)"/>
+          <rect x="16" y="143" width="48" height="8"   fill="rgba(197,160,89,0.07)"/>
+          <rect x="22" y="158" width="36" height="0.5" fill="rgba(197,160,89,0.35)"/>
+          <rect x="26" y="165" width="28" height="0.5" fill="rgba(197,160,89,0.2)"/>
+          <path d="M33 28 Q31 45 30 58 L30 65 L50 65 L50 58 Q49 45 47 28Z" fill="url(#b2g)" stroke="rgba(197,160,89,0.25)" stroke-width="0.5"/>
+          <rect x="31" y="18" width="18" height="12" rx="1" fill="#1a1a0a" stroke="rgba(197,160,89,0.5)" stroke-width="0.7"/>
+          <rect x="34" y="22" width="12" height="0.5" fill="rgba(197,160,89,0.5)"/>
+        </svg>
+
+        <p class="bottle-name-jp">特別純米　燈火</p>
+        <p class="bottle-name-en">Tomoshibi — Ember</p>
+        <p class="bottle-desc">山田錦60%精米。温めると現れる、ふくよかな米の旨み。</p>
+        <div class="bottle-type-tag">Tokubetsu Junmai</div>
+        <p class="seimaibuai-badge">Seimaibuai 60%</p>
+      </article>
+
+      <!-- ── 商品 3: 吟醸 朧月 ────────────────────────────────────── -->
+      <article class="bottle-card"
+        data-product-id="3"
+        data-product-type="ginjo"
+        data-seimaibuai="55"
+        data-product-name-jp="吟醸　朧月"
+        data-product-name-en="Oborozuki — Haze Moon">
+
+        <svg class="bottle-svg" viewBox="0 0 80 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="朧月 ボトル">
+          <defs>
+            <linearGradient id="b3g" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#0c1a18"/>
+              <stop offset="40%"  stop-color="#152825"/>
+              <stop offset="100%" stop-color="#081210"/>
+            </linearGradient>
+            <linearGradient id="b3s" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(197,160,89,0)"/>
+              <stop offset="45%"  stop-color="rgba(180,220,200,0.35)"/>
+              <stop offset="100%" stop-color="rgba(197,160,89,0)"/>
+            </linearGradient>
+          </defs>
+          <path d="M15 72 Q10 85 8 108 L6 182 Q6 205 15 210 L65 210 Q74 205 74 182 L72 108 Q70 85 65 72 Z" fill="url(#b3g)" stroke="rgba(197,160,89,0.3)" stroke-width="0.5"/>
+          <path d="M15 72 Q10 85 8 108 L14 108 Q15 87 18 75Z" fill="rgba(255,255,255,0.04)"/>
+          <rect x="6"  y="118" width="68" height="65" fill="url(#b3s)" opacity="0.4"/>
+          <rect x="12" y="122" width="56" height="62" fill="rgba(245,240,232,0.03)" stroke="rgba(180,220,200,0.2)" stroke-width="0.5"/>
+          <rect x="18" y="131" width="44" height="0.5" fill="rgba(180,220,200,0.4)"/>
+          <rect x="14" y="141" width="52" height="9"   fill="rgba(180,220,200,0.06)"/>
+          <rect x="20" y="156" width="40" height="0.5" fill="rgba(180,220,200,0.3)"/>
+          <rect x="24" y="163" width="32" height="0.5" fill="rgba(180,220,200,0.2)"/>
+          <path d="M31 35 Q29 50 28 62 L28 72 L52 72 L52 62 Q51 50 49 35Z" fill="url(#b3g)" stroke="rgba(197,160,89,0.25)" stroke-width="0.5"/>
+          <rect x="30" y="22" width="20" height="15" rx="1" fill="#081a15" stroke="rgba(180,220,200,0.4)" stroke-width="0.7"/>
+          <rect x="33" y="27" width="14" height="0.5" fill="rgba(180,220,200,0.4)"/>
+        </svg>
+
+        <p class="bottle-name-jp">吟醸　朧月</p>
+        <p class="bottle-name-en">Oborozuki — Haze Moon</p>
+        <p class="bottle-desc">低温長期発酵。春霞のような柔らかさ、すっと消える余韻。</p>
+        <div class="bottle-type-tag">Ginjo</div>
+        <p class="seimaibuai-badge">Seimaibuai 55%</p>
+      </article>
+
+    </div><!-- /.bottle-grid (wp:loop end) -->
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       フッター
+       WordPress 化時: footer.php として分離し、
+       wp_footer() を body 直前に配置する。
+  ════════════════════════════════════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-brand-name">エモ<span>酒造</span></p>
+        <p class="footer-brand-copy">Brewing the Future</p>
+        <address class="footer-addr">
+          〒000-0000<br>
+          岐阜県飛騨市古川町壱之町<br>
+          エモ酒造株式会社<br><br>
+          Tel: <a href="tel:0577000000">0577-00-0000</a>
+        </address>
+      </div>
+      <nav aria-label="フッターナビゲーション">
+        <p class="footer-col-title">Navigate</p>
+        <ul class="footer-col-links">
+          <li><a href="#the-water">The Water</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Stockists</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="法的情報">
+        <p class="footer-col-title">Legal</p>
+        <ul class="footer-col-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Responsible Drinking</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 エモ酒造株式会社. All Rights Reserved.</span>
+      <span>お酒は二十歳になってから</span>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       Tweaks Panel（プレビュー環境専用調整パネル）
+       window.postMessage({ type: '__activate_edit_mode' }) で表示される。
+       通常ページ表示では display: none のまま。
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="tweaks-panel" role="complementary" aria-label="デザイン調整パネル">
+    <h3>Tweaks</h3>
+    <div class="tweak-row">
+      <label for="tw-accent">Accent Color</label>
+      <input type="color" id="tw-accent" value="#8affdc">
+    </div>
+    <div class="tweak-row">
+      <label for="tw-wave">Wave Intensity</label>
+      <input type="range" id="tw-wave" min="0" max="2" step="0.1" value="1.3">
+    </div>
+    <div class="tweak-row">
+      <label for="tw-canvas-opacity">Canvas Opacity</label>
+      <input type="range" id="tw-canvas-opacity" min="0.1" max="1" step="0.05" value="0.75">
+    </div>
+    <div class="tweak-row">
+      <label for="tw-speed">Reveal Speed</label>
+      <select id="tw-speed">
+        <option value="0.6">Fast</option>
+        <option value="1.2" selected>Medium</option>
+        <option value="2">Slow</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── メインスクリプト ───────────────────────────────────────────
+       defer により DOM 解析完了後に実行される。
+       Three.js / GSAP の defer とは DOMContentLoaded で同期されるため
+       依存関係の問題は発生しない。
+       WordPress 化時: wp_enqueue_script('emo-main', ..., ['three','gsap','gsap-st'], ..., true)
+  ──────────────────────────────────────────────────────────────────── -->
+  <script src="script.js" ></script>
+
+</body>
+</html>
