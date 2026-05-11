@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas Campaign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Playfair Display', 'Noto Serif JP', serif;
+            background: radial-gradient(circle at center, #8B0000 0%, #4a0000 100%);
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .gold-text {
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Smooth Snowfall Canvas */
+        #snowCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Town Silhouette */
+        .town-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .town-silhouette {
+            fill: #1a0505;
+            filter: drop-shadow(0 -5px 15px rgba(0,0,0,0.5));
+            width: 100%;
+            height: auto;
+        }
+
+        /* Santa Image Wrapper */
+        #santaWrapper {
+            position: absolute;
+            z-index: 50;
+            pointer-events: none;
+            will-change: transform, left, top;
+            /* Critical for centering: ensure transform translate applies to the whole block */
+            transform: translate(-50%, -50%);
+        }
+        
+        #santaSprite {
+            width: 150px;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            /* Smooth flip transition as requested */
+            transition: transform 0.2s ease-out;
+            transform-origin: center center;
+            display: block;
+        }
+
+        /* Particles */
+        .star-particle {
+            position: absolute;
+            pointer-events: none;
+            fill: #F9E076;
+            z-index: 45;
+            animation: starFade 0.8s ease-out forwards;
+        }
+
+        @keyframes starFade {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+        }
+
+        /* Buttons */
+        .app-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
+        }
+        .app-button:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 0, 0, 1);
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+            box-shadow: inset 0 0 200px rgba(0,0,0,0.7);
+        }
+
+        /* Content Layout */
+        .content-layer {
+            position: relative;
+            z-index: 30;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="snowCanvas"></canvas>
+    
+    <div id="santaWrapper">
+        <!-- Center point for the cursor. Image itself is within this wrapper -->
+        <img id="santaSprite" src="santa.png" alt="Santa" onerror="this.style.opacity='0'; this.parentElement.style.background='rgba(255,255,255,0.1)'; this.parentElement.style.width='150px'; this.parentElement.style.height='80px'; this.parentElement.style.borderRadius='20px';">
+    </div>
+
+    <div class="content-layer">
+        <div class="max-w-2xl text-center md:text-left">
+            <div class="inline-block gold-text font-bold tracking-[0.4em] mb-4 text-xs sm:text-sm uppercase bg-black/20 px-4 py-1 rounded-full border border-[#D4AF37]/20 backdrop-blur-sm">
+                2025 Magical Winter DEMO App
+            </div>
+            <h1 class="text-white mb-8 leading-[1.05]">
+                <span class="block text-6xl sm:text-8xl lg:text-9xl font-bold italic drop-shadow-2xl">Merry</span>
+                <span class="block text-5xl sm:text-7xl lg:text-8xl font-bold italic mb-6">Christmas!</span>
+                <span class="block text-2xl sm:text-3xl lg:text-4xl font-light tracking-widest opacity-90 font-serif">
+                    素敵な冬のひとときを
+                </span>
+            </h1>
+            
+            <p class="text-white/80 text-lg md:text-xl mb-12 font-serif max-w-md mx-auto md:mx-0 leading-relaxed drop-shadow-md">
+                聖なる夜を彩る、魔法のアプリ。<br>
+                クリスマスの喜びを、あなたの指先からお届けします。
+            </p>
+
+            <div class="flex flex-wrap justify-center md:justify-start gap-6">
+                <a href="#" class="app-button flex items-center gap-4 px-8 py-3.5 rounded-2xl group active:scale-95">
+                    <svg class="w-8 h-8 group-hover:text-[#D4AF37] transition-colors" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 21.8-88.5 21.8-11.4 0-51.1-20.8-83.6-20.1-42.9 .6-82.7 25-104.2 62.1-43.9 75.9-11.3 189 31.3 250.3 20.8 30 46.1 63.9 78.1 62.7 31.1-1.2 42.7-20.1 80.4-20.1 37.5 0 48.2 20.1 81 19.5 33.3-.6 55.1-30.8 75.7-60.8 23.8-34.6 33.6-68.1 33.8-69.8-.7-.3-65.5-25.2-66-100.2zM289.1 80c15.4-18.8 25.9-44.9 23.1-71-23.8 1-52.6 15.8-69.7 35.7-15.3 17.7-28.7 44.4-25.1 69.8 26.3 2.1 53.6-15.7 71.7-34.5z"/></svg>
+                    <div class="text-left">
+                        <div class="text-[10px] uppercase opacity-60 font-sans tracking-widest">Download on the</div>
+                        <div class="text-xl font-bold -mt-1 tracking-tight font-sans">App Store</div>
+                    </div>
+                </a>
+                <a href="#" class="app-button flex items-center gap-4 px-8 py-3.5 rounded-2xl group active:scale-95">
+                    <svg class="w-8 h-8 group-hover:text-[#D4AF37] transition-colors" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-10.3 18-28.5-1.2-40.8zM104.6 499l220.7-127.3-60.1-60.1L104.6 499z"/></svg>
+                    <div class="text-left">
+                        <div class="text-[10px] uppercase opacity-60 font-sans tracking-widest">Get it on</div>
+                        <div class="text-xl font-bold -mt-1 tracking-tight font-sans">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="town-container">
+        <svg viewBox="0 0 1400 220" class="town-silhouette" preserveAspectRatio="none">
+            <path d="M0,220 L0,170 L30,140 L60,170 L60,220 M70,220 L70,110 L90,80 L110,110 L110,220 M120,220 L120,160 L180,160 L180,220 M175,165 L210,120 L245,165 M250,220 L250,180 L290,140 L330,180 L330,220 M340,220 L340,150 L400,150 L400,220 M335,155 L370,110 L405,155 M420,220 L420,140 L470,90 L520,140 L520,220 M530,220 L530,120 L560,80 L590,120 L590,220 M610,220 L610,170 L680,170 L680,220 M605,175 L645,120 L685,175 M700,220 L700,130 L760,80 L820,130 L820,220 M830,220 L830,160 L900,110 L970,160 L970,220 M980,220 L980,100 L1020,60 L1060,100 L1060,220 M1070,220 L1070,160 L1140,160 L1140,220 M1065,165 L1105,120 L1145,165 M1160,220 L1160,130 L1220,90 L1280,130 L1280,220 M1290,220 L1290,170 L1400,170 L1400,220 Z" />
+            <g fill="#D4AF37" opacity="0.3">
+                <rect x="40" y="185" width="6" height="8" rx="1" /><rect x="90" y="140" width="4" height="6" rx="1" /><rect x="145" y="180" width="8" height="10" rx="1" /><rect x="280" y="190" width="6" height="8" rx="1" /><rect x="360" y="170" width="10" height="12" rx="1" /><rect x="460" y="160" width="8" height="10" rx="1" /><rect x="555" y="140" width="5" height="7" rx="1" /><rect x="635" y="185" width="8" height="10" rx="1" /><rect x="750" y="160" width="10" height="12" rx="1" /><rect x="890" y="180" width="12" height="14" rx="1" /><rect x="1010" y="120" width="8" height="10" rx="1" /><rect x="1100" y="185" width="7" height="9" rx="1" /><rect x="1210" y="160" width="9" height="11" rx="1" /><rect x="1340" y="185" width="10" height="12" rx="1" />
+            </g>
+        </svg>
+    </div>
+
+    <div class="vignette"></div>
+
+    <script>
+        // --- Animation Logic ---
+        const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
+
+        const state = {
+            target: { x: window.innerWidth * 0.8, y: window.innerHeight * 0.3 },
+            current: { x: window.innerWidth * 0.8, y: window.innerHeight * 0.3 },
+            snowflakes: [],
+            particles: [],
+            lastParticleTime: 0,
+            flip: 1 // 1 for left-facing, -1 for right-facing
+        };
+
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        const santaWrapper = document.getElementById('santaWrapper');
+        const santaSprite = document.getElementById('santaSprite');
+
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+
+        const initSnow = () => {
+            state.snowflakes = Array.from({ length: 100 }).map(() => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speed: Math.random() * 1 + 0.5,
+                swing: Math.random() * 2,
+                offset: Math.random() * 1000
+            }));
+        };
+
+        const updateSnow = () => {
+            state.snowflakes.forEach(s => {
+                s.y += s.speed;
+                s.x += Math.sin((Date.now() + s.offset) / 1000) * 0.5;
+                if (s.y > canvas.height) {
+                    s.y = -10;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+        };
+
+        const drawSnow = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+            state.snowflakes.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        };
+
+        const createParticle = (x, y) => {
+            const particle = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const size = Math.random() * 15 + 10;
+            particle.setAttribute("viewBox", "0 0 24 24");
+            particle.setAttribute("width", size);
+            particle.setAttribute("height", size);
+            particle.classList.add("star-particle");
+            
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z");
+            particle.appendChild(path);
+
+            // Centering the particle emission
+            particle.style.left = `${x - size/2}px`;
+            particle.style.top = `${y - size/2}px`;
+            
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 800);
+        };
+
+        const loop = () => {
+            // Smooth movement (lerp)
+            state.current.x = lerp(state.current.x, state.target.x, 0.08);
+            state.current.y = lerp(state.current.y, state.target.y, 0.08);
+
+            // Calculate direction and tilt
+            const dx = state.target.x - state.current.x;
+            const tilt = dx * 0.1;
+            const float = Math.sin(Date.now() / 400) * 5;
+
+            // Flip logic
+            // If dx > 1, we're moving right -> flip Santa (scaleX(-1))
+            // If dx < -1, we're moving left -> original Santa (scaleX(1))
+            if (Math.abs(dx) > 1) {
+                state.flip = dx > 0 ? -1 : 1;
+            }
+
+            // Position the wrapper (centered on cursor)
+            santaWrapper.style.left = `${state.current.x}px`;
+            santaWrapper.style.top = `${state.current.y + float}px`;
+            
+            // Apply scaleX and tilt to the sprite img
+            // Using a transition in CSS handles the smooth flip
+            if (santaSprite) {
+                santaSprite.style.transform = `scaleX(${state.flip}) rotate(${tilt * state.flip}deg)`;
+            }
+
+            // Particle Trail (Behind Santa)
+            const dist = Math.hypot(dx, state.target.y - state.current.y);
+            if (dist > 1 && Date.now() - state.lastParticleTime > 80) {
+                // Adjusting particle offset based on flip
+                const offsetX = state.flip === 1 ? -40 : 40;
+                createParticle(state.current.x + offsetX, state.current.y + 15);
+                state.lastParticleTime = Date.now();
+            }
+
+            updateSnow();
+            drawSnow();
+
+            requestAnimationFrame(loop);
+        };
+
+        // Pointer Events
+        const handleMove = (x, y) => {
+            state.target.x = x;
+            state.target.y = y;
+        };
+
+        window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+        window.addEventListener('touchstart', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY));
+        window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY));
+
+        window.addEventListener('resize', () => {
+            resize();
+            initSnow();
+        });
+
+        // Initialize
+        resize();
+        initSnow();
+        loop();
+    </script>
+</body>
+</html>

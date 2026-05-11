@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMODESIGN | LAB</title>
+    <meta name="description" content="EMODESIGNの技術実験室。WebGL・Canvas・AI Creative Workflowなど、論理に基づいた技術探究と創造的実験の記録。">
+    <meta name="keywords" content="EMODESIGN,LAB,WebGL,Canvas,Three.js,GSAP,AI,フロントエンドエンジニア">
+    <link rel="icon" href="img/favicon.ico" sizes="192x192">
+    <link rel="apple-touch-icon" href="img/favicon.ico">
+    <meta property="og:title" content="EMODESIGN | LAB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emodesign0501.candypop.jp/lab.html">
+    <meta property="og:image" content="/img/ogp.webp">
+    <meta property="og:site_name" content="EMODESIGN | LAB">
+    <meta property="og:description" content="論理に基づいた技術探究と創造的実験の記録。WebGL・Canvas・AI Creative Workflow。">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Adobe Font -->
+    <script>
+        (function(d) {
+            var config = { kitId: 'luz0jyx', scriptTimeout: 3000, async: true },
+            h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),
+            tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;
+            h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';
+            tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};
+            s.parentNode.insertBefore(tk,s);
+        })(document);
+    </script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/dc816d1780.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lab.css">
+</head>
+
+<body class="lab-page">
+
+    <canvas class="canvas-container canvas-top"></canvas>
+    <canvas class="canvas-container canvas-contact"></canvas>
+    <div class="bg-fade-layer"></div>
+
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <!-- ══════════════════════════════════════════════════
+         HERO
+    ══════════════════════════════════════════════════ -->
+    <section class="lab-hero">
+        <div class="lab-hero__grid-bg" aria-hidden="true"></div>
+        <div class="lab-hero__inner">
+            <p class="lab-hero__eyebrow">EMODESIGN / EXPERIMENTAL</p>
+            <h1 class="lab-hero__title">LAB</h1>
+            <p class="lab-hero__sub">Logic <span class="lab-hero__x">×</span> Experiment</p>
+            <p class="lab-hero__desc">
+                論理に基づいた技術探究と創造的実験の記録。<br>
+                可能性の境界を、コードで押し広げる。
+            </p>
+            <div class="lab-hero__cats">
+                <a href="#section-ai" class="lab-hero__cat-link">01 AI Creative Workflow</a>
+                <a href="#section-immersive" class="lab-hero__cat-link">02 Immersive Visual & Motion</a>
+                <a href="#section-ui" class="lab-hero__cat-link">03 UI Micro-interactions</a>
+                <a href="#section-seasonal" class="lab-hero__cat-link">04 Seasonal & Concept Design</a>
+            </div>
+        </div>
+        <div class="lab-hero__scroll">Scroll ↓</div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         FEATURED — EMO Precision Labs
+    ══════════════════════════════════════════════════ -->
+    <section class="lab-featured-section">
+        <div class="lab-featured-card">
+            <div class="lab-featured-card__inner">
+                <div class="lab-featured-card__info">
+                    <div class="lab-featured-card__labels">
+                        <span class="lab-cat-badge lab-cat-badge--ai">AI Creative Workflow</span>
+                        <span class="lab-featured-label">★ FEATURED EXPERIMENT</span>
+                    </div>
+                    <h2 class="lab-featured-card__title">EMO Precision Labs</h2>
+                    <p class="lab-featured-card__desc">
+                        精密加工の新基準 ——「0.001mmの論理」。WebGLとGSAPを組み合わせ、工業系コーポレートサイトの
+                        高品質感をAIとの協働で設計。要件定義からコード生成まで、AIアシストによる
+                        高速プロトタイピングの最前線事例。
+                    </p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill lab-tech-pill--ai">Three.js</span>
+                        <span class="lab-tech-pill lab-tech-pill--ai">GSAP</span>
+                        <span class="lab-tech-pill lab-tech-pill--ai">ScrollTrigger</span>
+                        <span class="lab-tech-pill lab-tech-pill--ai">JavaScript</span>
+                        <span class="lab-tech-pill lab-tech-pill--ai">AI Assisted</span>
+                    </div>
+                    <div class="lab-insight lab-insight--ai">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">
+                            WebGLで精密工業の「0.001mmの論理」を視覚化。
+                            AIとの反復的な設計がプロトタイプの速度と品質を同時に向上させる。
+                        </p>
+                    </div>
+                    <a href="demo/Precision_Labs/index.html" class="lab-demo-btn lab-demo-btn--ai lab-demo-btn--featured" target="_blank" rel="noopener">
+                        VIEW DEMO →
+                    </a>
+                </div>
+                <div class="lab-featured-card__visual">
+                    <video
+                        src="img/lab/precision_labs.mp4"
+                        autoplay loop muted playsinline
+                        class="lab-featured-video"
+                    ></video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="lab-main">
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 01 — AI Creative Workflow
+        ══════════════════════════════════════════════════ -->
+        <section class="lab-category-section" id="section-ai">
+            <div class="lab-section-header">
+                <span class="lab-section-number">01</span>
+                <div class="lab-section-header__text">
+                    <h2 class="lab-section-title">AI Creative Workflow</h2>
+                    <p class="lab-section-desc">AIと人間の共創、プロトタイピング</p>
+                </div>
+                <div class="lab-section-line" aria-hidden="true"></div>
+            </div>
+            <div class="lab-grid lab-grid--2col">
+
+                <article class="lab-card lab-card--ai">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/sake_brewery.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--ai">AI Creative</span>
+                    </div>
+                    <h3 class="lab-card__title">エモ酒造</h3>
+                    <p class="lab-card__desc">架空の岐阜・飛騨にある老舗酒蔵をデジタルで再解釈。Three.jsの液体シェーダーで飛騨の天然水の質感を表現したコンセプトサイト。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Three.js</span>
+                        <span class="lab-tech-pill">WebGL Shader</span>
+                        <span class="lab-tech-pill">GSAP</span>
+                        <span class="lab-tech-pill">JavaScript</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">伝統産業とWebGLの接続。液体シェーダーのパラメータ調整をAIと連携しながら進める新しい制作フロー。</p>
+                    </div>
+                    <a href="demo/sake_brewery/index.html" class="lab-demo-btn lab-demo-btn--ai" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--ai">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/pen-Illustrator3D.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--ai">AI Creative</span>
+                    </div>
+                    <h3 class="lab-card__title">3D Pen Scroll</h3>
+                    <p class="lab-card__desc">3DペンモデルをThree.jsでリアルタイムレンダリングし、スクロールと連動させた没入型インタラクション実験。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Three.js</span>
+                        <span class="lab-tech-pill">GLTFLoader</span>
+                        <span class="lab-tech-pill">WebGL</span>
+                        <span class="lab-tech-pill">Scroll Sync</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">GLBモデルのスクロール連動はカメラ制御の精度が鍵。AIアシストで3Dアニメーションのロジックを高速設計。</p>
+                    </div>
+                    <a href="demo/pen-Illustrator3D/index.html" class="lab-demo-btn lab-demo-btn--ai" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 02 — Immersive Visual & Motion
+        ══════════════════════════════════════════════════ -->
+        <section class="lab-category-section" id="section-immersive">
+            <div class="lab-section-header">
+                <span class="lab-section-number">02</span>
+                <div class="lab-section-header__text">
+                    <h2 class="lab-section-title">Immersive Visual & Motion</h2>
+                    <p class="lab-section-desc">WebGL, Canvas, 没入型演出</p>
+                </div>
+                <div class="lab-section-line" aria-hidden="true"></div>
+            </div>
+            <div class="lab-grid lab-grid--4col">
+
+                <article class="lab-card lab-card--immersive">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/canvas_particle_hover.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--immersive">Immersive</span>
+                    </div>
+                    <h3 class="lab-card__title">Dot HOVER !!</h3>
+                    <p class="lab-card__desc">マウスのインタラクションでパーティクルが弾けるCanvas 2D実装。座標計算とリアルタイム描画の研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Canvas API</span>
+                        <span class="lab-tech-pill">JavaScript</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">距離計算とrequestAnimationFrameで60fpsのインタラクションを実現。物理演算なしの表現力。</p>
+                    </div>
+                    <a href="demo/canvas_particle_hover/index.html" class="lab-demo-btn lab-demo-btn--immersive" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--immersive">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/luxyparallax.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--immersive">Immersive</span>
+                    </div>
+                    <h3 class="lab-card__title">Luxy Parallax</h3>
+                    <p class="lab-card__desc">慣性スクロールとパララックスを組み合わせた空間的UX。奥行きのある没入感の実装研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Luxy.js</span>
+                        <span class="lab-tech-pill">Swiper</span>
+                        <span class="lab-tech-pill">JavaScript</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">スクロールに慣性を与えると空間移動の感覚が生まれる。data-speed-yの微調整がdepth感を決定する。</p>
+                    </div>
+                    <a href="demo/luxyparallax/index.html" class="lab-demo-btn lab-demo-btn--immersive" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--immersive">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/rose_showcasegallery.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--immersive">Immersive</span>
+                    </div>
+                    <h3 class="lab-card__title">Roses Gallery</h3>
+                    <p class="lab-card__desc">CSSのhoverだけで実現する没入型ギャラリー。JSゼロで高パフォーマンスなhoverトランジション。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Pure CSS</span>
+                        <span class="lab-tech-pill">CSS Variables</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">hover時のCSS切り替えだけでギャラリーの表示を変更。JSなしでも十分な没入感を作れることを証明した実験。</p>
+                    </div>
+                    <a href="demo/rose_showcasegallery/index.html" class="lab-demo-btn lab-demo-btn--immersive" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--immersive">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/flowing_lettering.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--immersive">Immersive</span>
+                    </div>
+                    <h3 class="lab-card__title">Flowing Lettering</h3>
+                    <p class="lab-card__desc">CSSカスタムプロパティで動的速度制御する可変速マーキー。文字数に応じた自動調整の研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">CSS Animation</span>
+                        <span class="lab-tech-pill">CSS Custom Props</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">--char-count変数でアニメーション時間を動的制御。JS不要でレスポンシブな動きを実現できる。</p>
+                    </div>
+                    <a href="demo/flowing_lettering/index.html" class="lab-demo-btn lab-demo-btn--immersive" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 03 — UI Micro-interactions
+        ══════════════════════════════════════════════════ -->
+        <section class="lab-category-section" id="section-ui">
+            <div class="lab-section-header">
+                <span class="lab-section-number">03</span>
+                <div class="lab-section-header__text">
+                    <h2 class="lab-section-title">UI Micro-interactions</h2>
+                    <p class="lab-section-desc">細部へのこだわり、手触り感</p>
+                </div>
+                <div class="lab-section-line" aria-hidden="true"></div>
+            </div>
+            <div class="lab-grid">
+
+                <article class="lab-card lab-card--ui">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/Neuomorphic-Checkboxes.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--ui">Micro-interaction</span>
+                    </div>
+                    <h3 class="lab-card__title">Neumorphic Checkboxes</h3>
+                    <p class="lab-card__desc">光と影の計算でニューモフィズムを実現。押し込む触感をbox-shadowだけで表現したチェックボックス。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">CSS</span>
+                        <span class="lab-tech-pill">Font Awesome</span>
+                        <span class="lab-tech-pill">Neumorphism</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">凹凸の触感はbox-shadowの2方向制御で生まれる。物理的なフィードバックをCSSで模倣する研究。</p>
+                    </div>
+                    <a href="demo/Neuomorphic-Checkboxes/index.html" class="lab-demo-btn lab-demo-btn--ui" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--ui">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/clippath.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--ui">Micro-interaction</span>
+                    </div>
+                    <h3 class="lab-card__title">Clip-path Text Mask</h3>
+                    <p class="lab-card__desc">SVG clipPathとCSSを組み合わせた巨大タイポグラフィの画像マスク。文字を「窓」にする演出研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">CSS clip-path</span>
+                        <span class="lab-tech-pill">SVG</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">SVGのclipPathはCSSより複雑な形状を作れる。テキストを透過マスクにすることで視覚的驚きを生む。</p>
+                    </div>
+                    <a href="demo/clippath/index.html" class="lab-demo-btn lab-demo-btn--ui" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--ui">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/index_tab.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--ui">Micro-interaction</span>
+                    </div>
+                    <h3 class="lab-card__title">Tab Index</h3>
+                    <p class="lab-card__desc">SwiperのスライドとタブUIを完全同期。コンテンツ切り替えのシームレスなトランジション研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Swiper</span>
+                        <span class="lab-tech-pill">JavaScript</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">タブとスライダーの双方向同期はevent listenerの順番が鍵。UIの状態管理の精度がUXを決める。</p>
+                    </div>
+                    <a href="demo/index_tab/index.html" class="lab-demo-btn lab-demo-btn--ui" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 04 — Seasonal & Concept Design
+        ══════════════════════════════════════════════════ -->
+        <section class="lab-category-section" id="section-seasonal">
+            <div class="lab-section-header">
+                <span class="lab-section-number">04</span>
+                <div class="lab-section-header__text">
+                    <h2 class="lab-section-title">Seasonal & Concept Design</h2>
+                    <p class="lab-section-desc">世界観構築の研究</p>
+                </div>
+                <div class="lab-section-line" aria-hidden="true"></div>
+            </div>
+            <div class="lab-grid lab-grid--2col">
+
+                <article class="lab-card lab-card--seasonal">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/luxury-christmas-campaign-hero.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--seasonal">Concept Design</span>
+                    </div>
+                    <h3 class="lab-card__title">Luxury Christmas Campaign</h3>
+                    <p class="lab-card__desc">ゴールド×ディープレッドの高級クリスマスキャンペーンHero。配色と余白だけで格式を演出するコンセプト研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">Tailwind CSS</span>
+                        <span class="lab-tech-pill">Canvas API</span>
+                        <span class="lab-tech-pill">JavaScript</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">高級感はフォントと余白の比率が9割。Tailwindのユーティリティで短時間の世界観構築を実証。</p>
+                    </div>
+                    <a href="demo/luxury-christmas-campaign-hero/index.html" class="lab-demo-btn lab-demo-btn--seasonal" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+                <article class="lab-card lab-card--seasonal">
+                    <div class="lab-card__accent"></div>
+                    <div class="lab-card__video">
+                        <video src="img/lab/minimalist-white-christmas.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="lab-card__header">
+                        <span class="lab-cat-badge lab-cat-badge--seasonal">Concept Design</span>
+                    </div>
+                    <h3 class="lab-card__title">Minimalist White Christmas</h3>
+                    <p class="lab-card__desc">余白と雪のアニメーションのみで季節感を演出するミニマリストなクリスマスHero。引き算の美学の研究。</p>
+                    <div class="lab-tech-stack">
+                        <span class="lab-tech-pill">CSS Animation</span>
+                        <span class="lab-tech-pill">React.js</span>
+                        <span class="lab-tech-pill">HTML / CSS</span>
+                    </div>
+                    <div class="lab-insight">
+                        <span class="lab-insight__label">INSIGHT</span>
+                        <p class="lab-insight__text">ミニマルな雪のアニメーションで最大限の季節感。足すより引く設計が記憶に残るデザインを生む。</p>
+                    </div>
+                    <a href="demo/minimalist-white-christmas/index.html" class="lab-demo-btn lab-demo-btn--seasonal" target="_blank" rel="noopener">DEMO →</a>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- マウスストーカー -->
+    <div id="stalker"></div>
+    <div class="sparkle-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+    <script src="lab.js"></script>
+</body>
+</html>

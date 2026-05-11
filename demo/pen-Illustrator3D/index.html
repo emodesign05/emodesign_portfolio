@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js 3D Pen Scroll Animation</title>
+    <style>
+        body { margin: 0; background: #fff; overflow-x: hidden; }
+        .scroll-container { height: 500vh; }
+        canvas { position: fixed; top: 0; left: 0; outline: none; }
+        .section-label {
+            position: relative; 
+            height: 100vh; 
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #333; 
+            pointer-events: none;
+        }
+        #writing-svg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 800px;
+            /* SVGの比率を固定（超重要） */
+            aspect-ratio: 1000 / 500;
+            pointer-events: none;
+            z-index: 5;
+            /* 調整中は以下を有効にすると分かりやすい */
+            /* background: rgba(0, 0, 0, 0.05); */
+        }
+        #final-message {
+            position: fixed; 
+            top: 55%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            opacity: 1; /* 親は見せておく */
+            font-size: clamp(2rem, 5vw, 3rem); 
+            font-family: 'Yu Mincho', serif;
+            letter-spacing: .5em;
+            font-weight: bold; 
+            color: #5a87b4; 
+            z-index: 100; 
+            pointer-events: none; 
+            text-align: center; 
+            width: 100%;
+        }
+        #final-message span {
+            display: inline-block;
+            opacity: 0; /* 1文字ずつ消しておく */
+            transform: translateY(20px); /* 最初は少し下に下げておく */
+        }
+    </style>
+</head>
+<body>
+    <svg id="writing-svg" viewBox="0 0 1000 500">
+        <path id="ink-path" d="M100,250 Q250,100 400,250 T700,250" fill="none" stroke="#333" stroke-width="3" />
+    </svg>
+    
+    <div class="scroll-container">
+        <section class="section-label">FV (WritingMode)</section>
+        <section class="section-label">TRANSITION...</section>
+        <section class="section-label">
+            CONCEPT <span>(SpinMode)</span>
+        </section>
+    </div>
+    <div id="final-message">
+        <span>想</span><span>い</span><span>を</span><span>、</span><span>な</span><span>ぞ</span><span>る</span><span>。</span>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+        // --- Three.js 基本設定 ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 2.0); 
+        scene.add(ambientLight);
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        mainLight.position.set(5, 10, 7);
+        scene.add(mainLight);
+        camera.position.z = 5;
+
+        let pen; 
+        
+        // ★ペン先の位置合わせ用変数
+        // ペン先がずれている場合は、この2つの数字だけを調整
+        // プラスマイナスを変えると上下左右に位置移動
+        const tipOffsetX = 1.08; 
+        const tipOffsetY = 1.06;  
+
+        // --- モデル読み込み ---
+        const loader = new THREE.GLTFLoader();
+        loader.load('pen.gltf', function (gltf) {
+            pen = gltf.scene;
+            pen.scale.set(10, 10, 10);
+            scene.add(pen);
+            
+            // 環境マップ（反射）
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+            scene.environment = pmremGenerator.fromScene(new THREE.Scene()).texture;
+            pen.traverse((child) => {
+                if (child.isMesh) child.material.envMapIntensity = 1.5;
+            });
+
+            initAnimation(); 
+        });
+
+        // --- 座標変換関数（完全版） ---
+        // 画面上のピクセル(x, y)を、z=0平面上の3D座標に正確に変換します
+        function pixelToThree(pixelX, pixelY) {
+            const canvas = renderer.domElement;
+            // 正規化デバイス座標 (NDC) に変換 [-1 to +1]
+            const x = (pixelX / canvas.clientWidth) * 2 - 1;
+            const y = -(pixelY / canvas.clientHeight) * 2 + 1;
+
+            // 3D空間へ投影
+            const vector = new THREE.Vector3(x, y, 0.5);
+            vector.unproject(camera);
+            
+            // カメラからその点へのベクトル
+            const dir = vector.sub(camera.position).normalize();
+            // z=0 平面との交点を計算
+            const distance = -camera.position.z / dir.z;
+            const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+            
+            return pos;
+        }
+
+        // --- アニメーション設定 ---
+        function initAnimation() {
+            if (!pen) return;
+
+            const path = document.querySelector("#ink-path");
+            const pathLength = path.getTotalLength();
+            gsap.set(path, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+            
+            // ★追跡用オブジェクト（プロキシ）
+            // これがSVGパスの上を透明な状態で走ります
+            const penTracker = { x: 0, y: 0 };
+
+            const tl = gsap.timeline({
+                defaults: { ease: "none" },
+                scrollTrigger: {
+                    trigger: ".scroll-container",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1,
+                    invalidateOnRefresh: true // リサイズ時の再計算を有効化
+                }
+            });
+
+            // 背景色変更など
+            tl.to("body", { backgroundColor: "#e6f2ff", duration: 2 }, "transition-start");
+
+            // STEP 1: 筆記フェーズ
+            tl.set(pen.rotation, { z: -Math.PI / 4, x: 0.5 });
+            
+            // パス描画
+            tl.to(path, { strokeDashoffset: 0, duration: 2 }, 0);
+
+            // ★ペンの動き（modifiersではなくonUpdateを使用）
+            tl.to(penTracker, {
+                motionPath: {
+                    path: "#ink-path",
+                    alignOrigin: [0.5, 0.5],
+                    autoRotate: false
+                },
+                duration: 2,
+                // フレームごとの更新処理
+                onUpdate: () => {
+                    const svgElement = document.querySelector("#writing-svg");
+                    const rect = svgElement.getBoundingClientRect();
+
+                    // 1. 現在のSVG上の座標を、画面全体のピクセル座標に変換
+                    // penTracker.x / 1000 はSVG内の割合
+                    const pixelX = rect.left + (penTracker.x / 1000) * rect.width;
+                    const pixelY = rect.top + (penTracker.y / 500) * rect.height;
+
+                    // 2. ピクセル座標を3D座標に変換
+                    const targetPos = pixelToThree(pixelX, pixelY);
+
+                    // 3. ペンに適用（ここでオフセットを足す）
+                    // ペンの回転などは animate() ループで上書きされるため、ここでは位置のみ指定
+                    // しなり（rotation）の影響を受ける場合、本来はベクトル計算が必要ですが
+                    // 簡易的に固定オフセットでも十分追従します
+                    pen.position.x = targetPos.x + tipOffsetX;
+                    pen.position.y = targetPos.y + tipOffsetY;
+                }
+            }, 0);
+
+            // STEP 2: 書き終わり以降
+            tl.addLabel("transition-start", ">");
+            
+            // ペンを浮かせて回転
+            tl.to(pen.position, { x: 0, y: 0, z: 0.5, duration: 1.5, ease: "power2.inOut" }, "transition-start");
+            tl.to(camera.position, { z: 4, duration: 1.5 }, "transition-start");
+            tl.to(pen.rotation, { y: Math.PI * 6, x: 0, z: 0, duration: 2, ease: "power1.inOut" }, "transition-start");
+            tl.to("#writing-svg", { opacity: 0, duration: 0.5 }, "transition-start");
+
+            // STEP 3: CONCEPT
+            tl.to(pen.position, { y: -2, duration: 1.5, ease: "power2.inOut" });
+            tl.to(pen.rotation, { x: Math.PI / 2, duration: 1.5 }, "<");
+
+            // --- STEP 4: 文字のライズアップ（1文字ずつ） ---
+            // 念のため初期状態をセット
+            gsap.set("#final-message span", { opacity: 0, y: 20 });
+
+            tl.to("#final-message span", {
+                opacity: 1,
+                y: 0,               // 元の位置に戻る
+                stagger: 0.15,
+                duration: 1.0,
+                ease: "power2.out"
+            }, "+=0.5"); // 前の動きが終わってから少し間を置いて開始
+        }
+
+        // --- ループアニメーション ---
+        let clock = new THREE.Clock();
+        let scrollVelocity = 0;
+
+        ScrollTrigger.create({
+            onUpdate: (self) => scrollVelocity = self.getVelocity()
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (pen) {
+                const elapsed = clock.getElapsedTime();
+                
+                // 待機中のふわふわ（Y座標に加算）
+                // ※重要: initAnimationで設定した位置を壊さないよう、加算のみ行う
+                pen.position.y += Math.sin(elapsed * 2) * 0.001; 
+                // ↑ これを入れると正確なトレースの邪魔になるので、筆記中はOFFにするか微量にします
+                
+                // ペンの「しなり」制御
+                // 筆記中のみ適用するガードを入れるとより安全ですが、現状でもOK
+                const targetRotationZ = (-Math.PI / 4) + (scrollVelocity * 0.00005);
+                pen.rotation.z += (targetRotationZ - pen.rotation.z) * 0.1;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>

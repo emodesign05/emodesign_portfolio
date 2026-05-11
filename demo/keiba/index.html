@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026年 運試し競馬おみくじ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- React & Babel Standalone -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --enji-deep: #800000;
+            --enji-bright: #b22222;
+            --tatami: #d9e19a;
+            --gold: #ffd700;
+            --sky-blue: #87ceeb;
+            --fuji-blue: #224694;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, var(--enji-deep) 0%, var(--enji-bright) 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+
+        .ichimatsu-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.03) 75%, rgba(255, 255, 255, 0.03)),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.03) 75%, rgba(255, 255, 255, 0.03));
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wagara-serif { font-family: 'Noto Serif JP', serif; }
+
+        .sunrise {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #ff4500, #ff0000 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(255, 69, 0, 0.6);
+            z-index: 1;
+        }
+
+        .fuji-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1200px;
+            height: 50vh;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .fuji-base {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--fuji-blue);
+            clip-path: polygon(50% 10%, 0% 100%, 100% 100%);
+            opacity: 0.9;
+        }
+
+        .fuji-snow {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 20%;
+            background: #ffffff;
+            clip-path: polygon(50% 0%, 0% 100%, 30% 80%, 50% 100%, 70% 80%, 100% 100%);
+        }
+
+        .matsu {
+            position: absolute;
+            bottom: 0;
+            font-size: 5rem;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+            z-index: 3;
+            opacity: 0.8;
+        }
+
+        @keyframes confetti-fall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        .animate-confetti { animation: confetti-fall linear infinite; }
+
+        .tatami-texture {
+            background-color: var(--tatami);
+            background-image: 
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.05), rgba(0,0,0,0.05) 1px, transparent 1px, transparent 4px);
+        }
+
+        .horse-row-active {
+            transition: transform 0.05s ease-out;
+            touch-action: none;
+        }
+        .horse-row-active:active {
+            transform: scale(0.97);
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
+        
+        /* レース中の馬のコンテナ用スタイル。Transitionをオフにしてラグを防ぐ */
+        .racing-no-transition {
+            transition: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="ichimatsu-overlay"></div>
+    <div class="sunrise"></div>
+    <div class="fuji-container">
+        <div class="fuji-base"></div>
+        <div class="fuji-snow"></div>
+    </div>
+    <!-- <div class="matsu" style="left: 2%;">🌲</div>
+    <div class="matsu" style="right: 2%;">🌲</div> -->
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef, useMemo } = React;
+
+        const HORSES = [
+          { id: 0, name: 'レッドエース', color: 'bg-red-700', emoji: '🐎' },
+          { id: 1, name: 'ブルーオーシャン', color: 'bg-blue-800', emoji: '🐎' },
+          { id: 2, name: 'イエローサン', color: 'bg-yellow-600', emoji: '🐎' },
+          { id: 3, name: 'グリーンリーフ', color: 'bg-green-800', emoji: '🐎' },
+        ];
+
+        const OMIKUJI_RESULTS = [
+          { rank: 1, label: '大吉', subtext: '最高の一年になる予感！馬力全開で突き進もう！', color: 'text-red-600' },
+          { rank: 2, label: '中吉', subtext: '安定した運気。自分のペースを大切にして。', color: 'text-orange-500' },
+          { rank: 3, label: '小吉', subtext: '地道な努力が実を結ぶ一年。焦らず一歩ずつ。', color: 'text-blue-600' },
+          { rank: 4, label: '末吉', subtext: '油断禁物。足元をすくわれないよう慎重に。', color: 'text-gray-500' },
+        ];
+
+        const CONFETTI_COLORS = ['#ff0000', '#ffd700', '#ffffff', '#ff69b4', '#006400', '#8b0000'];
+
+        const ResultModal = ({ selectedHorseId, rankings, onRestart }) => {
+          const result = useMemo(() => {
+            const entry = rankings.find(r => r.horseId === selectedHorseId);
+            const userRank = entry ? entry.rank : 4;
+            return OMIKUJI_RESULTS.find(o => o.rank === userRank) || OMIKUJI_RESULTS[3];
+          }, [selectedHorseId, rankings]);
+
+          const selectedHorse = HORSES[selectedHorseId];
+
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black p-4 animate-in fade-in duration-1000 overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none">
+                {Array.from({ length: 180 }).map((_, i) => {
+                  const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+                  const delay = Math.random() * 10;
+                  const duration = 4 + Math.random() * 6;
+                  const size = 10 + Math.random() * 14;
+                  const left = Math.random() * 100;
+                  return (
+                    <div key={i} className="absolute animate-confetti" style={{ backgroundColor: color, width: `${size}px`, height: `${size * 0.7}px`, left: `${left}%`, top: `-20px`, opacity: 0.9, animationDelay: `${delay}s`, animationDuration: `${duration}s`, transform: `rotate(${Math.random() * 360}deg)`, borderRadius: i % 4 === 0 ? '50%' : '2px', boxShadow: '0 0 5px rgba(255,255,255,0.3)' }} />
+                  );
+                })}
+              </div>
+              <div className="relative bg-[#fdf5e6] border-[10px] border-[#ffd700] rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_0_120px_rgba(255,215,0,0.5)] flex flex-col items-center z-10">
+                <div className="mb-4">
+                  <span className="bg-red-800 text-white text-sm font-bold px-6 py-2 rounded-full uppercase tracking-[0.2em] animate-pulse border border-yellow-400">謹賀新年 2026</span>
+                </div>
+                <h2 className="text-xl font-bold text-gray-800 mb-2 wagara-serif">新春の御神籤結果</h2>
+                <div className={`text-8xl font-black mb-4 drop-shadow-md ${result.color} animate-bounce wagara-serif`}>{result.label}</div>
+                <div className="mb-6 px-4 py-4 bg-[#f2e2c4] border border-[#d4af37]/40 rounded-xl w-full">
+                  <div className="text-sm text-gray-700 mb-1">選んだ <span className="font-bold text-red-900">{selectedHorse.name}</span> は</div>
+                  <div className="text-3xl font-black text-gray-900 italic">{result.rank}着でした！</div>
+                </div>
+                <p className="text-gray-800 font-bold mb-8 leading-relaxed wagara-serif">{result.subtext}</p>
+                <button onClick={onRestart} className="w-full bg-[#8b0000] hover:bg-[#b00000] text-white font-bold py-5 px-6 rounded-2xl transition-all active:scale-95 shadow-2xl border-b-4 border-black/40">
+                  <span className="text-xl tracking-wider">もう一度遊ぶ</span>
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        const HorseTrack = ({ horsePositions, status, selectedHorseId, onSelectHorse }) => {
+          const rowRefs = useRef([]);
+
+          useEffect(() => {
+            const handlers = HORSES.map((horse, idx) => {
+              const el = rowRefs.current[idx];
+              if (!el) return null;
+              const handleStart = (e) => {
+                if (status === 'WAITING') {
+                  e.preventDefault(); 
+                  onSelectHorse(horse.id);
+                }
+              };
+              el.addEventListener('touchstart', handleStart, { passive: false });
+              el.addEventListener('mousedown', handleStart);
+              return () => {
+                el.removeEventListener('touchstart', handleStart);
+                el.removeEventListener('mousedown', handleStart);
+              };
+            });
+            return () => handlers.forEach(h => h && h());
+          }, [status, onSelectHorse]);
+
+          return (
+            <div className="relative tatami-texture border-[10px] border-[#ffd700] rounded-3xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.6)]">
+              <div className="absolute right-[10%] top-0 bottom-0 w-3 bg-red-700/40 z-0"></div>
+              <div className="absolute left-[5%] top-0 bottom-0 w-8 bg-white/30 z-0 flex flex-col justify-around">
+                {Array.from({ length: 40 }).map((_, i) => (
+                  <div key={i} className={`h-1.5 w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}></div>
+                ))}
+              </div>
+              <div className="absolute left-[6%] top-6 transform -translate-x-1/2 -rotate-90 origin-center text-red-800 font-black text-sm tracking-[0.3em] wagara-serif"></div>
+
+              <div className="flex flex-col divide-y-4 divide-[#ffd700]">
+                {HORSES.map((horse, idx) => {
+                  const isSelected = selectedHorseId === horse.id;
+                  const isWaiting = status === 'WAITING';
+
+                  return (
+                    <div 
+                      key={horse.id} 
+                      ref={el => rowRefs.current[idx] = el}
+                      className={`relative h-20 md:h-32 flex items-center px-4 ${isWaiting ? 'horse-row-active cursor-pointer' : ''} ${isSelected ? 'bg-white/30' : ''}`}
+                    >
+                      <div className="absolute right-6 text-black/5 font-black text-4xl md:text-7xl italic select-none wagara-serif">{horse.name}</div>
+                      <div 
+                        className={`absolute flex flex-col items-center ${status === 'RACING' ? 'racing-no-transition' : 'transition-all duration-500'}`}
+                        style={{ 
+                          right: `calc(10% + ${horsePositions[idx] * 0.85}%)`,
+                          transform: 'translateX(50%)'
+                        }}
+                      >
+                        {isWaiting && <div className="mb-2 bg-[#8b0000] text-yellow-100 text-[10px] md:text-xs px-3 py-1 rounded-full animate-bounce font-bold shadow-xl border border-[#ffd700]">選ぶ</div>}
+                        <div className={`relative w-14 h-14 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-2xl ${horse.color} border-4 border-white ${isSelected ? 'ring-4 ring-[#ffd700] scale-110' : ''}`}>
+                          <span className="text-4xl md:text-6xl">{horse.emoji}</span>
+                          <span className="absolute -top-1 -right-1 bg-white text-black font-black text-xs md:text-sm w-7 h-7 flex items-center justify-center rounded-full border-2 border-black">{idx + 1}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        };
+
+        const App = () => {
+          const [status, setStatus] = useState('WAITING');
+          const [selectedHorseId, setSelectedHorseId] = useState(null);
+          const [horsePositions, setHorsePositions] = useState([0, 0, 0, 0]);
+          const [rankings, setRankings] = useState([]);
+          
+          const requestRef = useRef(null);
+          const lastTimeRef = useRef(0);
+          
+          // ステートの同期用
+          const statusRef = useRef('WAITING');
+          const positionsRef = useRef([0, 0, 0, 0]);
+          const rankingsRef = useRef([]);
+
+          const updateRace = useCallback((time) => {
+            if (!lastTimeRef.current) {
+                lastTimeRef.current = time;
+                requestRef.current = requestAnimationFrame(updateRace);
+                return;
+            }
+            const deltaTime = time - lastTimeRef.current;
+            lastTimeRef.current = time;
+
+            // ステートがRACINGでない場合は停止
+            if (statusRef.current !== 'RACING') return;
+
+            const nextPositions = [...positionsRef.current];
+            const currentRankings = [...rankingsRef.current];
+            let allFinished = true;
+
+            for (let i = 0; i < HORSES.length; i++) {
+                if (nextPositions[i] >= 100) continue;
+                
+                // デルタタイムに基づいた移動計算 (1秒あたり約20-25%進む)
+                // 秒間60フレーム換算で Math.random() * 0.4 + 0.15 程度になるよう調整
+                const speedScale = deltaTime / 16.67; // 60fpsを基準とした係数
+                const move = (Math.random() * 0.4 + 0.2) * speedScale;
+                
+                nextPositions[i] = Math.min(100, nextPositions[i] + move);
+
+                if (nextPositions[i] >= 100) {
+                    currentRankings.push({ horseId: i, rank: currentRankings.length + 1 });
+                }
+                if (nextPositions[i] < 100) allFinished = false;
+            }
+
+            positionsRef.current = nextPositions;
+            rankingsRef.current = currentRankings;
+            setHorsePositions(nextPositions);
+            setRankings(currentRankings);
+
+            if (allFinished) {
+                statusRef.current = 'FINISHED';
+                setStatus('FINISHED');
+            } else {
+                requestRef.current = requestAnimationFrame(updateRace);
+            }
+          }, []);
+
+          const startRace = useCallback((id) => {
+            if (statusRef.current !== 'WAITING') return;
+            
+            setSelectedHorseId(id);
+            statusRef.current = 'RACING';
+            setStatus('RACING');
+            
+            rankingsRef.current = [];
+            setRankings([]);
+            
+            positionsRef.current = [0, 0, 0, 0];
+            setHorsePositions([0, 0, 0, 0]);
+            
+            lastTimeRef.current = 0;
+            // 指が触れた瞬間に即座にループを開始
+            requestRef.current = requestAnimationFrame(updateRace);
+          }, [updateRace]);
+
+          useEffect(() => {
+            if (status === 'FINISHED') {
+                const timer = setTimeout(() => {
+                    positionsRef.current = [0, 0, 0, 0];
+                    setHorsePositions([0, 0, 0, 0]);
+                }, 400);
+                return () => clearTimeout(timer);
+            }
+          }, [status]);
+
+          const handleRestart = () => {
+            statusRef.current = 'WAITING';
+            setStatus('WAITING');
+            setSelectedHorseId(null);
+            positionsRef.current = [0, 0, 0, 0];
+            setHorsePositions([0, 0, 0, 0]);
+            rankingsRef.current = [];
+            setRankings([]);
+          };
+
+          return (
+            <div className="flex flex-col h-screen w-full text-white relative overflow-hidden select-none z-10">
+              <header className="p-8 text-center z-10 bg-black/40 backdrop-blur-sm shrink-0 border-b-[6px] border-[#ffd700]">
+                <h1 className="text-4xl md:text-6xl font-black italic tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,1)] wagara-serif text-yellow-100 uppercase">2026年 運試し競馬おみくじ</h1>
+                <div className="mt-3 flex items-center justify-center gap-3">
+                  <span className="text-lg md:text-2xl font-bold text-yellow-400 wagara-serif">
+                    {status === 'WAITING' ? '好きな馬をタップしてレース開始！' : 
+                     status === 'RACING' ? '走れ！その脚に新年の夢を乗せて！' : '大願成就、運勢の発表なり'}
+                  </span>
+                </div>
+              </header>
+              <main className="flex-grow flex flex-col justify-center p-6 relative z-10">
+                <div className="max-w-6xl mx-auto w-full">
+                  <HorseTrack horsePositions={horsePositions} status={status} selectedHorseId={selectedHorseId} onSelectHorse={startRace} />
+                </div>
+              </main>
+              <footer className="p-5 text-center z-10 shrink-0 bg-black/30">
+                <span className="text-sm md:text-lg font-bold text-yellow-100/90 tracking-[0.4em] wagara-serif">令和八年 新春</span>
+              </footer>
+              {status === 'FINISHED' && selectedHorseId !== null && <ResultModal selectedHorseId={selectedHorseId} rankings={rankings} onRestart={handleRestart} />}
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

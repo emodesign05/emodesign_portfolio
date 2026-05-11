@@ -1701,7 +1701,8 @@ function loadHTMLComponent(url, selector) {
                 if (selector === '#header-placeholder') {
                     // 少し遅延させてDOMの反映を待つ（安全策）
                     setTimeout(() => {
-                        initAnchorScroll(); 
+                        initAnchorScroll();
+                        initNavHover();
                     }, 50);
                 }
             })
@@ -2072,6 +2073,62 @@ if (document.querySelector('article.work-item')) {
         });
     })();
 
+}
+
+// =================================================================
+// Nav hover: .en スライドアウト → .jp stagger スライドイン
+// =================================================================
+function initNavHover() {
+    // .jp テキストを1文字ずつ <span> に分割
+    document.querySelectorAll('.nav_list .link .jp').forEach(jp => {
+        const chars = [...jp.textContent].map(ch => {
+            const s = document.createElement('span');
+            s.textContent = ch;
+            return s;
+        });
+        jp.textContent = '';
+        chars.forEach(s => jp.appendChild(s));
+    });
+
+    // .jp chars を最初は下に隠す
+    gsap.set('.nav_list .link .jp span', { yPercent: 110 });
+
+    document.querySelectorAll('.nav_list .link').forEach(link => {
+        const en     = link.querySelector('.en');
+        const jpChars = link.querySelectorAll('.jp span');
+
+        link.addEventListener('mouseenter', () => {
+            gsap.to(en, {
+                yPercent: -110,
+                duration: 0.5,
+                ease: 'expo.out',
+                overwrite: true,
+            });
+            gsap.to(jpChars, {
+                yPercent: 0,
+                duration: 0.6,
+                ease: 'expo.out',
+                stagger: 0.04,
+                overwrite: true,
+            });
+        });
+
+        link.addEventListener('mouseleave', () => {
+            gsap.to(en, {
+                yPercent: 0,
+                duration: 0.5,
+                ease: 'expo.out',
+                overwrite: true,
+            });
+            gsap.to(jpChars, {
+                yPercent: 110,
+                duration: 0.4,
+                ease: 'expo.out',
+                stagger: { each: 0.03, from: 'end' },
+                overwrite: true,
+            });
+        });
+    });
 }
 
 // Priceシミュレーション　アコーディオン
