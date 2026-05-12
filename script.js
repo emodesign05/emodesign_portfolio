@@ -1702,7 +1702,7 @@ function loadHTMLComponent(url, selector) {
                     // 少し遅延させてDOMの反映を待つ（安全策）
                     setTimeout(() => {
                         initAnchorScroll();
-                        initNavHover();
+                        initNavAutoLoop();
                     }, 50);
                 }
             })
@@ -2076,11 +2076,17 @@ if (document.querySelector('article.work-item')) {
 }
 
 // =================================================================
-// Nav hover: .en スライドアウト → .jp stagger スライドイン
+// Nav: 自動ループアニメーション（無限ループ + ホバー連動）
 // =================================================================
-function initNavHover() {
+function initNavAutoLoop() {
+    const DISPLAY    = 5.5;  // 各状態の表示秒数
+    const SWITCH     = 0.8;  // スイッチアニメーション後のバッファ（全文字が揃う余裕）
+    const ITEM_DELAY = 0.6;  // メニュー間の開始オフセット（視線誘導）
+    const JP_OUT_T   = DISPLAY + SWITCH + DISPLAY; // jp退場タイミング
+
     // .jp テキストを1文字ずつ <span> に分割
     document.querySelectorAll('.nav_list .link .jp').forEach(jp => {
+        if (jp.querySelector('span')) return; // 既に分割済みならスキップ
         const chars = [...jp.textContent].map(ch => {
             const s = document.createElement('span');
             s.textContent = ch;
@@ -2090,45 +2096,101 @@ function initNavHover() {
         chars.forEach(s => jp.appendChild(s));
     });
 
-    // .jp chars を最初は下に隠す
+    // 初期状態: jp chars を下に隠す
     gsap.set('.nav_list .link .jp span', { yPercent: 110 });
 
-    document.querySelectorAll('.nav_list .link').forEach(link => {
-        const en     = link.querySelector('.en');
+    document.querySelectorAll('.nav_list .link').forEach((link, index) => {
+        const en      = link.querySelector('.en');
         const jpChars = link.querySelectorAll('.jp span');
+        const isLab   = link.getAttribute('href')?.includes('lab');
+
+        // --- メインループタイムライン ---
+        const tl = gsap.timeline({
+            repeat: -1,
+            delay: index * ITEM_DELAY,
+        });
+
+        // Phase 2（t=DISPLAY）: en スライドアウト
+        tl.to(en, {
+            yPercent: -110,
+            duration: 0.5,
+            ease: 'expo.out',
+        }, DISPLAY);
+
+        // Phase 2: jp stagger スライドイン
+        tl.to(jpChars, {
+            yPercent: 0,
+            duration: 0.55,
+            ease: 'expo.out',
+            stagger: 0.04,
+        }, DISPLAY);
+
+        // LAB のみ: グリッチ演出
+        if (isLab) {
+            tl.call(() => triggerLabGlitch(jpChars), null, DISPLAY);
+        }
+
+        // Phase 4（t=JP_OUT_T）: jp stagger スライドアウト + en 帰還
+        tl.to(jpChars, {
+            yPercent: 110,
+            duration: 0.45,
+            ease: 'expo.out',
+            stagger: { each: 0.03, from: 'end' },
+        }, JP_OUT_T);
+
+        tl.to(en, {
+            yPercent: 0,
+            duration: 0.5,
+            ease: 'expo.out',
+        }, JP_OUT_T);
+
+        // --- ホバー連動（ループ一時停止 → 即座に jp 表示） ---
+        let hovering = false;
 
         link.addEventListener('mouseenter', () => {
-            gsap.to(en, {
-                yPercent: -110,
-                duration: 0.5,
-                ease: 'expo.out',
-                overwrite: true,
-            });
-            gsap.to(jpChars, {
-                yPercent: 0,
-                duration: 0.6,
-                ease: 'expo.out',
-                stagger: 0.04,
-                overwrite: true,
-            });
+            hovering = true;
+            tl.pause();
+            gsap.to(en,      { yPercent: -110, duration: 0.4, ease: 'expo.out', overwrite: true });
+            gsap.to(jpChars, { yPercent: 0,    duration: 0.5, ease: 'expo.out', stagger: 0.03, overwrite: true });
         });
 
         link.addEventListener('mouseleave', () => {
-            gsap.to(en, {
-                yPercent: 0,
-                duration: 0.5,
-                ease: 'expo.out',
-                overwrite: true,
-            });
+            hovering = false;
+            gsap.to(en, { yPercent: 0, duration: 0.4, ease: 'expo.out', overwrite: true });
             gsap.to(jpChars, {
                 yPercent: 110,
-                duration: 0.4,
+                duration: 0.35,
                 ease: 'expo.out',
-                stagger: { each: 0.03, from: 'end' },
+                stagger: { each: 0.025, from: 'end' },
                 overwrite: true,
+                onComplete: () => { if (!hovering) tl.restart(); },
             });
         });
     });
+}
+
+// LAB 切り替え時のグリッチ演出
+function triggerLabGlitch(jpChars) {
+    const origTexts = [...jpChars].map(s => s.textContent);
+    const glyphs    = '!#&@%?<>※▲◆';
+    let   tick      = 0;
+
+    // テキストスクランブル（50ms × 8回）
+    const scrambleId = setInterval(() => {
+        jpChars.forEach(s => {
+            s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        });
+        if (++tick >= 8) {
+            clearInterval(scrambleId);
+            origTexts.forEach((t, i) => { jpChars[i].textContent = t; });
+        }
+    }, 50);
+
+    // フィルターグリッチ（blur + skewX）
+    gsap.timeline()
+        .to([...jpChars], { filter: 'blur(4px) skewX(15deg)', duration: 0.06, ease: 'none' })
+        .to([...jpChars], { filter: 'blur(2px) skewX(-8deg)',  duration: 0.07 })
+        .to([...jpChars], { filter: 'blur(0px) skewX(0deg)',   duration: 0.2,  ease: 'power2.out' });
 }
 
 // Priceシミュレーション　アコーディオン
