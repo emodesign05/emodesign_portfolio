@@ -1,4 +1,42 @@
 // =================================================================
+// -1. クロスページ遷移時のブラウザ標準ハッシュジャンプを即座に打ち消す
+// =================================================================
+// このscriptタグの実行時点でDOMは既にパース済みのため、URLに#が含まれていると
+// ブラウザが標準のフラグメントナビゲーション（該当要素へのネイティブジャンプ）を
+// 既に行ってしまっている場合がある。さらに厄介なことに、ブラウザ（特にChrome系）は
+// ページ読み込み中に発生するレイアウト変化を追いかけて、ユーザーが手動スクロール
+// するまでの間、同じフラグメントへのネイティブジャンプを「複数回」試みることがある。
+// そのため一度だけ0,0に戻すのでは不十分で、こちらの着地処理（releaseInitialScrollGuard
+// が呼ばれるまで）は継続的に0へ戻し続け、ネイティブジャンプを完全に無効化する。
+// 実際の着地は下部の processInitialNavigation() が全ての準備が整ってから行う。
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+let releaseInitialScrollGuard = () => {};
+
+if (window.location.hash) {
+    window.scrollTo(0, 0);
+
+    let guardActive = true;
+    const scrollGuard = () => {
+        if (guardActive && window.scrollY !== 0) {
+            window.scrollTo(0, 0);
+        }
+    };
+    window.addEventListener('scroll', scrollGuard, { passive: true });
+
+    releaseInitialScrollGuard = () => {
+        guardActive = false;
+        window.removeEventListener('scroll', scrollGuard);
+    };
+
+    // 保険: ローディング画面が存在しないページなど、processInitialNavigation()が
+    // 実行されないケースでガードが解除されず永久にスクロール不可になるのを防ぐ
+    setTimeout(releaseInitialScrollGuard, 4000);
+}
+
+// =================================================================
 // 0. Lenis スムーススクロール初期化 & GSAP同期
 // =================================================================
 let lenis;
@@ -40,11 +78,6 @@ initLenis();
 // ==============================================
 // script.js — 初期化を一箇所にまとめた完全版
 // ==============================================
-
-// ★★★ 追加: ブラウザの標準スクロール復元を無効化（GSAPで制御するため） ★★★
-if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
 
 // GSAPプラグインの登録（安全な書き方）
 if (typeof gsap !== 'undefined') {
@@ -592,11 +625,11 @@ function startHeroAnimation() { // ★関数名を startHeroAnimation に変更�
             const isMobile = window.innerWidth <= 768;
 
             if (isMobile) {
-                // SP: 画面高さの3倍程度に短縮 (体感的にちょうど良い速さ)
-                pinDuration = window.innerHeight * 3;
+                // SP: 画面高さの1.8倍程度に短縮（バランス型: 従来比-40%）
+                pinDuration = window.innerHeight * 1.8;
             } else {
-                // PC: 従来の 3000px または 画面高さの4〜5倍
-                pinDuration = 3000; 
+                // PC: 従来の 3000px から -40% に短縮
+                pinDuration = 1800;
             }
         
         // シャッフル時のチラつき修正
@@ -1219,8 +1252,8 @@ function initHowtoSection() {
         const TOTAL_ITEMS = howtoRoutes.length; 
         // ★★★ レスポンシブ: デバイスごとにスクロール量を設定 ★★★
         const isMobile = window.innerWidth <= 768;
-        // SPならPCの半分（1500 -> 750）に設定
-        const PIN_DURATION_PER_ITEM = isMobile ? 750 : 1500; 
+        // SPならPCの半分に設定（バランス型: 従来比-40%で短縮）
+        const PIN_DURATION_PER_ITEM = isMobile ? 450 : 900;
         // ★★★ レスポンシブ ここまで ★★★
         const TRANSITION_RATIO = 0.33; 
         const transitionDuration = PIN_DURATION_PER_ITEM * TRANSITION_RATIO; 
@@ -1726,10 +1759,11 @@ function initAnchorScroll() {
         
         link.addEventListener('click', function(e) {
             const targetId = this.getAttribute('data-anchor');
-            
-            // index.html内でのリンクの場合のみ処理
-            if (document.body.classList.contains('portfolio-page') || !targetId) {
-                return; 
+
+            // 対象のセクションが現在のページに存在する場合のみスムーススクロールを処理
+            // （存在しない場合は index.html#targetId への通常のページ遷移に任せる）
+            if (!targetId || !document.getElementById(targetId)) {
+                return;
             }
 
             e.preventDefault(); // デフォルトのジャンプを防止
@@ -1739,42 +1773,69 @@ function initAnchorScroll() {
                 naviToggle.checked = false;
             }
 
-            // スムーススクロールを実行
-            gsap.to(window, {
-                duration: 1, 
-                scrollTo: {
-                    y: `#${targetId}`,
-                    offset: -50 
-                },
-                ease: "power2.inOut",
-                
-                // ★★★ 修正箇所: スクロール完了時の処理 (Projects専用) ★★★
-                onComplete: () => {
-                    // Projectsセクションへの遷移が完了した場合のみ実行
-                    if (targetId === 'projects-section' && typeof ScrollTrigger !== 'undefined') {
-                        
-                        // GSAPにスクロール位置を強制的に適用させるための処理
-                        // Projectsセクションの ScrollTrigger のみを探して更新するのが理想ですが、
-                        // 確実性を高めるため、全ての ScrollTrigger を更新します。
-
-                        // 1. スクロールトリガーを一度リセットする
-                        ScrollTrigger.getAll().forEach(trigger => {
-                            if (trigger.trigger === '.projects-section') {
-                                // ProjectsセクションのScrollTriggerを強制的に更新
-                                trigger.update();
-                            }
-                        });
-                        
-                        // 2. わずかな遅延を入れ、全体をリフレッシュする
-                        setTimeout(() => {
-                            ScrollTrigger.refresh(true);
-                        }, 50); 
-                    }
-                }
-            });
+            scrollToAnchor(targetId);
         });
     });
 }
+
+/**
+ * 指定した data-anchor のIDまで、Lenisでスムーススクロールする。
+ * ★注意1: Lenisがスクロールを制御しているため、gsap.to(window, {scrollTo}) は使わない
+ * （併用すると毎フレームLenisに位置を巻き戻され、途中で止まってしまう）。
+ * ★注意2: CSS側の scroll-behavior は auto にしてある（style.css参照）。smoothのままだと
+ * ネイティブのスムーススクロールとLenisのスムーススクロールが競合し、
+ * JSから位置を指定しても意図した場所まで届かず途中で止まる/短く着地する原因になる。
+ * ★注意3: 以前は着地後にレイアウトシフトを毎フレーム監視して補正していたが、
+ * 原因（loading="lazy"画像の読み込み前後で高さが変わること）をCSS側の
+ * aspect-ratio指定で解消したため、シンプルな一発ジャンプに戻した。
+ * ページ全体の読み込み完了時（window load）に一度 ScrollTrigger.refresh() を
+ * 呼んでpinスペーサー等のレイアウトを確定させているので、以降はズレが起きない。
+ */
+function scrollToAnchor(targetId) {
+    const OFFSET = -50;
+
+    const finishProjectsSection = () => {
+        if (targetId === 'projects-section' && typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.trigger === '.projects-section') {
+                    trigger.update();
+                }
+            });
+        }
+    };
+
+    if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+    }
+
+    if (lenis) {
+        // ScrollTrigger.refresh()だけではLenis自身が持つ内部の高さ計算(limit)は
+        // 更新されない。読み込み直後などlimitが古いままだと、そのlimitでscrollTo先が
+        // クランプされて短く着地することがあるため、念のため再計算させておく。
+        lenis.resize();
+        lenis.scrollTo(`#${targetId}`, {
+            duration: 1.2,
+            offset: OFFSET,
+            onComplete: finishProjectsSection
+        });
+    } else {
+        // Lenis未初期化時のフォールバック
+        gsap.to(window, {
+            duration: 1,
+            scrollTo: { y: `#${targetId}`, offset: OFFSET },
+            ease: "power2.inOut",
+            onComplete: finishProjectsSection
+        });
+    }
+}
+
+// ページ全体（画像・フォント含む）の読み込み完了時に、pinスペーサー等の
+// レイアウトを最終確定させておく（アンカースクロールの着地精度を上げるため）
+window.addEventListener('load', () => {
+    if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+    }
+});
 
 
 // =================================================================
@@ -1808,11 +1869,11 @@ function initLoadingScreen() {
         const hash = window.location.hash; // #projects-section などを取得
 
         if (hash) {
-            // --- A. ハッシュがある場合 (portfolio.htmlから戻ってきた場合) ---
+            // --- A. ハッシュがある場合 (他ページから #about などを指定して遷移してきた場合) ---
             const targetElement = document.querySelector(hash);
-            
+
             if (targetElement) {
-                // 1. 強制的にトップへ (初期化ズレ防止)
+                // 1. 強制的にトップへ (初期化ズレ防止。ファイル先頭でも既に行っているが念のため再度)
                 window.scrollTo(0, 0);
 
                 // 2. ★重要★ Heroセクションを即座に隠す
@@ -1820,27 +1881,64 @@ function initLoadingScreen() {
                 if (document.querySelector('.hero')) {
                     gsap.set('.hero', { autoAlpha: 0 }); // opacity:0 + visibility:hidden
                 }
-                
-                // 3. ローディング画面を出したまま、ターゲットへ移動
-                // --- 🔴 ここからgsapではなくLenis用に書き換え 🔴 ---
-                // 前のコード：gsap.to(window, { duration: 0.1, scrollTo: { y: hash, ... } });
-                if (lenis) {
-                    // Lenisを使って、ハッシュの位置までスクロールさせる
-                    lenis.scrollTo(hash, {
-                        offset: -70,      // ヘッダーの高さ分調整
-                        duration: 1.2,    // 少し時間をかけて滑らかに
-                        immediate: false, 
-                        onComplete: () => {
-                            ScrollTrigger.refresh(true);
-                            setTimeout(() => {
-                                hideLoadingScreen(true);
-                                ScrollTrigger.refresh();
-                            }, 300);
-                        }
-                    });
+
+                // 3. ★タイミング制御★
+                // ここに来た時点で window の load イベントは発火済み（画像・フォント読み込み完了）。
+                // だが、GSAP ScrollTrigger の pin/pinSpacer の高さ計算は load 完了と同時に
+                // 確定しているとは限らないため、まず ScrollTrigger.refresh(true) を同期的に
+                // 完了させてレイアウトを確定させ、さらに setTimeout(100ms) で
+                // ブラウザの描画・レイアウト確定を待つ猶予を挟んでから、
+                // 最後に Lenis の scrollTo を immediate:true で実行して一発で正確な位置へ着地させる。
+                // （スムーズなduration付きトゥイーンにすると、着地までの間にレイアウトが
+                //   変化した場合にズレて着地してしまうため、ここでは使わない）
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh(true);
                 }
-                // --- 🔴 ここまで 🔴 ---
+
+                setTimeout(() => {
+                    if (typeof ScrollTrigger !== 'undefined') {
+                        // 猶予後にもう一度確定させてから着地する
+                        ScrollTrigger.refresh(true);
+                    }
+
+                    // ★重要: ここでガードを解除してから着地させる。
+                    // ガードを解除せずに scrollTo すると、ガード自身が
+                    // 「scrollYが0以外になった」と検知して0へ戻してしまうため、
+                    // 必ず自前の着地処理の直前で解除する。
+                    releaseInitialScrollGuard();
+
+                    // ★重要: ScrollTrigger.refresh()はGSAP側のpin位置を更新するだけで、
+                    // Lenis自身が内部に持つ dimensions.scrollHeight / limit は更新されない。
+                    // これが古いまま（Lenisインスタンス生成時＝pin挿入前の短い高さ）だと、
+                    // 直後の lenis.scrollTo() の着地先がその古いlimitでクランプされ、
+                    // 正しい座標より手前で止まってしまう。そのため着地直前に必ず
+                    // lenis.resize() を呼び、Lenis自身にも最新の高さを再計算させる。
+                    if (lenis) {
+                        lenis.resize();
+                    }
+
+                    const landOnTarget = () => {
+                        hideLoadingScreen(true);
+                        if (typeof ScrollTrigger !== 'undefined') {
+                            ScrollTrigger.refresh();
+                        }
+                    };
+
+                    if (lenis) {
+                        lenis.scrollTo(hash, {
+                            offset: -50,
+                            immediate: true,
+                            onComplete: landOnTarget
+                        });
+                    } else {
+                        // Lenis未初期化時のフォールバック
+                        const y = targetElement.getBoundingClientRect().top + window.scrollY - 50;
+                        window.scrollTo(0, y);
+                        landOnTarget();
+                    }
+                }, 100);
             } else {
+                releaseInitialScrollGuard();
                 hideLoadingScreen(false);
             }
         } else {
@@ -1895,7 +1993,9 @@ function initLoadingScreen() {
 
     // --- A. 全ページ共通の処理 (portfolio.html, price.html でも動かす) ---
     // ★★★ ローディング画面の初期化を最優先で呼び出す ★★★
-    initLenis();           // Lenis開始
+    // 注意: initLenis()はファイル先頭で既に1回呼び出し済み。
+    // ここで再度呼ぶとgsap.tickerへのraf登録が二重になり、
+    // Lenisの時間進行が2倍速になってスクロール位置計算がずれるため呼ばない。
     initLoadingScreen();    // ローディング & ハッシュ遷移
     fixFormScrollJump();    // ページ内にフォームがある場合のスクロールジャンプ防止
     // ★★★ ここから他の処理を開始する ★★★

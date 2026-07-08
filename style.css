@@ -22,7 +22,10 @@ html, body {
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
-  scroll-behavior: smooth;
+  /* ★重要: スムーススクロールはLenisが一括制御するため、ネイティブのscroll-behavior:smoothは使わない。
+     両方が有効だと、LenisのRAFベースの補間とブラウザ標準のスムーススクロールが競合し、
+     JSからscrollTop/scrollToを直接指定した際に意図した位置まで届かず途中で止まる/短く着地する原因になる。 */
+  scroll-behavior: auto;
   /* 標準カーソルを完全に非表示にする */
   cursor: none;
 }
@@ -1171,6 +1174,14 @@ img {
   position: relative;
 }
 
+.ht-image img {
+  /* loading="lazy"画像の読み込み前後でレイアウトが変わらないよう、
+     実画像の比率(2304x1792)分の高さを事前に確保しておく */
+  width: 100%;
+  aspect-ratio: 9 / 7;
+  object-fit: cover;
+}
+
 /* 幅1024px以下かつ横向きの場合のスタイル */
 @media (orientation: landscape) and (max-width: 1024px) {
   .ht-text { 
@@ -1409,6 +1420,12 @@ img {
 .loop_slider li img{
   width: 100%;
   max-width: none;
+  /* ★重要: このimgは幅200vwに対して縦横比6.657(4001x601px)で表示される。
+     aspect-ratioを指定しないと、loading="lazy"での読み込み完了時に
+     .loop（#aboutの直前にある要素）の高さが後から数百px増え、
+     それより下にあるセクション（#about等）へのアンカースクロールの着地位置が
+     ずれる原因になっていたため、読み込み前から高さを確保しておく。 */
+  aspect-ratio: 4001 / 601;
 }
 
 @keyframes scroll-left {
