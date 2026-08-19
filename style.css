@@ -1,5 +1,5 @@
 @charset "utf-8";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Serif+JP:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Serif+JP:wght@200..900&family=Permanent+Marker&family=Source+Sans+3:ital,wght@0,500;1,500&display=swap');
 
 * {
   box-sizing: border-box;
@@ -521,16 +521,12 @@ img {
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  /* background: linear-gradient(90deg, #fff, #e4caff, #fff);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;  */
   color:  #d272ff;
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.875), 
                 0 0 15px rgba(255, 255, 255, 0.8),
                 0 0 30px rgba(200, 100, 255, 0.5);
-  font-family: din-condensed, sans-serif;
-  font-weight: 400;
+  font-family: "Source Sans 3", sans-serif;
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -548,8 +544,8 @@ img {
 }
 
 .hero .emotion {
-  font-family: "marydale", sans-serif;
-  font-weight: 700;
+  font-family: "Permanent Marker", cursive;
+  font-weight: 400;
   font-style: normal;
   display: flex;
   flex-direction: row;
