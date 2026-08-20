@@ -516,33 +516,53 @@ img {
   perspective: 1000px; 
 }
 
+/* --------------------------------------------------
+   1. h1 全体の基本設定
+-------------------------------------------------- */
 .hero h1 {
   font-size: 8vw;
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color:  #d272ff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.875), 
-                0 0 15px rgba(255, 255, 255, 0.8),
-                0 0 30px rgba(200, 100, 255, 0.5);
   font-family: "Source Sans 3", sans-serif;
   font-weight: 500;
   font-style: normal;
+  color: #fff;
 }
 
 .hero h1 span {
   display: inline-block;
 }
 
-.hero .white {
-  font-size: 6.0vw;
-  color: #333;
-  -webkit-text-fill-color: #333;
-  text-shadow: 0 0 10px rgba(255,255,255,0.8), 
-               0 0 30px rgba(255,255,255,0.5);
-  background: none;
+/* --------------------------------------------------
+   2. Design（上段：明るく上品なピンクネオン）
+-------------------------------------------------- */
+.hero h1 > span:first-child {
+  color: #ffffff; /* 芯を純白に */
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 12px #69EACB,
+    0 0 25px #69EACB,
+    0 0 50px #69EACB; /* 強すぎた広がりを抑えて調整 */
 }
 
+/* --------------------------------------------------
+   3. that moves your（中段：白く優しく光るテキスト）
+-------------------------------------------------- */
+.hero .white {
+  font-size: 6.0vw;
+  color: #f0f0f0; /* やや明るめの白に変更 */
+  -webkit-text-fill-color: #f0f0f0;
+  background: none;
+  /* ほんのりソフトに光らせて存在感を出す */
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.9),
+    0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* --------------------------------------------------
+   4. EMOTION（下段：鮮やかで落ち着きのあるシアンネオン）
+-------------------------------------------------- */
 .hero .emotion {
   font-family: "Permanent Marker", cursive;
   font-weight: 400;
@@ -550,10 +570,23 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  color: #ffffff; /* 芯を純白に */
 }
 
 .emotion .char {
-  opacity: 0; /* 初期状態では非表示 */
+  opacity: 0; /* JS用初期状態（透明） */
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 12px #ecc3ff,
+    0 0 25px #ecc3ff,
+    0 0 50px #6654F1; /* バランスを考慮した光彩 */
+}
+
+/* --------------------------------------------------
+   5. その他の共通・アニメーション指定
+-------------------------------------------------- */
+.hero h1 > span:not(.emotion) {
+  opacity: 0; /* アニメーション開始まで非表示 */
 }
 
 .scroll-text {
@@ -564,48 +597,42 @@ img {
   color: #aaa;
   font-size: 14px;
   letter-spacing: 2px;
-  animation: blink 2s infinite; /* 点滅アニメーション */
+  animation: blink 2s infinite;
   z-index: 10;
 }
 
-.hero h1 > span:not(.emotion) {
-    /* ★追加: アニメーション開始まで透明にしておく */
-    opacity: 0; 
-}
-
-/* 点滅アニメーションの定義 */
 @keyframes blink {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
 }
 
-
-
-/* tablet size 画面サイズが1024px以下 */
-@media screen and (max-width:1024px) {
+/* --------------------------------------------------
+   6. レスポンシブ対応（画面サイズ別）
+-------------------------------------------------- */
+/* タブレット（1024px以下） */
+@media screen and (max-width: 1024px) {
   .hero h1 {
     font-size: 15vw;
   }
-
   .hero .white {
-  font-size: 11.0vw;
+    font-size: 11.0vw;
   }
- 
 }
 
-/* sp size 画面サイズが480px以下 */
+/* スマホ（480px以下） */
 @media screen and (max-width: 480px) {
   .hero h1 {
     font-size: 19vw;
   }
-
   .hero .white {
-  font-size: 16.0vw;
+    font-size: 16.0vw;
   }
 }
-/* =================================================================
+
+
+/* =========================================================
     PROJECT 
-================================================================= */
+========================================================= */
 
 .projects-section {
     position: relative; /* ★修正: Pinが有効になるまで relative に戻す★ */
