@@ -695,7 +695,7 @@ function startHeroAnimation() { // ★関数名を startHeroAnimation に変更�
         // 💡画像の数を変えたらここの数も変える👇
         // const を let に変更
         let CAROUSEL_ITEMS = [
-            { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 8, description: 'UI/UX' },
+            { name: 'UIUX', folder: 'uiux', filePrefix: 'uiux', totalImages: 7, description: 'UI/UX' },
             { name: 'CODE', folder: 'coding', filePrefix: 'code', totalImages: 8, description: 'CODE' },
             { name: 'GRAPHIC', folder: 'graphic', filePrefix: 'graphic', totalImages: 7, description: 'GRAPHIC' },
             { name: 'FLYER', folder: 'flyer', filePrefix: 'flyer', totalImages: 6, description: 'FLYER' },
@@ -2086,39 +2086,64 @@ if (document.querySelector('article.work-item')) {
             <div class="modal-content">
                 <button class="modal-close" aria-label="閉じる">&times;</button>
                 <button class="modal-prev" aria-label="前の画像">&#8592;</button>
-                <img src="" alt="">
+                <img src="" alt="" class="modal-img">
+                <video class="modal-video" autoplay muted loop playsinline></video>
                 <button class="modal-next" aria-label="次の画像">&#8594;</button>
                 <div class="modal-indicator"></div>
             </div>
         `;
         document.body.appendChild(overlay);
 
-        const modalImg    = overlay.querySelector('img');
+        const modalImg    = overlay.querySelector('.modal-img');
+        const modalVideo  = overlay.querySelector('.modal-video');
         const closeBtn    = overlay.querySelector('.modal-close');
         const prevBtn     = overlay.querySelector('.modal-prev');
         const nextBtn     = overlay.querySelector('.modal-next');
         const indicator   = overlay.querySelector('.modal-indicator');
 
-        let currentImages = []; // 現在のarticle内の画像リスト
-        let currentIndex  = 0;
+        let currentMediaList = [];
+        let currentIndex     = 0;
 
         // 表示を更新
         function updateModal() {
-            const { src, alt } = currentImages[currentIndex];
-            modalImg.src = src;
-            modalImg.alt = alt;
-            indicator.textContent = currentImages.length > 1
-                ? `${currentIndex + 1} / ${currentImages.length}`
+            const media = currentMediaList[currentIndex];
+
+            if (media.type === 'video') {
+                // 画像を隠して動画を表示
+                modalImg.style.display = 'none';
+                modalImg.src = '';
+
+                modalVideo.style.display = 'block';
+                // source要素を追加して複数フォーマットに対応
+                modalVideo.innerHTML = `
+                    <source src="${media.webm}" type="video/webm">
+                    <source src="${media.mp4}" type="video/mp4">
+                `;
+                modalVideo.load(); // 動画の再読み込みを明示的に命令
+                modalVideo.play().catch(() => {});
+            } else {
+                // 動画を隠して画像を表示
+                modalVideo.style.display = 'none';
+                modalVideo.pause();
+                modalVideo.innerHTML = '';
+
+                modalImg.style.display = 'block';
+                modalImg.src = media.src;
+                modalImg.alt = media.alt;
+            }
+
+            indicator.textContent = currentMediaList.length > 1
+                ? `${currentIndex + 1} / ${currentMediaList.length}`
                 : '';
-            const onlyOne = currentImages.length <= 1;
+            const onlyOne = currentMediaList.length <= 1;
             prevBtn.classList.toggle('hidden', onlyOne);
             nextBtn.classList.toggle('hidden', onlyOne);
         }
 
         // モーダルを開く
-        function openModal(images, index) {
-            currentImages = images;
-            currentIndex  = index;
+        function openModal(mediaList, index) {
+            currentMediaList = mediaList;
+            currentIndex     = index;
             updateModal();
             overlay.classList.add('is-open');
             document.body.style.overflow = 'hidden';
@@ -2129,29 +2154,59 @@ if (document.querySelector('article.work-item')) {
             overlay.classList.remove('is-open');
             document.body.style.overflow = '';
             modalImg.src = '';
-            currentImages = [];
+            modalVideo.pause();
+            modalVideo.innerHTML = '';
+            currentMediaList = [];
         }
 
         function goPrev() {
-            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            currentIndex = (currentIndex - 1 + currentMediaList.length) % currentMediaList.length;
             updateModal();
         }
 
         function goNext() {
-            currentIndex = (currentIndex + 1) % currentImages.length;
+            currentIndex = (currentIndex + 1) % currentMediaList.length;
             updateModal();
         }
 
-        // 各articleごとに画像グループを登録
+        // 各articleごとに要素を登録
         document.querySelectorAll('article.work-item').forEach(article => {
-            const imgs = [...article.querySelectorAll('.eyecatch, .sub-images img')];
-            if (!imgs.length) return;
+            const elements = [...article.querySelectorAll('.eyecatch, .sub-images img')];
+            if (!elements.length) return;
 
-            // article内の画像情報をまとめる
-            const imageData = imgs.map(img => ({ src: img.src, alt: img.alt }));
+            // メディア情報の抽出処理
+            const mediaData = elements.map(el => {
+                if (el.tagName.toLowerCase() === 'video') {
+                    // sourceタグからWebMとMP4のパスをそれぞれ取得
+                    const webmSource = el.querySelector('source[type*="webm"]');
+                    const mp4Source  = el.querySelector('source[type*="mp4"]');
+                    
+                    return {
+                        type: 'video',
+                        webm: webmSource ? webmSource.getAttribute('src') : '',
+                        mp4:  mp4Source  ? mp4Source.getAttribute('src')  : (el.getAttribute('src') || '')
+                    };
+                } else {
+                    return {
+                        type: 'image',
+                        src: el.getAttribute('src') || el.src,
+                        alt: el.getAttribute('alt') || ''
+                    };
+                }
+            });
 
-            imgs.forEach((img, i) => {
-                img.addEventListener('click', () => openModal(imageData, i));
+            // クリックイベントの登録（videoの親要素<a>による遷移を防止）
+            elements.forEach((el, i) => {
+                const targetEventElement = el.closest('a') || el;
+                
+                targetEventElement.addEventListener('click', (e) => {
+                    // 外部リンク（実装サイトリンクなど）以外の画像/動画モックアップクリック時はモーダルを開く
+                    if (el.classList.contains('eyecatch') || el.closest('.sub-images')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(mediaData, i);
+                    }
+                });
             });
         });
 

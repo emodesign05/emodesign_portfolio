@@ -212,6 +212,33 @@ hr {
     font-weight: bold;
 }
 
+.eyecatch-link {
+    display: block;
+    text-decoration: none;
+}
+
+.video-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px; /* デザインに合わせて調整 */
+    background-color: #f5f5f5;
+}
+
+/* 動画サイズを元のclass="eyecatch"の表示にフィットさせる */
+.eyecatch.hover-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* ホバー時の軽いズーム演出（お好みで） */
+.video-container:hover .eyecatch.hover-video {
+    transform: scale(1.02);
+}
+
 /* --------------------
 // 説明とサブ画像
 // -------------------- */
@@ -305,7 +332,8 @@ html, body {
     cursor: default !important;
 }
 
-.modal-content img {
+.modal-content .modal-img,
+.modal-content .modal-video{
     display: block;
     max-width: 80vw;
     max-height: 85vh;
