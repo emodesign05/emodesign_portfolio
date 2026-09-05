@@ -296,11 +296,11 @@ html, body {
 // ============================================== */
 /* レスポンシブ調整していないので気になったら調整する */
 
-#uiux-section, #code-section, #logo-section, #graphic-section, #flyer-section {
+#uiux-section, #code-section, #logo-section, #graphic-section, #print-section {
     scroll-margin-top: 120px; 
 }
 
-#uiux-section article, #code-section article, #logo-section article, #graphic-section article, #flyer-section  article{
+#uiux-section article, #code-section article, #logo-section article, #graphic-section article, #print-section  article{
     scroll-margin-top: 150px; 
 }
 

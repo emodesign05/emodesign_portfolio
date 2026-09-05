@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMODESIGN Works</title>
-    <meta name="description" content="EMODESIGNのPortforioサイト。フロントエンドエンジニア、WEB・graphic・VI・CIデザイナー、CODER。東京葛下町が拠点です。作品を展示しています。">
+    <meta name="description" content="EMODESIGNのPortforioサイト。フロントエンドエンジニア、WEB・graphic・VI・CIデザイナー、CODER。東京葛下町が拠点です。実績紹介ページです。。">
     <meta name="keywords" content=
     "エモデザイン,EMO,EMODESIGN,emo,emodesign,葛飾区,江戸川区,葛飾区フロントエンドエンジニア,江戸川区フロントエンドエンジニア,葛飾区ウェブデザイナー,江戸川区ウェブデザイナー,ウェブデザイナー、グラフィックデザイナー">
     <meta name="thumbnail" content="img/EMODESIGN_umezome.png">
@@ -35,8 +35,8 @@
         <nav>
             <a href="#uiux-section">UI/UX</a> |
             <a href="#code-section">CODE</a> |
-            <a href="#logo-section">LOGO</a> |
-            <a href="#flyer-section">FLYER</a> |
+            <!-- <a href="#logo-section">LOGO</a> | -->
+            <a href="#print-section">PRINT</a> |
             <a href="#graphic-section">GRAPHIC</a>
         </nav>
     </article>
@@ -47,12 +47,57 @@
         <section id="uiux-section" class="work-category">
             <h2>UI/UX</h2>
             <div class="index-list">
+                <a href="#uiux-work-bena">べなの暮らし様&nbsp;ホームページ上流設計・実装 (2026.02)</a>
                 <a href="#uiux-work-Lumiere">Lumière Photography様&nbsp;ホームページ制作 (2025.08)</a>
                 <a href="#uiux-work-sol">合同会社Sol様&nbsp;ホームページ制作 (2024.09)</a>
                 <a href="#uiux-work-kexus">株式会社杵臼様&nbsp;ホームページ制作 (2024.10)</a>
                 <a href="#uiux-work-kexdca">スポーツマッチングサイトキネヅカ様&nbsp;UIUX制作 (2024.12)</a>
-                <a href="#uiux-work-neco">CafeNECO&nbsp;ホームページ制作 (2024.02)</a>
+                <!-- <a href="#uiux-work-neco">CafeNECO&nbsp;ホームページ制作 (2024.02)</a> -->
             </div>
+
+            <article id="uiux-work-bena" class="work-item">
+                <h3>べなの暮らし様&nbsp;ホームページ上流設計・実装</h3>
+                <div class="work-details">
+                    <a href="https://cheerarikaphotography.com/" target="_blank" rel="noopener noreferrer" class="eyecatch-link">
+                        <!-- 動画コンテナ（hoverイベント制御用） -->
+                        <div class="video-container">
+                            <video 
+                                autoplay 
+                                muted 
+                                playsinline 
+                                loop
+                                preload="metadata" 
+                                poster="img/uiux/uiux8.webp" 
+                                class="eyecatch hover-video">
+                                <!-- 軽量なWebMを優先 -->
+                                <source src="img/webm/bena.webm" type="video/webm">
+                                <!-- MP4を保険として設置 -->
+                                <source src="img/movie/bena.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </a>
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2026年02月</p>
+                        <p><strong>コンセプト:</strong>地域の日常と温もりに寄り添い、ありのままの魅力を引き出すWebプラットフォーム</p>
+                        <p><strong>実装言語:</strong> HTML,CSS,JavaScript</p>
+                        <p><strong>制作ツール:</strong> Adobe XD, WordPress(SWELL)</p>
+                        <a href="https://benanokurashi.jp/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://benanokurashi.jp/</span></p></a>
+                    </div>
+                    <div class="description">   
+                        <h4>制作方針</h4>
+                        <p>
+                        伊那谷サラウンド様制作のデザインカンプをもとに、レスポンシブ対応からUIデザイン、フロントエンド開発、全体のディレクションまで一貫して担当しました。<br>
+                        Web運用が初めてとなる部奈地域協議会様のために、サーバー選定やドメイン取得、CMS選定から公開後のサポートまで伴走型で支援しています。<br>
+                        サイト構築には拡張性と操作性に優れたWordPress（SWELL）を採用し、更新者様が迷わず運用できるよう独自のカスタマイズを施しました。<br>
+                        さらに、ご予算に合わせた最適なコストプランの提案に加え、運用の定着化に向けたマニュアル作成まで丁寧に対応しています。
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/siteview_benanokurashi.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                        </div>
+                    </div>
+                </div>
+            </article>
 
             <article id="uiux-work-Lumiere" class="work-item">
                 <h3>Lumière Photography様&nbsp;ホームページ制作</h3>
@@ -77,17 +122,22 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年08月</p>
-                        <p><strong>コンセプト:</strong>「新緑」</p>
+                        <p><strong>コンセプト:</strong>新緑のような瑞々しい世界観で紡ぐ、撮影予約から作品鑑賞までをシームレスにつなぐポートフォリオサイト</p>
                         <p><strong>実装言語:</strong> HTML,CSS,JavaScript,jQuery</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop, Figma</p>
                         <a href="https://cheerarikaphotography.com/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://cheerarikaphotography.com/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>出張カメラマンLumière Photography&nbsp;ちありか様のホームページを作成させていただきました。<br>「新緑のちありか」のコードネームをお持ちとのことで、新緑を思わせる緑をベースに作成いたしました。<br>お子様やご家族様が被写体になることが多いとのことでしたので、優しく温かみがあり、スタイリッシュさを感じるデザインに落とし込みました。<br><br>美しい写真をお見せするためにスライドを多めに使い、観せるホームページに仕上げました。</p>
+                        <p>
+                            出張カメラマンLumière Photography様の独立に伴い、集客と予約管理の軸となるWebサイトを制作いたしました。<br>
+                            ブランドの象徴である「新緑」のグリーンを基調に、ファミリー層に届く優しさと、デザイン性の高いスタイリッシュさを両立させたビジュアルに仕上げています。<br>
+                            独立初期の運用負荷を考慮し、固定費を抑えたサーバー選定や予約システムの導入、運用フローの構築までトータルでサポートしました。<br>
+                            美しい写真を惹き立てるスライド演出と直感的な予約導線を設計し、作品の魅力を伝えながら確実なCV（予約）へつなげる構成を追求しています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_chiarika.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -116,17 +166,22 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2024年09月</p>
-                        <p><strong>コンセプト:</strong>「海と太陽」</p>
+                        <p><strong>コンセプト:</strong>海と太陽の生命力をシンボライズし、女性のエンパワーメントを力強く後押しするコーポレートサイト</p>
                         <p><strong>実装言語:</strong> HTML,CSS,jQuery</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Figma</p>
                         <a href="https://sol.fem.jp/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://sol.fem.jp/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>合同会社Sol様のホームページを作成させていただきました。<br>女性の社会進出を応援する事業を行っているSol代表者様の海洋事業と、Sol社の「元始、女性は太陽であった」というタグラインを表現するサイトにしました。<br>TOPページのタグラインの背景にはふわふわと太陽が浮かび、他のページにも海の泡を思わせるような丸いあしらいを浮かべています。</p>
+                        <p>
+                            女性の社会進出を支援する合同会社Sol様のブランド思想を体現するため、海洋事業とタグライン「元始、女性は太陽であった」を軸にデザインを昇華させました。<br>
+                            TOPページではブランドの象徴である太陽が美しく浮かび上がる演出を取り入れ、他ページでも海の泡沫を連想させる繊細なグラフィック表現を散りばめています。<br>
+                            シックで洗練された世界観を保ちつつ、ユーザーの情動に訴えかけるスタイリッシュなビジュアルストーリーテリングを追求しました。<br>
+                            事業の先進性と温かみが共存するデザイン設計により、訪問者へ企業のビジョンと存在意義を強く印象づける仕上がりとしています。
+                            </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_sol.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -155,17 +210,22 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2024年11月</p>
-                        <p><strong>コンセプト:</strong>「人と人を繋ぐ」</p>
+                        <p><strong>コンセプト:</strong>杵臼（しょきゅう）の交わり」を核に、人と人の確かな繋がりを象徴するスタイリッシュなコーポレートサイト</p>
                         <p><strong>実装言語:</strong> HTML,CSS,jQuery</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop, Figma</p>
                         <a href="http://kexus.jp/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">http://kexus.jp/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>杵臼様が提供するサービス「キネヅカ」のアイデンティティカラーの「白、黒、赤」を使いクリーンでシンプルに制作しています。<br>ファーストビューのモチーフは、大小の「臼」が重なり合い「杵臼（しょきゅう）の交わり」を表し、<br>「人と人を繋ぐ」という企業コンセプトを、人が交わる交差点の背景画像で表現しています。<br><br>ボタンはニューモフィズムでキネヅカのサービスサイトとリンクするようにデザインしています。</p>
+                        <p> 
+                            提供サービス「キネヅカ」のアイデンティティカラーである「白・黒・赤」を軸に、無駄を削ぎ落とした洗練されたクリーン＆シンプルデザインを展開しました。<br>
+                            ファーストビューでは大小の臼が重なり合う抽象グラフィックで「杵臼の交わり」を描き、背景の交差点写真と対比させることで企業コンセプトを多角的に表現しています。<br>
+                            UIパーツにはトレンド感と立体感を併せ持つニューモフィズムを採用し、サービスサイトとのトーン＆マナーの連動性と先進性を担保しました。<br>
+                            企業が大切にするビジョンを視覚化し、デザイン性と直感的な伝わりやすさを意識して構築しています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_kexus.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -177,13 +237,18 @@
                     <a href="https://kexdca.co.jp/" target="_blank" rel="noopener noreferrer"><img src="img/uiux/uiux7.webp" alt="スポーツマッチングサイトキネヅカ様 デバイスモックアップ画像" class="eyecatch" loading="lazy" width="2560" height="2560"></a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2024年12月</p>
-                        <p><strong>コンセプト:</strong>「スポーツマッチングUI」</p>
+                        <p><strong>コンセプト:</strong>スポーツが持つ高揚感と直感的な操作性を両立させ、スムーズなマッチングを叶えるUI/UXデザイン</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop, Figma</p>
                         <a href="https://kexdca.co.jp/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://kexdca.co.jp/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>スポーツマッチングサイト・キネヅカ様のマッチングサイトUIをデザインさせていただきました。<br>キネヅカのコーポレートカラーに合わせて赤をポイントカラーにして、スポーツの疾走感を感じるような斜めのアクセントを諸所に入れています。<br>ホームページではなくUIデザイン要素が強いので、華美にならず、シンプルに動線を意識して作成しました、<br>実装は他の方が担当しております。</p>
+                        <p>
+                            スポーツマッチングサイト「キネヅカ」のユーザー体験を最適化するため、UI/UXデザインを担当いたしました。<br>
+                            ブランドカラーである赤をポイントに効かせ、スポーツの疾走感を象徴する斜線のアクセントを随所に配置することで、スタイリッシュな世界観を構築しています。<br>
+                            Webサイトの装飾的なアプローチとは一線を画し、ユーザーが迷わず目的を達成できるよう、装飾を削ぎ落としたシンプルかつ機能的な導線設計を第一に追求しました。<br>
+                            機能美と直感的な使いやすさを追求したUI設計により、サービスのエンゲージメント向上と快適なマッチング体験に貢献しています。<br>
+                        </p>
                         <div class="sub-images">
                             <img src="img/portfolio/kexdka_sub1.webp" alt="サブ画像1" loading="lazy" width="2560" height="2560">
                             <img src="img/portfolio/kexdka_sub2.webp" alt="サブ画像2" loading="lazy" width="2560" height="2560">
@@ -192,11 +257,11 @@
                 </div>
             </article>
 
-            <article id="uiux-work-neco" class="work-item">
+            <!-- <article id="uiux-work-neco" class="work-item">
                 <h3>CafeNECO&nbsp;ホームページ制作&nbsp;&nbsp;<span style="font-weight: normal;">CIDesignAcademy</span></h3>
                 <div class="work-details">
                     <a href="https://magenta100786.studio.site/" target="_blank" rel="noopener noreferrer" class="eyecatch-link">
-                        <!-- 動画コンテナ（hoverイベント制御用） -->
+                        
                         <div class="video-container">
                             <video 
                                 autoplay 
@@ -206,9 +271,7 @@
                                 preload="metadata" 
                                 poster="img/uiux/uiux6.webp" 
                                 class="eyecatch hover-video">
-                                <!-- 軽量なWebMを優先 -->
                                 <source src="img/webm/cafeneco.webm" type="video/webm">
-                                <!-- MP4を保険として設置 -->
                                 <source src="img/movie/cafeneco.mp4" type="video/mp4">
                             </video>
                         </div>
@@ -224,12 +287,12 @@
                         <h4>制作方針</h4>
                         <p>「白い仔猫しかいない渋谷の白い猫カフェ」というコンセプトのもと、白い仔猫のもつ気品や優雅さ、美しさを感じられれるデザインに落とし込み、あしらいも邪魔にならないシンプルで繊細なものを選びました。<br>ホームページの動きも、ふわっとしたフェードインで品のあるように仕上げています。</p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
+                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy">
                         </div>
                     </div>
                 </div>
-            </article>
+            </article> -->
 
 
 
@@ -246,7 +309,6 @@
                 <a href="#code-work-degitan">デジタル探偵カンプコーディング (2025.06)</a>
                 <a href="#code-work-aikoumuten">アイ工務店サイト模写コーディング (2025.06)</a>
             </div>
-
 
             <article id="code-work-math" class="work-item">
                 <h3>Mathupカンプコーディング&nbsp;&nbsp;<span style="font-weight: normal;">Added Pallas</span></h3>
@@ -271,16 +333,20 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年09月</p>
-                        <p><strong>コンセプト:</strong> ユーザー体験の向上と視覚的動線操作の両立</p>
+                        <p><strong>コンセプト:</strong> 精緻なカンプ再現性とGSAPアニメーションの融合により、数学の堅牢なイメージを軽やかに解き放つインタラクティブサイト。</p>
                         <p><strong>実装言語:</strong> HTML,CSS,JavaScript</p>
                         <a href="https://addedpallas.school/e-yuki/mathup/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://addedpallas.school/e-yuki/mathup/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>視覚的な面白さで興味を引きつけ、ユーザーの視線を集めながら、自然と見せたい場所へ導く“動線操作”を意識しています。<br>JavaScriptのgsapを多用し、フェードイン・マーカー風アニメーションで視線誘導をしています。<br><br>ふわふわ動くアニメーションを併用し、数学の「難しい」イメージを払拭するような軽さが出しています。</p>
+                        <p>提供いただいたデザインカンプをピクセル単位で正確に再現しつつ、JavaScript（GSAP）を用いた緻密な動的実装を担当いたしました。<br>
+                            フェードインやマーカー風のアニメーションを効果的に組み込み、ユーザーの視線を自然に重要コンテンツへ導く視線誘導（動線操作）を実現しています。<br>
+                            浮遊感のあるアニメーションをあしらうことで、数学特有のハードさを和らげ、親しみやすさと洗練されたグラフィック体験を両立させました。<br>
+                            意図したデザインを完全に表現するコーディング技術と、ユーザーの離脱を防ぐ心地よいアニメーション設計を追求しています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_mathup.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -309,16 +375,20 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年08月</p>
-                        <p><strong>コンセプト:</strong> エレガントで優美な世界観とマッチする「引き立てる」コーディング</p>
+                        <p><strong>コンセプト:</strong> ブライダル特有の上質で洗練された世界観を惹き立て、美しさと機能性を調和させたインタラクティブサイト</p>
                         <p><strong>実装言語:</strong> HTML,CSS,JavaScript</p>
                         <a href="https://addedpallas.school/e-yuki/weddiurl_ad/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://addedpallas.school/e-yuki/weddiurl_ad/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>ウェディング業界というエレガントで優美な世界観を崩さない、高級感のある余白とゆっくり変わる動きの実装を大切にしました。<br>セクション内での文字や画像の追従で「見せたい部分を強調する」ことができています。</p>
+                        <p>ウェディング業界ならではのエレガントで優美な世界観を損なわないよう、ラグジュアリーさを演出する細やかな余白設計と緩やかなアニメーション実装を徹底しました。<br>
+                           スクロールに連動して文字や画像が滑らかに追従する視覚効果を取り入れ、意図した要素へ自然に視線を誘う演出を加えています。<br>
+                           単なるカンプ再現にとどまらず、ブランドの持つ上質な空気をWeb上で再現するコーディング技術を追求しました。<br>
+                           デザインの美しさを前面に出しつつ、ユーザーに負担を与えない上質な閲覧体験と確実な情報伝達を可能にしています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_weddiurl.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -347,16 +417,20 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年06月</p>
-                        <p><strong>コンセプト:</strong> canvasの実装とスクロールエフェクトによるUX作成</p>
+                        <p><strong>コンセプト:</strong> HTML5 Canvasとスクロール演出の融合により、没入感あふれる探偵の世界観とインタラクティブな体験を創出するエンタメサイト。</p>
                         <p><strong>実装言語:</strong> HTML,CSS,JavaScript</p>
                         <a href="https://addedpallas.school/e-yuki/degitan/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://addedpallas.school/e-yuki/degitan/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>サイト全体の背景のふわふわ揺れる円はcanvasで実装。<br>スクロールとともに動いたり現れたり、背景色が変わったりサイトを訪れた方の興味を引く作りを実装しました。<br>リンク上でカーソルが虫眼鏡になるのもおしゃれなギミックです。</p>
+                        <p>サイト全体で揺らめく背景のグラフィックをHTML5 Canvasで実装し、技術的な先進性と独自の印象的な世界観を構築しました。<br>
+                            スクロールに連動した背景色の変化や要素の動的出現を細部までチューニングし、訪問者の関心を惹きつけ続けるUXデザインを追求しています。<br>
+                            リンクホバー時にカーソルが虫眼鏡に変化する緻密なギミックなど、サイト全体の探偵コンセプトを補強する演出を丁寧に組み込みました。<br>
+                            視覚的な驚きとスムーズな操作性を両立させ、ブランドストーリーへ引き込むエンゲージメントの高いコーディングを実現しています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_dejitan.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -385,16 +459,20 @@
                     </a>
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年06月</p>
-                        <p><strong>コンセプト:</strong> Javascriptの初実装とSwiperアレンジ</p>
-                        <p><strong>実装言語:</strong> HTML,CSS,JavaScript,jQuery</p>
+                        <p><strong>コンセプト:</strong> 要件に応じたスライダー設計とJavaScript/CSSの高度な制御により、洗練された動的体験を実現したWebサイト。</p>
+                        <p><strong>実装言語:</strong> HTML,CSS,JavaScript</p>
                         <a href="https://addedpallas.school/e-yuki/aikoumuten/" target="_blank" rel="noopener noreferrer"><p><strong>実装サイト:</strong>&nbsp;<span class="site-link">https://addedpallas.school/e-yuki/aikoumuten/</span></p></a>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>SwiperがJavaScriptプラグインなので、初めてJavaScriptを使用したコーディングとなります。<br>PCサイズでのファーストビュー直下のカード型スライダーの実装が非常に難易度が高いものでした。スライドとホバーギミックの連動はjsとCSSで動きを制御して作成しています。</p>
+                        <p>サイト内の多様なスライダーにおいて、ライブラリ（Swiper）の高度なカスタマイズと自作プログラムを最適に使い分けて実装しました。<br>
+                           既存ライブラリでは再現が困難だったPC版ファーストビュー直下のカード型スライダーは完全自作し、スライド動作とホバーギミックをJavaScriptとCSSで精密に制御しています。<br>
+                           その他のSwiperを用いたスライド表現においても難易度の高い独自アレンジを施し、デザイン意図に忠実な滑らかな操作感を追求しました。<br>
+                           技術的な制約を乗り越える柔軟な実装力とフロントエンドの制御技術により、高度なUI要件を完璧に成立させています。
+                        </p>
                         <div class="sub-images">
-                            <!-- <img src="img/uiux/sub1.webp" alt="サブ画像1" loading="lazy">
-                            <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
+                            <img src="img/portfolio/siteview_aikoumuten.webp" alt="サブ画像1" loading="lazy">
+                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -404,7 +482,7 @@
         <hr>
 
     <!-- ★★★★★LOGO★★★★★ -->
-        <section id="logo-section" class="work-category">
+        <!-- <section id="logo-section" class="work-category">
             <h2>LOGO</h2>
             <div class="index-list">
                 <a href="#code-work-gamouno">株式会社ガモーノ様&nbsp;企業ロゴ作成 (2025.08)</a>
@@ -445,7 +523,6 @@
                         <p>企業名のコンセプトとなった「杵臼（しょきゅう）の交わり」から着想し、杵と臼が交わるイメージで制作しました。<br>ブランドカラーは赤と黒とし、スポーツマッチングサイトに合うような快活さを出しました。</p>
                         <div class="sub-images">
                             <img src="img/portfolio/kexus_meishi.webp" alt="杵臼様 企業ロゴ名刺イメージ画像" loading="lazy" width="1500" height="1000">
-                            <!-- <img src="img/portfolio/kexus_meishi.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
@@ -454,30 +531,83 @@
 
         </section>
 
-        <hr>
+        <hr> -->
 
     <!-- ★★★★★FLYER★★★★★ -->        
-        <section id="flyer-section" class="work-category">
-            <h2>FLYER</h2>
+        <section id="print-section" class="work-category">
+            <h2>PRINT</h2>
             <div class="index-list">
-                <a href="#flyer-work-gpbc2026tk">GRAND PLUME Ballet Competition パンフレット制作 (2025.12)</a>
-                <a href="#flyer-work-seasondemo">SEASONS HARVESTポスター制作 (2024.05)</a>
-                <a href="#flyer-work-beppu">べっぷ内科クリニック様&nbsp;YouTubeリニューアルチラシ制作(2025.08)</a>
+                <a href="#print-work-balletmate2026">BALLET MATE JAPAN様 フライヤー作成 (2026.08)</a>
+                <a href="#print-work-kb2026">KBバレエスタジオ様 第7回発表会プログラム・フライヤー制作 (2026.07)</a>
+                <a href="#print-work-gpbc2026tk">GRAND PLUME Ballet Competition パンフレット制作 (2025.12)</a>
+                <a href="#print-work-beppu">べっぷ内科クリニック様&nbsp;YouTubeリニューアルチラシ制作(2025.08)</a>
+                <!-- <a href="#print-work-seasondemo">SEASONS HARVESTポスター制作 (2024.05)</a> -->
             </div>
 
 
-            <article id="flyer-work-gpbc2026tk" class="work-item">
+            <article id="print-work-balletmate2026" class="work-item">
+                <h3>BALLET MATE JAPAN様 フライヤー作成</h3>
+                <div class="work-details">
+                    <img src="img/print/print9.webp" alt="BALLET MATE JAPAN様 フライヤー" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2026年08月</p>
+                        <p><strong>コンセプト:</strong> 「The Moment You Shine」を掲げ、歴史あるコンクールの品格と近未来的なラインウェーブで、大人が輝く特別な瞬間を彩るグラフィックデザイン。</p>
+                        <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop, FireFly</p>
+                    </div>
+                    <div class="description">
+                        <h4>制作方針</h4>
+                        <p>韓国で10年の歴史を誇る伝統的バレエコンクールの日本初開催にあたり、趣味としてバレエを愛する大人たちが主役となれるブランディングを展開しました。<br>
+                        本国のビジュアルアイデンティティである先進的なラインウェーブを継承しつつ、東京スカイツリーのシルエットを組み込んだグラフィックへとリデザインしています。<br>
+                        大人向けコンクールにふさわしい上質で洗練されたトーン＆マナーを追求し、舞台に立つ高揚感と東京開催ならではの特別感を提示しました。<br>
+                        伝統の格式と現代的なデザイン手法を美しく融合させ、参加者の挑戦心と魅力を最大限に惹き立てるクリエイティブに仕上げています。
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/bm2026_sub1.webp" alt="GRAND PLUME Ballet Competition様 パンフレット 見開き画像" loading="lazy" width="2560" height="2560">
+                            <img src="img/portfolio/bm2026_sub2.webp" alt="GRAND PLUME Ballet Competition様 パンフレット 裏面画像" loading="lazy" width="2560" height="2560">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="print-work-kb2026" class="work-item">
+                <h3>KBバレエスタジオ様 第7回発表会プログラム・フライヤー制作</h3>
+                <div class="work-details">
+                    <img src="img/print/print8.webp" alt="KBバレエスタジオ様 発表会プログラム・フライヤー" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2026年07月</p>
+                        <p><strong>コンセプト:</strong> アンティークブック</p>
+                        <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop, Gemini</p>
+                    </div>
+                    <div class="description">
+                        <h4>制作方針</h4>
+                        <p>今回の演目である『ライモンダ』と『ラ・バヤデール』は、人間の深い情熱や美学を描き続けてきた、クラシック・バレエの至宝です。<br>   
+                        この重厚な世界観を、時を重ねたアンティークの洋書になぞらえてデザインいたしました。<br> 
+                        伝統と格式を纏った「ネイビー」の装丁。そして、舞台上の気高き踊りを象徴する「ゴールド」の紋様。
+                        まるで一冊の美しい古書をひも解くように、幕が上がる瞬間から、それぞれの物語が紡ぐロマンの旅へと皆さまを誘います。<br>   
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/kb2026_sub1.webp" alt="KBバレエスタジオ様 発表会プログラム・フライヤー 見開き画像" loading="lazy" width="2560" height="2560">
+                            <img src="img/portfolio/kb2026_sub2.webp" alt="KBバレエスタジオ様 発表会プログラム・フライヤー 裏面画像" loading="lazy" width="2560" height="2560">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="print-work-gpbc2026tk" class="work-item">
                 <h3>GRAND PLUME Ballet Competition様 パンフレット制作</h3>
                 <div class="work-details">
-                    <img src="img/flyer/flyer6.webp" alt="GRAND PLUME Ballet Competition様 パンフレット" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <img src="img/print/print6.webp" alt="GRAND PLUME Ballet Competition様 パンフレット" class="eyecatch" loading="lazy" width="2560" height="2560">
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年12月</p>
-                        <p><strong>コンセプト:</strong> 舞台への情熱とドラマティック・レッド</p>
+                        <p><strong>コンセプト:</strong> 舞台に懸けるダンサーの情熱とコンクールの重厚な格式を、鮮烈なドラマティック・レッドで紡ぐグラフィックデザイン。</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop</p>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>バレエが持つ芸術性と、コンクールという真剣勝負の舞台の迫力を、強い色彩のコントラストで、参加者が持つ舞台への情熱と力強さを表現しました。<br>太く、エッジの効いたフォントを用いることで、コンクールの格式と重厚感を演出しています。<br>中面は情報設計を綿密に立て、本コンペの、最大の魅力となるスカラシップを一番に押し出しています。<br>要項ページ部分は動線が分かるように調整しました。<br>ポイントカラーは表紙に合わせ赤をポイントにしています。
+                        <p>バレエの美しき芸術性とコンクール特有の真剣勝負の緊張感を、強い色彩コントラストを用いて圧倒的な熱量と力強さへと昇華させました。<br>
+                        エッジの効いた力強いタイポグラフィを採用することで、イベントが持つ重厚な格式と洗練された存在感を際立たせています。<br>
+                        中面では緻密な情報設計を行い、最大の訴求点である「スカラシップ制度」を最優先で視線が止まるレイアウトへ配置しました。<br>
+                        要項ページには直感的な導線設計を施し、表紙と連動したキーカラーの赤をアクセントとして効かせることで、機能性と美しいトーン＆マナーを両立させています。
                         </p>
                         <div class="sub-images">
                             <img src="img/portfolio/gpbc_sub1.webp" alt="GRAND PLUME Ballet Competition様 パンフレット 見開き画像" loading="lazy" width="2560" height="2560">
@@ -487,10 +617,10 @@
                 </div>
             </article>
 
-            <article id="flyer-work-seasondemo" class="work-item">
+            <!-- <article id="print-work-seasondemo" class="work-item">
                 <h3>SEASONS HARVESTポスター制作&nbsp;&nbsp;<span style="font-weight: normal;">CIDesignAcademy</span></h3>
                 <div class="work-details">
-                    <img src="img/flyer/flyer1.webp" alt="SEASONS HARVESTポスター" class="eyecatch" loading="lazy" width="1080" height="1080">
+                    <img src="img/print/print1.webp" alt="SEASONS HARVESTポスター" class="eyecatch" loading="lazy" width="1080" height="1080">
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2024年05月</p>
                         <p><strong>コンセプト:</strong> 地産地消のカジュアルイタリアンレストラン</p>
@@ -501,24 +631,27 @@
                         <p>色は赤2色・紺2色・白のみ使用。地産地消のイタリアンカジュアルレストラン、価格帯指定の規定内で制作しました。<br>指定色から海の近くをイメージして、浮き輪を連想させるロゴを作成し、ロゴの円と丸いお皿に載った料理写真をリンクさせました。</p>
                         <div class="sub-images">
                             <img src="img/portfolio/seasons_harvest.webp" alt="SEASONS HARVESTポスター イメージ画像" loading="lazy" width="1080" height="1080">
-                            <!-- <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
                         </div>
                     </div>
                 </div>
-            </article>
+            </article> -->
 
-            <article id="flyer-work-beppu" class="work-item">
+            <article id="print-work-beppu" class="work-item">
                 <h3>べっぷ内科クリニック様&nbsp;YouTubeリニューアルチラシ制作</h3>
                 <div class="work-details">
-                    <img src="img/flyer/flyer5.webp" alt="べっぷ内科クリニック様 YouTubeリニューアルチラシ" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <img src="img/print/print5.webp" alt="べっぷ内科クリニック様 YouTubeリニューアルチラシ" class="eyecatch" loading="lazy" width="2560" height="2560">
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2025年08月</p>
-                        <p><strong>コンセプト:</strong>YouTubeチャンネルリニューアル告知</p>
+                        <p><strong>コンセプト:</strong>院内患者層へ直感的に届くインパクトと親しみやすさで、チャンネルの刷新と認知拡大を果たす告知チラシ。</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop</p>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>YouTubeチャンネルを一新してリニューアルしたことをクリニックに訪れる患者様を中心に告知したいとのことでご依頼いただきました。<br>ポスティングされても分かるように文字全体大きく配置し、フォントはYouTubeサムネイルと同じフォントを使用し統一感とインパクトを出しています。<br>動画配信であることがすぐ分かるように、サムネイルをスマホのモックアップに入れ、フィルムに風に並べています。<br>クリニックにいらっしゃる方は高齢の方も多いかと思うので、説明にあたる部分のフォントも大きめに配置しました。</p>
+                        <p> 通院患者様を中心にYouTubeチャンネルの全面リニューアルを印象付けるため、視認性と訴求力を追求した紙面を設計いたしました。<br>
+                            ポスティング時でも一目で伝わる大ぶりのタイポグラフィを採用し、動画サムネイルと同フォントを使用することで統一感とブランド認知度を高めています。<br>
+                            スマートフォンモックやフィルム風のレイアウトをあしらい、動画コンテンツであることが瞬時に直感できるビジュアル演出を施しました。<br>
+                            高齢層の患者様にも配慮したユニバーサルな文字サイズと情報動線を意識し、幅広い層の登録・視聴行動を促すデザインに仕上げています。
+                        </p>
                         <div class="sub-images">
                             <!-- <img src="img/portfolio/seasons_harvest.webp" alt="サブ画像1" loading="lazy">
                             <img src="img/uiux/sub2.webp" alt="サブ画像2" loading="lazy"> -->
@@ -535,11 +668,86 @@
         <section id="graphic-section" class="work-category">
             <h2>GRAPHIC</h2>
             <div class="index-list">
-                <a href="#graphic-work-tsuyu">梅雨タイポグラフィ (2024.05)</a>
-                <a href="#graphic-work-kb2024vi">KBBalletStudio様 発表会VI作成 (2024.06)</a>
+                <a href="#graphic-work-kb2026gra">KBバレエスタジオ様 第7回発表会 Tシャツデザイン制作 (2026.07)</a>
+                <a href="#code-work-gamouno">株式会社ガモーノ様&nbsp;企業ロゴ作成 (2025.08)</a>
+                <a href="#code-work-kexus">株式会社杵臼様&nbsp;企業ロゴ、サービスロゴ作成 (2024.10)</a>
+                <!-- <a href="#graphic-work-tsuyu">梅雨タイポグラフィ (2024.05)</a> -->
+                <a href="#graphic-work-kb2024vi">KBバレエスタジオ様 第6回発表会VI作成 (2024.06)</a>
             </div>
 
-            <article id="graphic-work-tsuyu" class="work-item">
+            <article id="graphic-work-kb2026gra" class="work-item">
+                <h3>KBバレエスタジオ様 第7回発表会 Tシャツデザイン制作</h3>
+                <div class="work-details">
+                    <img src="img/graphic/graphic8.webp" alt="KBバレエスタジオ様 第7回発表会 Tシャツ制作" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2026年07月</p>
+                        <p><strong>コンセプト:</strong> すべての演者を主役に据え、舞台の記憶と個々のアイデンティティを洗練されたグラフィックへと昇華させたアパレルデザイン。</p>
+                        <p><strong>制作ツール:</strong> Adobe Illustrator</p>
+                    </div>
+                    <div class="description">
+                        <h4>制作方針</h4>
+                        <p>第7回発表会で上演された『ラ・バヤデール』『ライモンダ』『ユニオンジャック』の全登場人物を描き下ろし、参加者全員が自身の役に愛着を持てる当事者性を創出しました。<br>
+                            クラシックバレエの厳かな世界観を親しみやすい2等身のデフォルメキャラへ再構築し、子どもたちの意欲と着用の楽しさを直感的に刺激しています。<br>
+                            単なる記念品にとどまらず、アパレルアイテムとして日常やレッスン時にも映えるレイアウトとシックなトーン＆マナーで作品としての完成度を追求しました。<br>
+                            全役柄の網羅による高い記念価値と日常使いできるファッション性を両立させ、生徒間のコミュニケーションを生み出すデザインソリューションを提供しています。
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/kb2026_gra_sub1.webp" alt="KBバレエスタジオ様 第7回発表会 Tシャツキャラクター 画像" loading="lazy" width="2560" height="2560">
+                            <!-- <img src="img/graphic/graphic9.webp" alt="KBバレエスタジオ様 第7回発表会 ゲートサイン 画像" loading="lazy" width="2560" height="2560"> -->
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="code-work-gamouno" class="work-item">
+                <h3>株式会社ガモーノ様 企業ロゴ作成</h3>
+                <div class="work-details">
+                    <img src="img/logo/logo4.webp" alt="ガモーノ様 企業ロゴ" class="eyecatch" loading="lazy">
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2025年08月</p>
+                        <p><strong>コンセプト:</strong> 新たな挑戦への恐れを排し、未来へ向かって力強く踏み出す「最初の一歩」を象徴するコーポレートロゴ。</p>
+                        <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop</p>
+                    </div>
+                    <div class="description">
+                        <h4>制作方針</h4>
+                        <p>「最初の一歩」「イタリア語の1」「社長様のお名前」という社名の由来を深く掘り下げ、ビジュアルアイデンティティへと昇華させました。<br>
+                            踏み出す足をモチーフにしたシンボルマークと、ロゴタイプ内に「1」を融合させたデザインで、歩き始める瞬間の高揚感と意志の強さを表現しています。<br>
+                            企業の軌跡が未来へ続くよう、靴底にもロゴタイプを忍ばせる緻密なギミックを施し、「1」には若葉を思わせる瑞々しいグリーンを採用しました。<br>
+                            「誰もが最初は初心者である」という視点に立ち、新たな一歩を共にするパートナーとしての信頼感と先進性を両立させたデザインに仕上げています。
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/GAMOUNO_Amazing_Shoes_Mockup_3.webp" alt="ガモーノ様 企業ロゴスニーカーイメージ画像" loading="lazy" width="2000" height="2000">
+                            <img src="img/portfolio/GAMOUNO_Businesscard-Mockup-presentation-vol-35.webp" alt="ガモーノ様 企業ロゴ名刺イメージ画像" loading="lazy"  width="2050" height="1500">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="code-work-kexus" class="work-item">
+                <h3>株式会社杵臼様&nbsp;企業ロゴ、サービスロゴ作成</h3>
+                <div class="work-details">
+                    <img src="img/logo/logo1.webp" alt="杵臼様 企業ロゴ" class="eyecatch" loading="lazy" width="2560" height="2560">
+                    <div class="metadata">
+                        <p><strong>制作年月:</strong> 2024年10月</p>
+                        <p><strong>コンセプト:</strong> 「杵柄（きねづか）」と「臼」が交わる情誼を核に、スポーツが結ぶ人々の躍動感と絆を象徴するアイデンティティ。</p>
+                        <p><strong>制作ツール:</strong> Adobe Illustrator, Adobe Photoshop</p>
+                    </div>
+                    <div class="description">
+                        <h4>制作方針</h4>
+                        <p>社名の由来である「杵臼の交わり」から着想を得て、サービスブランド「キネヅカ」の象徴である「杵柄」に「臼」をプラスし、人と人が固く結びつく瞬間をシンボル化しました。<br>
+                            ブランドカラーにはエネルギッシュな赤と重厚な黒を採用し、スポーツマッチングサービスに相応しい情熱と信頼感を表現しています。<br>
+                            洗練された造形美の中にアクティブな快活さを落とし込み、企業とサービスの双方に耐えうる汎用性の高いデザインを構築しました。<br>
+                            確かなブランド思想と現代的なスピード感を融合させ、ユーザーのエンゲージメントと認知度を高めるビジュアルを追求しています。
+                        </p>
+                        <div class="sub-images">
+                            <img src="img/portfolio/kexus_meishi.webp" alt="杵臼様 企業ロゴ名刺イメージ画像" loading="lazy" width="1500" height="1000">
+                            <!-- <img src="img/portfolio/kexus_meishi.webp" alt="サブ画像2" loading="lazy"> -->
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- <article id="graphic-work-tsuyu" class="work-item">
                 <h3>梅雨タイポグラフィ&nbsp;&nbsp;<span style="font-weight: normal;">趣味制作</span></h3>
                 <div class="work-details">
                     <img src="img/graphic/graphic3.webp" alt="梅雨タイポグラフィ" class="eyecatch" loading="lazy" width="2560" height="2560">
@@ -557,23 +765,26 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </article> -->
 
             <article id="graphic-work-kb2024vi" class="work-item">
-                <h3>KBBalletStudio様 発表会VI作成</h3>
+                <h3>KBバレエスタジオ様 第6回発表会VI作成</h3>
                 <div class="work-details">
-                    <img src="img/portfolio/kb2024_main.webp" alt="KBBalletStudio様 発表会VIスタンドバナー" class="eyecatch" loading="lazy" width="2083" height="2083">
+                    <img src="img/portfolio/kb2024_main.webp" alt="KBバレエスタジオ様 第6回発表会VIスタンドバナー" class="eyecatch" loading="lazy" width="2083" height="2083">
                     <div class="metadata">
                         <p><strong>制作年月:</strong> 2024年06月</p>
-                        <p><strong>コンセプト:</strong> くるみ割り人形と演目のコラボレーション</p>
+                        <p><strong>コンセプト:</strong> くるみ割り人形の魔法が、演目の煌めきと溶け合い、舞台の感動をひとつに紡ぐビジュアルアイデンティティ。</p>
                         <p><strong>制作ツール:</strong> Adobe Illustrator</p>
                     </div>
                     <div class="description">
                         <h4>制作方針</h4>
-                        <p>発表会に使用されるTシャツのご依頼をいただきそれから派生して、チケット・スタンドバナー・ノベルティバッグのご依頼もいただきました。<br>演目は「くるみ割り人形全幕」「ディズニーメドレー」「Who cares?」とのことでしたのでクリスマスを思わせるオーナメントのモチーフに、それぞれの演目のモチーフを映り込ませて仕上げました。<br>KB BalletStudio様の文字はクリスマスツリー風にし、世界観を統一させています。</p>
+                        <p>第6回発表会のTシャツデザインを起点に、チケット、スタンドバナー、ノベルティバッグまで、統一された世界観（VI）を一貫して構築しました。<br>
+                            上演作品「くるみ割り人形全幕」「ディズニーメドレー」「Who cares?」の多様な魅力を、クリスマスオーナメントという1つのテーマで美しく融合させています。<br>
+                            KBバレエスタジオ様のロゴをクリスマスツリー風にアレンジするなど、細部まで徹底したブランディングを施し、発表会への期待感を極限まで高めました。<br>
+                            デザインの一貫性によりイベント全体のプロフェッショナリズムを担保し、生徒や保護者、観客のエンゲージメントと記憶に残る体験に貢献しています。</p>
                         <div class="sub-images">
-                            <img src="img/portfolio/kb2024_sub1.webp" alt="KBBalletStudio様 発表会VI チケット画像" loading="lazy" width="5000" height="3750">
-                            <img src="img/portfolio/kb2024_sub2.webp" alt="KBBalletStudio様 発表会VI Tシャツ画像" loading="lazy" width="1524" height="1524">
+                            <img src="img/portfolio/kb2024_sub1.webp" alt="KBバレエスタジオ様 第6回発表会VI チケット画像" loading="lazy" width="5000" height="3750">
+                            <img src="img/portfolio/kb2024_sub2.webp" alt="KBバレエスタジオ様 第6回発表会VI Tシャツ画像" loading="lazy" width="1524" height="1524">
                         </div>
                     </div>
                 </div>
